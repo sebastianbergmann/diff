@@ -45,10 +45,6 @@ namespace SebastianBergmann;
 
 class DiffTest extends \PHPUnit_Framework_TestCase
 {
-    const REMOVED = 2;
-    const ADDED = 1;
-    const OLD = 0;
-
     /**
      * @covers SebastianBergmann\Diff::diff
      */
@@ -66,8 +62,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorMessage_toArray()
     {
         $expected = array();
-        $expected[] = array('a', self::REMOVED);
-        $expected[] = array('b', self::ADDED);
+        $expected[] = array('a', Diff::REMOVED);
+        $expected[] = array('b', Diff::ADDED);
 
         $diff = new Diff('a', 'b');
         $this->assertEquals($expected, $diff->toArray());
@@ -90,8 +86,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorStartSame_toArray()
     {
         $expected = array();
-        $expected[] = array('ba', self::REMOVED);
-        $expected[] = array('bc', self::ADDED);
+        $expected[] = array('ba', Diff::REMOVED);
+        $expected[] = array('bc', Diff::ADDED);
 
         $diff = new Diff('ba', 'bc');
         $this->assertEquals($expected, $diff->toArray());
@@ -114,8 +110,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorEndSame_toArray()
     {
         $expected = array();
-        $expected[] = array('ab', self::REMOVED);
-        $expected[] = array('cb', self::ADDED);
+        $expected[] = array('ab', Diff::REMOVED);
+        $expected[] = array('cb', Diff::ADDED);
 
         $diff = new Diff('ab', 'cb');
         $this->assertEquals($expected, $diff->toArray());
@@ -138,8 +134,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorStartAndEndSame_toArray()
     {
         $expected = array();
-        $expected[] = array('abc', self::REMOVED);
-        $expected[] = array('adc', self::ADDED);
+        $expected[] = array('abc', Diff::REMOVED);
+        $expected[] = array('adc', Diff::ADDED);
 
         $diff = new Diff('abc', 'adc');
         $this->assertEquals($expected, $diff->toArray());
@@ -162,8 +158,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorStartSameComplete_toArray()
     {
         $expected = array();
-        $expected[] = array('ab', self::REMOVED);
-        $expected[] = array('abc', self::ADDED);
+        $expected[] = array('ab', Diff::REMOVED);
+        $expected[] = array('abc', Diff::ADDED);
 
         $diff = new Diff('ab', 'abc');
         $this->assertEquals($expected, $diff->toArray());
@@ -186,8 +182,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorEndSameComplete_toArray()
     {
         $expected = array();
-        $expected[] = array('bc', self::REMOVED);
-        $expected[] = array('abc', self::ADDED);
+        $expected[] = array('bc', Diff::REMOVED);
+        $expected[] = array('abc', Diff::ADDED);
 
         $diff = new Diff('bc', 'abc');
         $this->assertEquals($expected, $diff->toArray());
@@ -210,8 +206,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorOverlapingMatches_toArray()
     {
         $expected = array();
-        $expected[] = array('abc', self::REMOVED);
-        $expected[] = array('abbc', self::ADDED);
+        $expected[] = array('abc', Diff::REMOVED);
+        $expected[] = array('abbc', Diff::ADDED);
 
         $diff = new Diff('abc', 'abbc');
         $this->assertEquals($expected, $diff->toArray());
@@ -234,8 +230,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorOverlapingMatches2_toArray()
     {
         $expected = array();
-        $expected[] = array('abcdde', self::REMOVED);
-        $expected[] = array('abcde', self::ADDED);
+        $expected[] = array('abcdde', Diff::REMOVED);
+        $expected[] = array('abcde', Diff::ADDED);
 
         $diff = new Diff('abcdde', 'abcde');
         $this->assertEquals($expected, $diff->toArray());
@@ -256,6 +252,18 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $diff = new Diff('abc', 'abc');
         $this->assertEquals(array(), $diff->toArray());
+    }
+
+    public function testMoreComplexDiff_toArray()
+    {
+        $expected = array();
+        $expected[] = array('abc', Diff::OLD);
+        $expected[] = array('def', Diff::REMOVED);
+        $expected[] = array('ghi', Diff::REMOVED);
+        $expected[] = array('dee', Diff::ADDED);
+
+        $diff = new Diff("abc\ndef\nghi", "abc\ndee");
+        $this->assertEquals($expected, $diff->toArray());
     }
 
     public function testCustomHeader()

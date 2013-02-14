@@ -57,6 +57,27 @@ namespace SebastianBergmann;
 class Diff
 {
     /**
+     * Token has not changed
+     *
+     * @var integer
+     */
+    const OLD = 0;
+
+    /**
+     * Token was added
+     *
+     * @var integer
+     */
+    const ADDED = 1;
+
+    /**
+     * Token was removed
+     *
+     * @var integer
+     */
+    const REMOVED = 2;
+
+    /**
      * The original string
      *
      * @var string
@@ -162,11 +183,11 @@ class Diff
                 $newChunk = FALSE;
             }
 
-            if ($diff[$i][1] === 1 /* ADDED */) {
+            if ($diff[$i][1] === static::ADDED) {
                 $buffer .= '+' . $diff[$i][0] . "\n";
             }
 
-            else if ($diff[$i][1] === 2 /* REMOVED */) {
+            else if ($diff[$i][1] === static::REMOVED) {
                 $buffer .= '-' . $diff[$i][0] . "\n";
             }
 
@@ -233,7 +254,7 @@ class Diff
         $diff = array();
 
         foreach ($start as $token) {
-            $diff[] = array($token, 0 /* OLD */);
+            $diff[] = array($token, static::OLD);
         }
 
         reset($from);
@@ -241,29 +262,29 @@ class Diff
 
         foreach ($common as $token) {
             while ((($fromToken = reset($from)) !== $token)) {
-                $diff[] = array(array_shift($from), 2 /* REMOVED */);
+                $diff[] = array(array_shift($from), static::REMOVED);
             }
 
             while ((($toToken = reset($to)) !== $token)) {
-                $diff[] = array(array_shift($to), 1 /* ADDED */);
+                $diff[] = array(array_shift($to), static::ADDED);
             }
 
-            $diff[] = array($token, 0 /* OLD */);
+            $diff[] = array($token, static::OLD);
 
             array_shift($from);
             array_shift($to);
         }
 
         while (($token = array_shift($from)) !== NULL) {
-            $diff[] = array($token, 2 /* REMOVED */);
+            $diff[] = array($token, static::REMOVED);
         }
 
         while (($token = array_shift($to)) !== NULL) {
-            $diff[] = array($token, 1 /* ADDED */);
+            $diff[] = array($token, static::ADDED);
         }
 
         foreach ($end as $token) {
-            $diff[] = array($token, 0 /* OLD */);
+            $diff[] = array($token, static::OLD);
         }
 
         return $diff;
