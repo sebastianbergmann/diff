@@ -57,67 +57,31 @@ namespace SebastianBergmann;
 class Diff
 {
     /**
-     * The original string
-     *
      * @var string
      */
-    private $from;
+    private $header;
 
     /**
-     * The new string
+     * Constructor
      *
-     * @var string
+     * @param string $header
      */
-    private $to;
-
-    /**
-     * The diff header
-     *
-     * @var string
-     */
-    private $header = "--- Original\n+++ New\n";
-
-    /**
-     * Constructs a new diff for two given strings
-     *
-     * @param mixed $from The original string
-     * @param mixed $to The new string
-     * @param mixed $header The diff header
-     */
-    public function __construct($from, $to, $header = '')
+    public function __construct($header = "--- Original\n+++ New\n")
     {
-        $this->from = $from;
-        $this->to = $to;
-
-        if ($header) {
-            $this->header = $header;
-        }
+        $this->header = $header;
     }
 
     /**
-     * Exports a value into a string.
+     * Returns the diff between two arrays or strings as string.
      *
-     * @return string
-     * @see    PHP_Exporter\Diff::diff
-     */
-    public function __toString()
-    {
-        return $this->diff();
-    }
-
-    /**
-     * Returns the diff between two strings as a string.
-     *
+     * @param  array|string $from
+     * @param  array|string $to
      * @return string
      */
-    public function diff()
+    public function diff($from, $to)
     {
-        if ($this->from === $this->to) {
-            return '';
-        }
-
         $buffer = $this->header;
-        $diff   = $this->toArray();
+        $diff   = $this->diffToArray($from,$to);
 
         $inOld = FALSE;
         $i     = 0;
@@ -179,7 +143,7 @@ class Diff
     }
 
     /**
-     * Returns the diff between two strings as an array.
+     * Returns the diff between two arrays or strings as array.
      *
      * every array-entry containts two elements:
      *   - [0] => string $token
@@ -189,16 +153,22 @@ class Diff
      * - 1: ADDED: $token was added to $from
      * - 0: OLD: $token is not changed in $to
      *
+     * @param  array|string $from
+     * @param  array|string $to
      * @return array
      */
-    public function toArray()
+    public function diffToArray($from, $to)
     {
-        if ($this->from === $this->to) {
-            return array();
+        preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
+        preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
+
+        if (is_string($from)) {
+            $from = preg_split('(\r\n|\r|\n)', $from);
         }
 
-        $from = preg_split('(\r\n|\r|\n)', $this->from);
-        $to = preg_split('(\r\n|\r|\n)', $this->to);
+        if (is_string($to)) {
+            $to = preg_split('(\r\n|\r|\n)', $to);
+        }
 
         $start      = array();
         $end        = array();
@@ -226,11 +196,19 @@ class Diff
             }
         }
 
-        $common = self::longestCommonSubsequence(
+        $common = $this->longestCommonSubsequence(
           array_values($from), array_values($to)
         );
 
         $diff = array();
+
+        if (isset($fromMatches[0]) && $toMatches[0] &&
+            count($fromMatches[0]) === count($toMatches[0]) &&
+            $fromMatches[0] !== $toMatches[0]) {
+            $diff[] = array(
+              '#Warning: Strings contain different line endings!', 0
+            );
+        }
 
         foreach ($start as $token) {
             $diff[] = array($token, 0 /* OLD */);
@@ -276,7 +254,7 @@ class Diff
      * @param  array $to
      * @return array
      */
-    protected static function longestCommonSubsequence(array $from, array $to)
+    protected function longestCommonSubsequence(array $from, array $to)
     {
         $common     = array();
         $matrix     = array();
