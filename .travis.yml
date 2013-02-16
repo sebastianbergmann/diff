@@ -1,0 +1,12 @@
+language: php
+
+before_script:
+    - composer install --prefer-source
+
+php:
+  - 5.4
+  - 5.3
+
+notifications:
+  email: false
+  irc: "irc.freenode.org#phpunit"
