@@ -5,6 +5,7 @@ before_script:
 
 php:
   - 5.4
+  - 5.3.3
   - 5.3
 
 notifications:
