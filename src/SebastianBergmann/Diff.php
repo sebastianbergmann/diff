@@ -157,7 +157,7 @@ class Diff
      * @param  array|string $to
      * @return array
      */
-    public function diffToArray($from, $to)
+    public function toArray($from, $to)
     {
         preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
         preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
