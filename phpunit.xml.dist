@@ -6,7 +6,7 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         bootstrap="src/autoload.php">
+         bootstrap="vendor/autoload.php">
  <testsuites>
   <testsuite name="Diff">
    <directory>./tests</directory>
@@ -15,9 +15,6 @@
  <filter>
   <whitelist addUncoveredFilesFromWhitelist="true">
    <directory>./src</directory>
-   <exclude>
-    <file>./src/autoload.php</file>
-   </exclude>
   </whitelist>
  </filter>
 </phpunit>
