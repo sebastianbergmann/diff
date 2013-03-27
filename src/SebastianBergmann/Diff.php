@@ -56,6 +56,11 @@ namespace SebastianBergmann;
  */
 class Diff
 {
+
+    private $from;
+
+    private $to;
+
     /**
      * @var string
      */
@@ -66,22 +71,24 @@ class Diff
      *
      * @param string $header
      */
-    public function __construct($header = "--- Original\n+++ New\n")
+    public function __construct($from, $to, $header = "--- Original\n+++ New\n")
     {
+        $this->from = $from;
+        $this->to = $to;
         $this->header = $header;
     }
 
     /**
      * Returns the diff between two arrays or strings as string.
      *
-     * @param  array|string $from
-     * @param  array|string $to
      * @return string
      */
-    public function diff($from, $to)
+    public function diff()
     {
+        $from = $this->from;
+        $to = $this->to;
         $buffer = $this->header;
-        $diff   = $this->diffToArray($from,$to);
+        $diff   = $this->toArray($from,$to);
 
         $inOld = FALSE;
         $i     = 0;
@@ -153,12 +160,12 @@ class Diff
      * - 1: ADDED: $token was added to $from
      * - 0: OLD: $token is not changed in $to
      *
-     * @param  array|string $from
-     * @param  array|string $to
      * @return array
      */
-    public function toArray($from, $to)
+    public function toArray()
     {
+        $from = $this->from;
+        $to = $this->to;
         preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
         preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
 
@@ -299,5 +306,9 @@ class Diff
         }
 
         return $common;
+    }
+
+    public function __toString(){
+        return $this->diff();        
     }
 }

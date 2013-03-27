@@ -223,8 +223,8 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testComparisonErrorOverlapingMatches2()
     {
         $this->assertEquals(
-          "--- Original\n+++ New\n@@ @@\n-abcdde\n+abcde\n",
-          new Diff('abcdde', 'abcde')
+            "--- Original\n+++ New\n@@ @@\n-abcdde\n+abcde\n",
+            new Diff('abcdde', 'abcde')
         );
     }
 
@@ -246,7 +246,10 @@ class DiffTest extends \PHPUnit_Framework_TestCase
      */
     public function testEmptyDiff()
     {
-        $this->assertEquals('', new Diff('abc', 'abc'));
+        $this->assertEquals(
+            "--- Original\n+++ New\n@@ @@\n abc\n",
+            (string)(new Diff('abc', 'abc'))
+        );
     }
 
     /**
@@ -255,7 +258,12 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     public function testEmptyDiff_toArray()
     {
         $diff = new Diff('abc', 'abc');
-        $this->assertEquals(array(), $diff->toArray());
+        $this->assertEquals(
+            array(
+                array('abc', 0)
+            ),
+            $diff->toArray()
+         );
     }
 
     public function testCustomHeader()
