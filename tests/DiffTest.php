@@ -49,6 +49,13 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     const ADDED = 1;
     const OLD = 0;
 
+    private $diff;
+
+    protected function setUp()
+    {
+        $this->diff = new Diff;
+    }
+
     /**
      * @covers SebastianBergmann\Diff::diff
      */
@@ -56,7 +63,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-a\n+b\n",
-          new Diff('a', 'b')
+          $this->diff->diff('a', 'b')
         );
     }
 
@@ -69,8 +76,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('a', self::REMOVED);
         $expected[] = array('b', self::ADDED);
 
-        $diff = new Diff('a', 'b');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('a', 'b'));
     }
 
     /**
@@ -80,7 +86,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-ba\n+bc\n",
-          new Diff('ba', 'bc')
+          $this->diff->diff('ba', 'bc')
         );
     }
 
@@ -93,8 +99,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('ba', self::REMOVED);
         $expected[] = array('bc', self::ADDED);
 
-        $diff = new Diff('ba', 'bc');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('ba', 'bc'));
     }
 
     /**
@@ -104,7 +109,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-ab\n+cb\n",
-          new Diff('ab', 'cb')
+          $this->diff->diff('ab', 'cb')
         );
     }
 
@@ -117,8 +122,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('ab', self::REMOVED);
         $expected[] = array('cb', self::ADDED);
 
-        $diff = new Diff('ab', 'cb');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('ab', 'cb'));
     }
 
     /**
@@ -128,7 +132,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-abc\n+adc\n",
-          new Diff('abc', 'adc')
+          $this->diff->diff('abc', 'adc')
         );
     }
 
@@ -141,8 +145,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('abc', self::REMOVED);
         $expected[] = array('adc', self::ADDED);
 
-        $diff = new Diff('abc', 'adc');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('abc', 'adc'));
     }
 
     /**
@@ -152,7 +155,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-ab\n+abc\n",
-          new Diff('ab', 'abc')
+          $this->diff->diff('ab', 'abc')
         );
     }
 
@@ -165,8 +168,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('ab', self::REMOVED);
         $expected[] = array('abc', self::ADDED);
 
-        $diff = new Diff('ab', 'abc');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('ab', 'abc'));
     }
 
     /**
@@ -176,7 +178,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-bc\n+abc\n",
-          new Diff('bc', 'abc')
+          $this->diff->diff('bc', 'abc')
         );
     }
 
@@ -189,8 +191,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('bc', self::REMOVED);
         $expected[] = array('abc', self::ADDED);
 
-        $diff = new Diff('bc', 'abc');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('bc', 'abc'));
     }
 
     /**
@@ -200,7 +201,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-abc\n+abbc\n",
-          new Diff('abc', 'abbc')
+          $this->diff->diff('abc', 'abbc')
         );
     }
 
@@ -213,8 +214,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('abc', self::REMOVED);
         $expected[] = array('abbc', self::ADDED);
 
-        $diff = new Diff('abc', 'abbc');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('abc', 'abbc'));
     }
 
     /**
@@ -224,7 +224,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-abcdde\n+abcde\n",
-          new Diff('abcdde', 'abcde')
+          $this->diff->diff('abcdde', 'abcde')
         );
     }
 
@@ -237,8 +237,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('abcdde', self::REMOVED);
         $expected[] = array('abcde', self::ADDED);
 
-        $diff = new Diff('abcdde', 'abcde');
-        $this->assertEquals($expected, $diff->toArray());
+        $this->assertEquals($expected, $this->diff->diffToArray('abcdde', 'abcde'));
     }
 
     /**
@@ -246,7 +245,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
      */
     public function testEmptyDiff()
     {
-        $this->assertEquals('', new Diff('abc', 'abc'));
+        $this->assertEquals('', $this->diff->diff('abc', 'abc'));
     }
 
     /**
@@ -254,15 +253,16 @@ class DiffTest extends \PHPUnit_Framework_TestCase
      */
     public function testEmptyDiff_toArray()
     {
-        $diff = new Diff('abc', 'abc');
-        $this->assertEquals(array(), $diff->toArray());
+        $this->assertEquals(array(), $this->diff->diffToArray('abc', 'abc'));
     }
 
     public function testCustomHeader()
     {
+        $diff = new Diff('CUSTOM HEADER');
+
         $this->assertEquals(
           "CUSTOM HEADER@@ @@\n-a\n+b\n",
-          new Diff('a', 'b', 'CUSTOM HEADER')
+          $this->diff->diff('a', 'b')
         );
     }
 }
