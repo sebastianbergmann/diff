@@ -262,7 +262,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
           "CUSTOM HEADER@@ @@\n-a\n+b\n",
-          $this->diff->diff('a', 'b')
+          $diff->diff('a', 'b')
         );
     }
 }
