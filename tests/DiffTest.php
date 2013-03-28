@@ -68,7 +68,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorMessage_toArray()
     {
@@ -91,7 +91,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorStartSame_toArray()
     {
@@ -114,7 +114,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorEndSame_toArray()
     {
@@ -137,7 +137,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorStartAndEndSame_toArray()
     {
@@ -160,7 +160,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorStartSameComplete_toArray()
     {
@@ -183,7 +183,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorEndSameComplete_toArray()
     {
@@ -206,7 +206,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorOverlapingMatches_toArray()
     {
@@ -229,7 +229,7 @@ class DiffTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers SebastianBergmann\Diff::toArray
+     * @covers SebastianBergmann\Diff::diffToArray
      */
     public function testComparisonErrorOverlapingMatches2_toArray()
     {
