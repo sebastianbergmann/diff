@@ -240,22 +240,6 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->diff->diffToArray('abcdde', 'abcde'));
     }
 
-    /**
-     * @covers SebastianBergmann\Diff::diff
-     */
-    public function testEmptyDiff()
-    {
-        $this->assertEquals('', $this->diff->diff('abc', 'abc'));
-    }
-
-    /**
-     * @covers SebastianBergmann\Diff::toArray
-     */
-    public function testEmptyDiff_toArray()
-    {
-        $this->assertEquals(array(), $this->diff->diffToArray('abc', 'abc'));
-    }
-
     public function testCustomHeader()
     {
         $diff = new Diff('CUSTOM HEADER');
