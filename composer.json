@@ -18,9 +18,9 @@
         "php": ">=5.3.3"
     },
     "autoload": {
-        "classmap": [
-            "src/"
-        ]
+        "psr-0": {
+            "SebastianBergmann" : "src/"
+        }
     },
     "extra": {
         "branch-alias": {
