@@ -22,3 +22,12 @@ To add this package as a local, per-project dependency to your project, simply a
             "sebastian/diff": "1.0.*"
         }
     }
+
+### Usage
+
+```php
+use SebastianBergmann\Diff
+
+$diff = new Diff("--- expected\n+++ actual\n");
+$diff->diff($expected, $actual);
+```
