@@ -28,6 +28,14 @@ To add this package as a local, per-project dependency to your project, simply a
 ```php
 use SebastianBergmann\Diff;
 
-$diff = new Diff("--- expected\n+++ actual\n");
-$diff->diff($expected, $actual);
+$diff = new Diff;
+print $diff->diff('foo', 'bar');
 ```
+
+The code above yields the output below:
+
+    --- Original
+    +++ New
+    @@ @@
+    -foo
+    +bar
