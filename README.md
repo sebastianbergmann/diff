@@ -4,7 +4,17 @@ Diff implementation for PHP, factored out of PHPUnit into a stand-alone componen
 
 ## Installation
 
-You can use the [PEAR Installer](http://pear.php.net/manual/en/guide.users.commandline.cli.php) or [Composer](http://getcomposer.org/) to download and install this package as well as its dependencies.
+You can use [Composer](http://getcomposer.org/) or the [PEAR Installer](http://pear.php.net/manual/en/guide.users.commandline.cli.php) to download and install this package as well as its dependencies.
+
+### Composer
+
+To add this package as a local, per-project dependency to your project, simply add a dependency on `sebastian/diff` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a dependency on Diff:
+
+    {
+        "require": {
+            "sebastian/diff": "*"
+        }
+    }
 
 ### PEAR Installer
 
@@ -13,23 +23,13 @@ The following two commands (which you may have to run as `root`) are all that is
     pear config-set auto_discover 1
     pear install pear.phpunit.de/Diff
 
-### Composer
-
-To add this package as a local, per-project dependency to your project, simply add a dependency on `sebastian/diff` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a dependency on Diff 1.0:
-
-    {
-        "require": {
-            "sebastian/diff": "1.0.*"
-        }
-    }
-
 ### Usage
 
 ```php
-use SebastianBergmann\Diff;
+use SebastianBergmann\Diff\Differ;
 
-$diff = new Diff;
-print $diff->diff('foo', 'bar');
+$differ = new Differ;
+print $differ->diff('foo', 'bar');
 ```
 
 The code above yields the output below:

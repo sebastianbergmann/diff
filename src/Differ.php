@@ -42,7 +42,7 @@
  * @link       http://www.github.com/sebastianbergmann/diff
  */
 
-namespace SebastianBergmann;
+namespace SebastianBergmann\Diff;
 
 /**
  * Diff implementation.
@@ -54,7 +54,7 @@ namespace SebastianBergmann;
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.github.com/sebastianbergmann/diff
  */
-class Diff
+class Differ
 {
     /**
      * @var string
@@ -254,7 +254,7 @@ class Diff
      * @param  array $to
      * @return array
      */
-    protected function longestCommonSubsequence(array $from, array $to)
+    private function longestCommonSubsequence(array $from, array $to)
     {
         $common     = array();
         $matrix     = array();

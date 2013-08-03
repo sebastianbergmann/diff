@@ -33,7 +33,7 @@
    <dir name="SebastianBergmann">
     <dir name="Diff">
      <file baseinstalldir="/" name="autoload.php" role="php"/>
-     <file baseinstalldir="/" name="Diff.php" role="php"/>
+     <file baseinstalldir="/" name="Differ.php" role="php"/>
     </dir>
    </dir>
    <file baseinstalldir="/" name="LICENSE" role="doc"/>

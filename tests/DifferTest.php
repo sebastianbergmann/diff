@@ -41,9 +41,9 @@
  * @link       http://www.github.com/sebastianbergmann/diff
  */
 
-namespace SebastianBergmann;
+namespace SebastianBergmann\Diff;
 
-class DiffTest extends \PHPUnit_Framework_TestCase
+class DifferTest extends \PHPUnit_Framework_TestCase
 {
     const REMOVED = 2;
     const ADDED = 1;
@@ -53,22 +53,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->diff = new Diff;
+        $this->differ = new Differ;
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorMessage()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-a\n+b\n",
-          $this->diff->diff('a', 'b')
+          $this->differ->diff('a', 'b')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorMessage_toArray()
     {
@@ -76,22 +76,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('a', self::REMOVED);
         $expected[] = array('b', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('a', 'b'));
+        $this->assertEquals($expected, $this->differ->diffToArray('a', 'b'));
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorStartSame()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-ba\n+bc\n",
-          $this->diff->diff('ba', 'bc')
+          $this->differ->diff('ba', 'bc')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorStartSame_toArray()
     {
@@ -99,22 +99,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('ba', self::REMOVED);
         $expected[] = array('bc', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('ba', 'bc'));
+        $this->assertEquals($expected, $this->differ->diffToArray('ba', 'bc'));
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorEndSame()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-ab\n+cb\n",
-          $this->diff->diff('ab', 'cb')
+          $this->differ->diff('ab', 'cb')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorEndSame_toArray()
     {
@@ -122,22 +122,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('ab', self::REMOVED);
         $expected[] = array('cb', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('ab', 'cb'));
+        $this->assertEquals($expected, $this->differ->diffToArray('ab', 'cb'));
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorStartAndEndSame()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-abc\n+adc\n",
-          $this->diff->diff('abc', 'adc')
+          $this->differ->diff('abc', 'adc')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorStartAndEndSame_toArray()
     {
@@ -145,22 +145,24 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('abc', self::REMOVED);
         $expected[] = array('adc', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('abc', 'adc'));
+        $this->assertEquals(
+          $expected, $this->differ->diffToArray('abc', 'adc')
+        );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorStartSameComplete()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-ab\n+abc\n",
-          $this->diff->diff('ab', 'abc')
+          $this->differ->diff('ab', 'abc')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorStartSameComplete_toArray()
     {
@@ -168,22 +170,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('ab', self::REMOVED);
         $expected[] = array('abc', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('ab', 'abc'));
+        $this->assertEquals($expected, $this->differ->diffToArray('ab', 'abc'));
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorEndSameComplete()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-bc\n+abc\n",
-          $this->diff->diff('bc', 'abc')
+          $this->differ->diff('bc', 'abc')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorEndSameComplete_toArray()
     {
@@ -191,22 +193,22 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('bc', self::REMOVED);
         $expected[] = array('abc', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('bc', 'abc'));
+        $this->assertEquals($expected, $this->differ->diffToArray('bc', 'abc'));
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorOverlapingMatches()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-abc\n+abbc\n",
-          $this->diff->diff('abc', 'abbc')
+          $this->differ->diff('abc', 'abbc')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorOverlapingMatches_toArray()
     {
@@ -214,22 +216,24 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('abc', self::REMOVED);
         $expected[] = array('abbc', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('abc', 'abbc'));
+        $this->assertEquals(
+          $expected, $this->differ->diffToArray('abc', 'abbc')
+        );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diff
+     * @covers SebastianBergmann\Diff\Differ::diff
      */
     public function testComparisonErrorOverlapingMatches2()
     {
         $this->assertEquals(
           "--- Original\n+++ New\n@@ @@\n-abcdde\n+abcde\n",
-          $this->diff->diff('abcdde', 'abcde')
+          $this->differ->diff('abcdde', 'abcde')
         );
     }
 
     /**
-     * @covers SebastianBergmann\Diff::diffToArray
+     * @covers SebastianBergmann\Diff\Differ::diffToArray
      */
     public function testComparisonErrorOverlapingMatches2_toArray()
     {
@@ -237,16 +241,21 @@ class DiffTest extends \PHPUnit_Framework_TestCase
         $expected[] = array('abcdde', self::REMOVED);
         $expected[] = array('abcde', self::ADDED);
 
-        $this->assertEquals($expected, $this->diff->diffToArray('abcdde', 'abcde'));
+        $this->assertEquals(
+          $expected, $this->differ->diffToArray('abcdde', 'abcde')
+        );
     }
 
+    /**
+     * @covers SebastianBergmann\Diff\Differ::diff
+     */
     public function testCustomHeader()
     {
-        $diff = new Diff('CUSTOM HEADER');
+        $differ = new Differ('CUSTOM HEADER');
 
         $this->assertEquals(
           "CUSTOM HEADER@@ @@\n-a\n+b\n",
-          $diff->diff('a', 'b')
+          $differ->diff('a', 'b')
         );
     }
 }

@@ -7,7 +7,7 @@ spl_autoload_register(
         static $classes = null;
         if ($classes === null) {
             $classes = array(
-                'sebastianbergmann\\diff' => '/Diff.php'
+                'sebastianbergmann\\diff\\differ' => '/Differ.php'
             );
         }
         $cn = strtolower($class);
