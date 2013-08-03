@@ -145,7 +145,7 @@ class Diff
     /**
      * Returns the diff between two arrays or strings as array.
      *
-     * every array-entry containts two elements:
+     * Each array element contains two elements:
      *   - [0] => string $token
      *   - [1] => 2|1|0
      *
