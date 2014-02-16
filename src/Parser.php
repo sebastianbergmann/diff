@@ -63,7 +63,7 @@ class Parser
         $diffs     = array();
         $diff      = null;
         $collected = array();
-        
+
         for ($i = 0; $i < $lineCount; ++$i) {
             if (preg_match('(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch) &&
                 preg_match('(^\\+\\+\\+\\s+(?P<file>\\S+))', $lines[$i + 1], $toMatch)) {
@@ -133,7 +133,7 @@ class Parser
                 array_unshift($lines, $last);
             }
         }
-        
+
         $diff->setChunks($chunks);
     }
 }
