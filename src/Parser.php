@@ -110,7 +110,7 @@ class Parser
             $last      = null;
 
             while (count($lines) &&
-                  (preg_match('(^(?P<type>[+ -])(?P<line>.*))', $last = array_shift($lines), $match) ||
+                  (preg_match('(^(?P<type>[+ -])?(?P<line>.*))', $last = array_shift($lines), $match) ||
                   (strpos($last, '\\ No newline at end of file' ) === 0))) {
                 if (count($match)) {
                     $type = Line::UNCHANGED;
