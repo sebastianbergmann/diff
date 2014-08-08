@@ -248,7 +248,7 @@ class Differ
     }
 
     /**
-     * Calculates the longest common subsequences of two strings.
+     * Calculates the longest common subsequence of two arrays.
      *
      * The method uses Hirschberg's algorithm that runs in linear space and
      *   quadratic time.
