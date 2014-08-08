@@ -250,54 +250,73 @@ class Differ
     /**
      * Calculates the longest common subsequence of two arrays.
      *
-     * @param  array $from
-     * @param  array $to
+     * The method uses Hirschberg's algorithm that runs in linear space and
+     *   quadratic time.
+     *
+     * @param array $from
+     * @param array $to
      * @return array
      */
     private function longestCommonSubsequence(array $from, array $to)
     {
-        $common     = array();
-        $matrix     = array();
-        $fromLength = count($from);
-        $toLength   = count($to);
+        $cfrom = count($from);
+        $cto = count($to);
 
-        for ($i = 0; $i <= $fromLength; ++$i) {
-            $matrix[$i][0] = 0;
+        if ($cfrom == 0) {
+            return array();
         }
-
-        for ($j = 0; $j <= $toLength; ++$j) {
-            $matrix[0][$j] = 0;
-        }
-
-        for ($i = 1; $i <= $fromLength; ++$i) {
-            for ($j = 1; $j <= $toLength; ++$j) {
-                $matrix[$i][$j] = max(
-                  $matrix[$i-1][$j],
-                  $matrix[$i][$j-1],
-                  $from[$i-1] === $to[$j-1] ? $matrix[$i-1][$j-1] + 1 : 0
-                );
+        elseif ($cfrom == 1) {
+            if (in_array($from[0], $to)) {
+                return array($from[0]);
             }
-        }
-
-        $i = $fromLength;
-        $j = $toLength;
-
-        while ($i > 0 && $j > 0) {
-            if ($from[$i-1] === $to[$j-1]) {
-                array_unshift($common, $from[$i-1]);
-                --$i;
-                --$j;
-            }
-
-            else if ($matrix[$i][$j-1] > $matrix[$i-1][$j]) {
-                --$j;
-            }
-
             else {
-                --$i;
+                return array();
             }
         }
+        else {
+            $i = (int)($cfrom / 2);
+            $fromStart = array_slice($from, 0, $i);
+            $fromEnd = array_slice($from, $i);
+            $llB = $this->longestCommonSubsequenceLength($fromStart, $to);
+            $llE = $this->longestCommonSubsequenceLength(array_reverse($fromEnd), array_reverse($to));
+            $jmax = 0;
+            $max = 0;
+            for($j = 0; $j <= $cto; $j++) {
+                $m = $llB[$j] + $llE[$cto - $j];
+                if ($m >= $max) {
+                    $max = $m;
+                    $jmax = $j;
+                }
+            }
+            $toStart = array_slice($to, 0, $jmax);
+            $toEnd = array_slice($to, $jmax);
+            return array_merge($this->longestCommonSubsequence($fromStart, $toStart), $this->longestCommonSubsequence($fromEnd, $toEnd));
+        }
+    }
 
-        return $common;
+    /**
+     * Helper function for the LCS method.
+     *
+     * @param array $from
+     * @param array $to
+     * @return array
+     */
+    private function longestCommonSubsequenceLength(array $from, array $to)
+    {
+        $curr = array_fill(0, count($to) + 1, 0);
+        $cfrom = count($from);
+        $cto = count($to);
+        for($i = 0; $i < $cfrom; $i++) {
+            $prev = $curr;
+            for ($j = 0; $j < $cto; $j++) {
+                if ($from[$i] == $to[$j]) {
+                    $curr[$j + 1] = $prev[$j] + 1;
+                }
+                else {
+                    $curr[$j + 1] = max($curr[$j], $prev[$j + 1]);
+                }
+            }
+        }
+        return $curr;
     }
 }
