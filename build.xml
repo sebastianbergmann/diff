@@ -1,66 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="diff" default="build">
- <property name="php" value="php"/>
- <property name="phpunit" value="phpunit"/>
-
- <target name="build" depends="prepare,lint,phpunit"/>
-
+<project name="diff">
  <target name="clean" description="Cleanup build artifacts">
+  <delete dir="${basedir}/vendor"/>
+  <delete file="${basedir}/composer.lock"/>
  </target>
 
- <target name="prepare" depends="clean,phpab" description="Prepare for build">
- </target>
-
- <target name="phpab" description="Generate autoloader script">
-  <exec executable="phpab">
-   <arg value="--output" />
-   <arg path="src/autoload.php" />
-   <arg path="src" />
-  </exec>
- </target>
-
- <target name="lint">
-  <apply executable="${php}" failonerror="true">
-   <arg value="-l" />
-
-   <fileset dir="${basedir}/src">
-    <include name="**/*.php" />
-    <modified />
+ <target name="composer" depends="clean" description="Install dependencies with Composer">
+  <tstamp>
+   <format property="thirty.days.ago" pattern="MM/dd/yyyy hh:mm aa" offset="-30" unit="day"/>
+  </tstamp>
+  <delete>
+   <fileset dir="${basedir}">
+    <include name="composer.phar" />
+    <date datetime="${thirty.days.ago}" when="before"/>
    </fileset>
+  </delete>
 
-   <fileset dir="${basedir}/tests">
-    <include name="**/*.php" />
-    <modified />
-   </fileset>
-  </apply>
- </target>
+  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
 
- <target name="phpunit" description="Run unit tests with PHPUnit">
-  <condition property="phpunit_cmd" value="${php} ${phpunit}" else="${phpunit}">
-   <not>
-    <equals arg1="${phpunit}" arg2="phpunit" />
-   </not>
-  </condition>
-
-  <exec executable="${phpunit_cmd}" failonerror="true"/>
- </target>
-
- <target name="pear">
-  <mkdir dir="${basedir}/build/SebastianBergmann/Diff"/>
-
-  <copy todir="${basedir}/build/SebastianBergmann/Diff">
-   <fileset dir="${basedir}/src"/>
-  </copy>
-
-  <copy file="LICENSE" todir="${basedir}/build"/>
-  <copy file="README.md" todir="${basedir}/build"/>
-
-  <exec executable="pear" dir="${basedir}/build">
-   <arg value="package" />
+  <exec executable="php">
+   <arg value="composer.phar"/>
+   <arg value="install"/>
   </exec>
-
-  <delete dir="${basedir}/build/SebastianBergmann"/>
-  <delete file="${basedir}/build/LICENSE"/>
-  <delete file="${basedir}/build/README.md"/>
  </target>
 </project>
