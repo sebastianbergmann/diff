@@ -56,6 +56,10 @@ namespace SebastianBergmann\Diff;
  */
 class Parser
 {
+    /**
+     * @param  string $string
+     * @return Diff[]
+     */
     public function parse($string)
     {
         $lines     = preg_split('(\r\n|\r|\n)', $string);
@@ -88,6 +92,10 @@ class Parser
         return $diffs;
     }
 
+    /**
+     * @param Diff  $diff
+     * @param array $lines
+     */
     private function parseFileDiff(Diff $diff, array $lines)
     {
         $chunks = array();
