@@ -81,25 +81,23 @@ class Differ
     public function diff($from, $to)
     {
         $buffer = $this->header;
-        $diff   = $this->diffToArray($from,$to);
+        $diff   = $this->diffToArray($from, $to);
 
-        $inOld = FALSE;
+        $inOld = false;
         $i     = 0;
         $old   = array();
 
         foreach ($diff as $line) {
             if ($line[1] ===  0 /* OLD */) {
-                if ($inOld === FALSE) {
+                if ($inOld === false) {
                     $inOld = $i;
                 }
-            }
-
-            else if ($inOld !== FALSE) {
+            } elseif ($inOld !== false) {
                 if (($i - $inOld) > 5) {
                     $old[$inOld] = $i - 1;
                 }
 
-                $inOld = FALSE;
+                $inOld = false;
             }
 
             ++$i;
@@ -112,29 +110,25 @@ class Differ
             $end = $tmp;
         }
 
-        $newChunk = TRUE;
+        $newChunk = true;
 
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
                 $buffer  .= "\n";
-                $newChunk = TRUE;
+                $newChunk = true;
                 $i        = $old[$i];
             }
 
             if ($newChunk) {
                 $buffer  .= "@@ @@\n";
-                $newChunk = FALSE;
+                $newChunk = false;
             }
 
             if ($diff[$i][1] === 1 /* ADDED */) {
                 $buffer .= '+' . $diff[$i][0] . "\n";
-            }
-
-            else if ($diff[$i][1] === 2 /* REMOVED */) {
+            } elseif ($diff[$i][1] === 2 /* REMOVED */) {
                 $buffer .= '-' . $diff[$i][0] . "\n";
-            }
-
-            else {
+            } else {
                 $buffer .= ' ' . $diff[$i][0] . "\n";
             }
         }
@@ -197,7 +191,8 @@ class Differ
         }
 
         $common = $this->longestCommonSubsequence(
-          array_values($from), array_values($to)
+            array_values($from),
+            array_values($to)
         );
 
         $diff = array();
@@ -232,11 +227,11 @@ class Differ
             array_shift($to);
         }
 
-        while (($token = array_shift($from)) !== NULL) {
+        while (($token = array_shift($from)) !== null) {
             $diff[] = array($token, 2 /* REMOVED */);
         }
 
-        while (($token = array_shift($to)) !== NULL) {
+        while (($token = array_shift($to)) !== null) {
             $diff[] = array($token, 1 /* ADDED */);
         }
 
@@ -272,9 +267,9 @@ class Differ
         for ($i = 1; $i <= $fromLength; ++$i) {
             for ($j = 1; $j <= $toLength; ++$j) {
                 $matrix[$i][$j] = max(
-                  $matrix[$i-1][$j],
-                  $matrix[$i][$j-1],
-                  $from[$i-1] === $to[$j-1] ? $matrix[$i-1][$j-1] + 1 : 0
+                    $matrix[$i-1][$j],
+                    $matrix[$i][$j-1],
+                    $from[$i-1] === $to[$j-1] ? $matrix[$i-1][$j-1] + 1 : 0
                 );
             }
         }
@@ -287,13 +282,9 @@ class Differ
                 array_unshift($common, $from[$i-1]);
                 --$i;
                 --$j;
-            }
-
-            else if ($matrix[$i][$j-1] > $matrix[$i-1][$j]) {
+            } elseif ($matrix[$i][$j-1] > $matrix[$i-1][$j]) {
                 --$j;
-            }
-
-            else {
+            } else {
                 --$i;
             }
         }

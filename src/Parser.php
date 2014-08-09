@@ -119,13 +119,13 @@ class Parser
 
             while (count($lines) &&
                   (preg_match('(^(?P<type>[+ -])?(?P<line>.*))', $last = array_shift($lines), $match) ||
-                  (strpos($last, '\\ No newline at end of file' ) === 0))) {
+                  (strpos($last, '\\ No newline at end of file') === 0))) {
                 if (count($match)) {
                     $type = Line::UNCHANGED;
 
                     if ($match['type'] == '+') {
                         $type = Line::ADDED;
-                    } else if ($match['type'] == '-') {
+                    } elseif ($match['type'] == '-') {
                         $type = Line::REMOVED;
                     }
 
