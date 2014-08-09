@@ -72,7 +72,7 @@ class Line
      * @param int    $type
      * @param string $content
      */
-    public function __construct($type = self::UNCHANGED, $content = null)
+    public function __construct($type = self::UNCHANGED, $content = '')
     {
         $this->type    = $type;
         $this->content = $content;
