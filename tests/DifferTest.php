@@ -44,6 +44,8 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit_Framework_TestCase;
+use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
+use SebastianBergmann\Diff\LCS\TimeEfficientImplementation;
 
 class DifferTest extends PHPUnit_Framework_TestCase
 {
@@ -68,9 +70,9 @@ class DifferTest extends PHPUnit_Framework_TestCase
      * @dataProvider arrayProvider
      * @covers       SebastianBergmann\Diff\Differ::diffToArray
      */
-    public function testArrayRepresentationOfDiffCanBeRendered(array $expected, $from, $to)
+    public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to));
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientImplementation));
     }
 
     /**
@@ -80,9 +82,33 @@ class DifferTest extends PHPUnit_Framework_TestCase
      * @dataProvider textProvider
      * @covers       SebastianBergmann\Diff\Differ::diff
      */
-    public function testTextRepresentationOfDiffCanBeRendered($expected, $from, $to)
+    public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to));
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientImplementation));
+    }
+
+    /**
+     * @param array  $expected
+     * @param string $from
+     * @param string $to
+     * @dataProvider arrayProvider
+     * @covers       SebastianBergmann\Diff\Differ::diffToArray
+     */
+    public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
+    {
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientImplementation));
+    }
+
+    /**
+     * @param string $expected
+     * @param string $from
+     * @param string $to
+     * @dataProvider textProvider
+     * @covers       SebastianBergmann\Diff\Differ::diff
+     */
+    public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
+    {
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation));
     }
 
     public function arrayProvider()
