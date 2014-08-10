@@ -69,6 +69,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
      * @param string $to
      * @dataProvider arrayProvider
      * @covers       SebastianBergmann\Diff\Differ::diffToArray
+     * @covers       SebastianBergmann\Diff\LCS\TimeEfficientImplementation
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
     {
@@ -81,6 +82,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
      * @param string $to
      * @dataProvider textProvider
      * @covers       SebastianBergmann\Diff\Differ::diff
+     * @covers       SebastianBergmann\Diff\LCS\TimeEfficientImplementation
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
     {
@@ -93,6 +95,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
      * @param string $to
      * @dataProvider arrayProvider
      * @covers       SebastianBergmann\Diff\Differ::diffToArray
+     * @covers       SebastianBergmann\Diff\LCS\MemoryEfficientImplementation
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
     {
@@ -105,10 +108,24 @@ class DifferTest extends PHPUnit_Framework_TestCase
      * @param string $to
      * @dataProvider textProvider
      * @covers       SebastianBergmann\Diff\Differ::diff
+     * @covers       SebastianBergmann\Diff\LCS\MemoryEfficientImplementation
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
     {
         $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation));
+    }
+
+    /**
+     * @covers SebastianBergmann\Diff\Differ::diff
+     */
+    public function testCustomHeaderCanBeUsed()
+    {
+        $differ = new Differ('CUSTOM HEADER');
+
+        $this->assertEquals(
+            "CUSTOM HEADER@@ @@\n-a\n+b\n",
+            $differ->diff('a', 'b')
+        );
     }
 
     public function arrayProvider()
@@ -224,19 +241,6 @@ class DifferTest extends PHPUnit_Framework_TestCase
                 'abcdde',
                 'abcde'
             ),
-        );
-    }
-
-    /**
-     * @covers SebastianBergmann\Diff\Differ::diff
-     */
-    public function testCustomHeaderCanBeUsed()
-    {
-        $differ = new Differ('CUSTOM HEADER');
-
-        $this->assertEquals(
-            "CUSTOM HEADER@@ @@\n-a\n+b\n",
-            $differ->diff('a', 'b')
         );
     }
 }
