@@ -49,7 +49,10 @@ class DifferTest extends \PHPUnit_Framework_TestCase
     const ADDED = 1;
     const OLD = 0;
 
-    private $diff;
+    /**
+     * @var Differ
+     */
+    private $differ;
 
     protected function setUp()
     {
