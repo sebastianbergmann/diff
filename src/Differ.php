@@ -157,8 +157,7 @@ class Differ
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
         if ($lcs === null) {
-            // @todo Automagically choose best strategy based on input size
-            $lcs = new TimeEfficientImplementation;
+            $lcs = $this->selectLcsImplementation($from, $to);
         }
 
         preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
@@ -244,5 +243,16 @@ class Differ
         }
 
         return $diff;
+    }
+
+    /**
+     * @param  array|string $from
+     * @param  array|string $to
+     * @return LongestCommonSubsequence
+     */
+    private function selectLcsImplementation($from, $to)
+    {
+        // @todo Automagically choose best strategy based on input size
+        return new TimeEfficientImplementation;
     }
 }
