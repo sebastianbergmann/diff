@@ -46,6 +46,7 @@ namespace SebastianBergmann\Diff;
 
 use SebastianBergmann\Diff\LCS\LongestCommonSubsequence;
 use SebastianBergmann\Diff\LCS\TimeEfficientImplementation;
+use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
 
 /**
  * Diff implementation.
@@ -156,10 +157,6 @@ class Differ
      */
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        if ($lcs === null) {
-            $lcs = $this->selectLcsImplementation($from, $to);
-        }
-
         preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
         preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
 
@@ -195,6 +192,10 @@ class Differ
             } else {
                 break;
             }
+        }
+
+        if ($lcs === null) {
+            $lcs = $this->selectLcsImplementation($from, $to);
         }
 
         $common = $lcs->calculate(array_values($from), array_values($to));
@@ -252,7 +253,26 @@ class Differ
      */
     private function selectLcsImplementation($from, $to)
     {
-        // @todo Automagically choose best strategy based on input size
+        // We don't want to use the time efficient implementation if it's memory
+        // footprint will probably exceed this value. Note that the footprint
+        // calculation is only an estimation for the matrix and the LCS method
+        // will typically allocate a bit more memory than this.
+        $memoryLimit = 100 * 1024*1024;
+        if ($this->calculateEstimatedFootprint($from, $to) > $memoryLimit) {
+          return new MemoryEfficientImplementation;
+        }
         return new TimeEfficientImplementation;
+    }
+
+    /**
+     * Calculates the estimated memory footprint for the DP-based method.
+     *
+     * @param type $from
+     * @param type $to
+     */
+    private function calculateEstimatedFootprint($from, $to)
+    {
+        $itemSize = PHP_INT_SIZE == 4 ? 76 : 144;
+        return $itemSize * pow(min(count($from), count($to)), 2);
     }
 }
