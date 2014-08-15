@@ -247,32 +247,36 @@ class Differ
     }
 
     /**
-     * @param  array|string $from
-     * @param  array|string $to
+     * @param  array $from
+     * @param  array $to
      * @return LongestCommonSubsequence
      */
-    private function selectLcsImplementation($from, $to)
+    private function selectLcsImplementation(array $from, array $to)
     {
-        // We don't want to use the time efficient implementation if it's memory
+        // We do not want to use the time-efficient implementation if its memory
         // footprint will probably exceed this value. Note that the footprint
         // calculation is only an estimation for the matrix and the LCS method
         // will typically allocate a bit more memory than this.
-        $memoryLimit = 100 * 1024*1024;
+        $memoryLimit = 100 * 1024 * 1024;
+
         if ($this->calculateEstimatedFootprint($from, $to) > $memoryLimit) {
-          return new MemoryEfficientImplementation;
+            return new MemoryEfficientImplementation;
         }
+
         return new TimeEfficientImplementation;
     }
 
     /**
      * Calculates the estimated memory footprint for the DP-based method.
      *
-     * @param type $from
-     * @param type $to
+     * @param  array $from
+     * @param  array $to
+     * @return integer
      */
-    private function calculateEstimatedFootprint($from, $to)
+    private function calculateEstimatedFootprint(array $from, array $to)
     {
         $itemSize = PHP_INT_SIZE == 4 ? 76 : 144;
+
         return $itemSize * pow(min(count($from), count($to)), 2);
     }
 }

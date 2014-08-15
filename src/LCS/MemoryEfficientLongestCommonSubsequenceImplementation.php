@@ -85,7 +85,7 @@ class MemoryEfficientImplementation implements LongestCommonSubsequence
             $jMax      = 0;
             $max       = 0;
 
-            for($j = 0; $j <= $cTo; $j++) {
+            for ($j = 0; $j <= $cTo; $j++) {
                 $m = $llB[$j] + $llE[$cTo - $j];
 
                 if ($m >= $max) {
@@ -115,7 +115,7 @@ class MemoryEfficientImplementation implements LongestCommonSubsequence
         $cFrom   = count($from);
         $cTo     = count($to);
 
-        for($i = 0; $i < $cFrom; $i++) {
+        for ($i = 0; $i < $cFrom; $i++) {
             $prev = $current;
 
             for ($j = 0; $j < $cTo; $j++) {
