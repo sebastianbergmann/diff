@@ -80,6 +80,9 @@ class Parser
                 $diff = new Diff($fromMatch['file'], $toMatch['file']);
                 ++$i;
             } else {
+                if (preg_match('/^(?:diff --git |index [\da-f\.]+|[+-]{3} [ab])/', $lines[$i])) {
+                    continue;
+                }
                 $collected[] = $lines[$i];
             }
         }
@@ -100,45 +103,34 @@ class Parser
     {
         $chunks = array();
 
-        while (count($lines)) {
-            while (!preg_match('(^@@\\s+-(?P<start>\\d+)(?:,\\s*(?P<startrange>\\d+))?\\s+\\+(?P<end>\\d+)(?:,\\s*(?P<endrange>\\d+))?\\s+@@)', $last = array_shift($lines), $match)) {
-                if ($last === null) {
-                    break 2;
-                }
+        foreach ($lines as $line) {
+            if (preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {
+                $chunk = new Chunk(
+                    $match['start'],
+                    isset($match['startrange']) ? max(1, $match['startrange']) : 1,
+                    $match['end'],
+                    isset($match['endrange']) ? max(1, $match['endrange']) : 1
+                );
+
+                $chunks[] = $chunk;
+                $diffLines = array();
+                continue;
             }
 
-            $chunk = new Chunk(
-                $match['start'],
-                isset($match['startrange']) ? max(1, $match['startrange']) : 1,
-                $match['end'],
-                isset($match['endrange']) ? max(1, $match['endrange']) : 1
-            );
+            if (preg_match('/^(?P<type>[+ -])?(?P<line>.*)/', $line, $match)) {
+                $type = Line::UNCHANGED;
 
-            $diffLines = array();
-            $last      = null;
-
-            while (count($lines) &&
-                  (preg_match('(^(?P<type>[+ -])?(?P<line>.*))', $last = array_shift($lines), $match) ||
-                  (strpos($last, '\\ No newline at end of file') === 0))) {
-                if (count($match)) {
-                    $type = Line::UNCHANGED;
-
-                    if ($match['type'] == '+') {
-                        $type = Line::ADDED;
-                    } elseif ($match['type'] == '-') {
-                        $type = Line::REMOVED;
-                    }
-
-                    $diffLines[] = new Line($type, $match['line']);
+                if ($match['type'] == '+') {
+                    $type = Line::ADDED;
+                } elseif ($match['type'] == '-') {
+                    $type = Line::REMOVED;
                 }
-            }
 
-            $chunk->setLines($diffLines);
+                $diffLines[] = new Line($type, $match['line']);
 
-            $chunks[] = $chunk;
-
-            if ($last !== null) {
-                array_unshift($lines, $last);
+                if (isset($chunk)) {
+                    $chunk->setLines($diffLines);
+                }
             }
         }
 
