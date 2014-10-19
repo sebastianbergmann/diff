@@ -260,10 +260,10 @@ class Differ
         $memoryLimit = 100 * 1024 * 1024;
 
         if ($this->calculateEstimatedFootprint($from, $to) > $memoryLimit) {
-            return new MemoryEfficientImplementation;
+            return new MemoryEfficientImplementation();
         }
 
-        return new TimeEfficientImplementation;
+        return new TimeEfficientImplementation();
     }
 
     /**

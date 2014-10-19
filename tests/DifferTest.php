@@ -60,7 +60,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->differ = new Differ;
+        $this->differ = new Differ();
     }
 
     /**
@@ -73,7 +73,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientImplementation()));
     }
 
     /**
@@ -86,7 +86,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientImplementation()));
     }
 
     /**
@@ -99,7 +99,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientImplementation()));
     }
 
     /**
@@ -112,7 +112,7 @@ class DifferTest extends PHPUnit_Framework_TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation));
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation()));
     }
 
     /**
