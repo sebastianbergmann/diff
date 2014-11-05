@@ -37,6 +37,7 @@
  * @package    Diff
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Kore Nordmann <mail@kore-nordmann.de>
+ * @author     Rob Caiger <rob@clocal.co.uk>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.github.com/sebastianbergmann/diff
@@ -50,6 +51,7 @@ namespace SebastianBergmann\Diff;
  * @package    Diff
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Kore Nordmann <mail@kore-nordmann.de>
+ * @author     Rob Caiger <rob@clocal.co.uk>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.github.com/sebastianbergmann/diff
@@ -118,7 +120,7 @@ class Parser
             $last      = null;
 
             while (count($lines) &&
-                  (preg_match('(^(?P<type>[+ -])?(?P<line>.*))', $last = array_shift($lines), $match) ||
+                  (preg_match('(^(?P<type>[+ -])(?P<line>.*))', $last = array_shift($lines), $match) ||
                   (strpos($last, '\\ No newline at end of file') === 0))) {
                 if (count($match)) {
                     $type = Line::UNCHANGED;
