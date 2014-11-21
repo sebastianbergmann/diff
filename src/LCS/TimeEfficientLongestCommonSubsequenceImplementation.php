@@ -66,24 +66,26 @@ class TimeEfficientImplementation implements LongestCommonSubsequence
     public function calculate(array $from, array $to)
     {
         $common     = array();
-        $matrix     = array();
         $fromLength = count($from);
         $toLength   = count($to);
+        $width      = $fromLength + 1;
+        $matrix     = new \SplFixedArray($width * ($toLength + 1));
 
         for ($i = 0; $i <= $fromLength; ++$i) {
-            $matrix[$i][0] = 0;
+            $matrix[$i] = 0;
         }
 
         for ($j = 0; $j <= $toLength; ++$j) {
-            $matrix[0][$j] = 0;
+            $matrix[$j * $width] = 0;
         }
 
         for ($i = 1; $i <= $fromLength; ++$i) {
             for ($j = 1; $j <= $toLength; ++$j) {
-                $matrix[$i][$j] = max(
-                    $matrix[$i-1][$j],
-                    $matrix[$i][$j-1],
-                    $from[$i-1] === $to[$j-1] ? $matrix[$i-1][$j-1] + 1 : 0
+                $o = ($j * $width) + $i;
+                $matrix[$o] = max(
+                    $matrix[$o - 1],
+                    $matrix[$o - $width],
+                    $from[$i - 1] === $to[$j - 1] ? $matrix[$o - $width - 1] + 1 : 0
                 );
             }
         }
@@ -93,16 +95,19 @@ class TimeEfficientImplementation implements LongestCommonSubsequence
 
         while ($i > 0 && $j > 0) {
             if ($from[$i-1] === $to[$j-1]) {
-                array_unshift($common, $from[$i-1]);
+                $common[] = $from[$i-1];
                 --$i;
-                --$j;
-            } elseif ($matrix[$i][$j-1] > $matrix[$i-1][$j]) {
                 --$j;
             } else {
-                --$i;
+                $o = ($j * $width) + $i;
+                if ($matrix[$o - $width] > $matrix[$o - 1]) {
+                    --$j;
+                } else {
+                    --$i;
+                }
             }
         }
 
-        return $common;
+        return array_reverse($common);
     }
 }

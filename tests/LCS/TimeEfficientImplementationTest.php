@@ -191,21 +191,12 @@ class TimeEfficientImplementationTest extends PHPUnit_Framework_TestCase
 
     public function testReversedSequences()
     {
-        // The values are unique and the second sequence is the reverse
-        // of the first sequence.
-        // The LCS must return a single value: the first value of the
-        // first sequence (which is the same than the last value of the
-        // second sequence).
-        //
-        // I don't know --yet-- if it is really important!
-        // As the values are unique, both results are "longest common
-        // sequence"! In fact, any value from teh set would be valid!
-        //
-        // And that too bad, because if we were allowed to return the
-        // first value of the first sequence, it would be much faster!
-        // (by building the matrix backward and gathering the common 
-        // items in the original direction.)
-        //
+        $from     = array('A', 'B');
+        $to       = array('B', 'A');
+        $expected = array('A');
+        $common   = $this->implementation->calculate($from, $to);
+        $this->assertEquals($expected, $common);
+
         foreach ($this->stress_sizes as $size) {
             $from   = range(1, $size);
             $to     = array_reverse($from);
