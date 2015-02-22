@@ -49,6 +49,14 @@ class Differ
      */
     public function diff($from, $to, LongestCommonSubsequence $lcs = null)
     {
+        if (!is_array($from) && !is_string($from)) {
+            $from = (string) $from;
+        }
+
+        if (!is_array($to) && !is_string($to)) {
+            $to = (string) $to;
+        }
+
         $buffer = $this->header;
         $diff   = $this->diffToArray($from, $to, $lcs);
 
