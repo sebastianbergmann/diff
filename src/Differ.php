@@ -111,7 +111,7 @@ class Differ
 
             if ($newChunk) {
                 if ($this->showNonDiffLines === true) {
-                    $buffer  .= "@@ @@\n";
+                    $buffer .= "@@ @@\n";
                 }
                 $newChunk = false;
             }
