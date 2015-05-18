@@ -32,11 +32,24 @@ class Differ
     private $header;
 
     /**
+     * @var bool
+     */
+    private $showNonDiffLines = true;
+
+    /**
      * @param string $header
      */
     public function __construct($header = "--- Original\n+++ New\n")
     {
         $this->header = $header;
+    }
+
+    /**
+     * @param bool $show
+     */
+    public function setShowNonDiffLines($show)
+    {
+        $this->showNonDiffLines = $show;
     }
 
     /**
@@ -97,7 +110,9 @@ class Differ
             }
 
             if ($newChunk) {
-                $buffer  .= "@@ @@\n";
+                if ($this->showNonDiffLines === true) {
+                    $buffer  .= "@@ @@\n";
+                }
                 $newChunk = false;
             }
 
@@ -105,7 +120,7 @@ class Differ
                 $buffer .= '+' . $diff[$i][0] . "\n";
             } elseif ($diff[$i][1] === 2 /* REMOVED */) {
                 $buffer .= '-' . $diff[$i][0] . "\n";
-            } else {
+            } elseif ($this->showNonDiffLines === true) {
                 $buffer .= ' ' . $diff[$i][0] . "\n";
             }
         }
