@@ -27,22 +27,15 @@ class Differ
     /**
      * @var bool
      */
-    private $showNonDiffLines = true;
+    private $showNonDiffLines;
 
     /**
      * @param string $header
      */
-    public function __construct($header = "--- Original\n+++ New\n")
+    public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
     {
         $this->header = $header;
-    }
-
-    /**
-     * @param bool $show
-     */
-    public function setShowNonDiffLines($show)
-    {
-        $this->showNonDiffLines = $show;
+        $this->showNonDiffLines = $showNonDiffLines;
     }
 
     /**
