@@ -183,6 +183,14 @@ class DifferTest extends PHPUnit_Framework_TestCase
                 ),
                 'abcdde',
                 'abcde'
+            ),
+            array(
+            	array(
+            		array('a', self::REMOVED),
+            		array('b', self::ADDED)
+            	),
+            	array('a'),
+            	array('b')
             )
         );
     }
