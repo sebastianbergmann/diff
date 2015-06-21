@@ -16,13 +16,6 @@ use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
 
 /**
  * Diff implementation.
- *
- * @package    Diff
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Kore Nordmann <mail@kore-nordmann.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.github.com/sebastianbergmann/diff
  */
 class Differ
 {
@@ -221,8 +214,8 @@ class Differ
     }
 
     /**
-     * @param  array $from
-     * @param  array $to
+     * @param  array                    $from
+     * @param  array                    $to
      * @return LongestCommonSubsequence
      */
     private function selectLcsImplementation(array $from, array $to)
@@ -245,7 +238,7 @@ class Differ
      *
      * @param  array $from
      * @param  array $to
-     * @return integer
+     * @return int
      */
     private function calculateEstimatedFootprint(array $from, array $to)
     {

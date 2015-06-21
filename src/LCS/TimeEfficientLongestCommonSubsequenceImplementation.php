@@ -12,13 +12,6 @@ namespace SebastianBergmann\Diff\LCS;
 
 /**
  * Time-efficient implementation of longest common subsequence calculation.
- *
- * @package    Diff
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Kore Nordmann <mail@kore-nordmann.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.github.com/sebastianbergmann/diff
  */
 class TimeEfficientImplementation implements LongestCommonSubsequence
 {
@@ -47,7 +40,7 @@ class TimeEfficientImplementation implements LongestCommonSubsequence
 
         for ($i = 1; $i <= $fromLength; ++$i) {
             for ($j = 1; $j <= $toLength; ++$j) {
-                $o = ($j * $width) + $i;
+                $o          = ($j * $width) + $i;
                 $matrix[$o] = max(
                     $matrix[$o - 1],
                     $matrix[$o - $width],
