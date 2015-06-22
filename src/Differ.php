@@ -34,7 +34,7 @@ class Differ
      */
     public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
     {
-        $this->header = $header;
+        $this->header           = $header;
         $this->showNonDiffLines = $showNonDiffLines;
     }
 
