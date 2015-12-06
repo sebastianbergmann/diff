@@ -2,7 +2,7 @@
     "name": "sebastian/diff",
     "description": "Diff implementation",
     "keywords": ["diff"],
-    "homepage": "http://www.github.com/sebastianbergmann/diff",
+    "homepage": "https://github.com/sebastianbergmann/diff",
     "license": "BSD-3-Clause",
     "authors": [
         {
