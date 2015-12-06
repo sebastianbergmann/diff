@@ -18,8 +18,9 @@ class MemoryEfficientImplementation implements LongestCommonSubsequence
     /**
      * Calculates the longest common subsequence of two arrays.
      *
-     * @param  array $from
-     * @param  array $to
+     * @param array $from
+     * @param array $to
+     *
      * @return array
      */
     public function calculate(array $from, array $to)
@@ -64,8 +65,9 @@ class MemoryEfficientImplementation implements LongestCommonSubsequence
     }
 
     /**
-     * @param  array $from
-     * @param  array $to
+     * @param array $from
+     * @param array $to
+     *
      * @return array
      */
     private function length(array $from, array $to)

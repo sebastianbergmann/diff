@@ -16,7 +16,8 @@ namespace SebastianBergmann\Diff;
 class Parser
 {
     /**
-     * @param  string $string
+     * @param string $string
+     *
      * @return Diff[]
      */
     public function parse($string)

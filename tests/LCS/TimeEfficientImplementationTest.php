@@ -49,7 +49,7 @@ class TimeEfficientImplementationTest extends PHPUnit_Framework_TestCase
             false, 0, 0.0, '', null, array(),
             true, 1, 1.0, 'foo', array('foo', 'bar'), array('foo' => 'bar')
         );
-        $to = $from;
+        $to     = $from;
         $common = $this->implementation->calculate($from, $to);
 
         $this->assertEquals($from, $common);
@@ -81,19 +81,19 @@ class TimeEfficientImplementationTest extends PHPUnit_Framework_TestCase
 
     public function testDistinctSequences()
     {
-        $from  = array('A');
-        $to    = array('B');
+        $from   = array('A');
+        $to     = array('B');
         $common = $this->implementation->calculate($from, $to);
         $this->assertEquals(array(), $common);
 
-        $from  = array('A', 'B', 'C');
-        $to    = array('D', 'E', 'F');
+        $from   = array('A', 'B', 'C');
+        $to     = array('D', 'E', 'F');
         $common = $this->implementation->calculate($from, $to);
         $this->assertEquals(array(), $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from  = range(1, $size);
-            $to    = range($size + 1, $size * 2);
+            $from   = range(1, $size);
+            $to     = range($size + 1, $size * 2);
             $common = $this->implementation->calculate($from, $to);
             $this->assertEquals(array(), $common);
         }
@@ -101,15 +101,15 @@ class TimeEfficientImplementationTest extends PHPUnit_Framework_TestCase
 
     public function testCommonSubsequence()
     {
-        $from     = array('A',      'C',      'E', 'F', 'G'     );
+        $from     = array('A',      'C',      'E', 'F', 'G');
         $to       = array('A', 'B',      'D', 'E',           'H');
-        $expected = array('A',                'E'               );
+        $expected = array('A',                'E');
         $common   = $this->implementation->calculate($from, $to);
         $this->assertEquals($expected, $common);
 
-        $from     = array('A',      'C',      'E', 'F', 'G'     );
-        $to       = array(     'B', 'C', 'D', 'E', 'F',      'H');
-        $expected = array('C',                'E', 'F'          );
+        $from     = array('A',      'C',      'E', 'F', 'G');
+        $to       = array('B', 'C', 'D', 'E', 'F',      'H');
+        $expected = array('C',                'E', 'F');
         $common   = $this->implementation->calculate($from, $to);
         $this->assertEquals($expected, $common);
 

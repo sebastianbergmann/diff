@@ -41,9 +41,10 @@ class Differ
     /**
      * Returns the diff between two arrays or strings as string.
      *
-     * @param  array|string             $from
-     * @param  array|string             $to
-     * @param  LongestCommonSubsequence $lcs
+     * @param array|string             $from
+     * @param array|string             $to
+     * @param LongestCommonSubsequence $lcs
+     *
      * @return string
      */
     public function diff($from, $to, LongestCommonSubsequence $lcs = null)
@@ -125,9 +126,10 @@ class Differ
      * - 1: ADDED: $token was added to $from
      * - 0: OLD: $token is not changed in $to
      *
-     * @param  array|string             $from
-     * @param  array|string             $to
-     * @param  LongestCommonSubsequence $lcs
+     * @param array|string             $from
+     * @param array|string             $to
+     * @param LongestCommonSubsequence $lcs
+     *
      * @return array
      */
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
@@ -222,8 +224,9 @@ class Differ
     }
 
     /**
-     * @param  array                    $from
-     * @param  array                    $to
+     * @param array $from
+     * @param array $to
+     *
      * @return LongestCommonSubsequence
      */
     private function selectLcsImplementation(array $from, array $to)
@@ -244,8 +247,9 @@ class Differ
     /**
      * Calculates the estimated memory footprint for the DP-based method.
      *
-     * @param  array $from
-     * @param  array $to
+     * @param array $from
+     * @param array $to
+     *
      * @return int
      */
     private function calculateEstimatedFootprint(array $from, array $to)
