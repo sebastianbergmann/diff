@@ -67,9 +67,9 @@ class Parser
             if (preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {
                 $chunk = new Chunk(
                     $match['start'],
-                    isset($match['startrange']) ? max(1, $match['startrange']) : 1,
+                    array_key_exists('startrange', $match) && is_numeric($match['startrange']) ? $match['startrange'] : 1,
                     $match['end'],
-                    isset($match['endrange']) ? max(1, $match['endrange']) : 1
+                    array_key_exists('endrange', $match) && is_numeric($match['endrange']) ? $match['endrange'] : 1
                 );
 
                 $chunks[]  = $chunk;

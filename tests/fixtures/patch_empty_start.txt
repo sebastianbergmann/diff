@@ -1,0 +1,6 @@
+diff --git a/Foo.php b/Foo.php
+index abcdefg..abcdefh 100644
+--- a/Foo.php
++++ b/Foo.php
+@@ -20,0 +20 @@ class Foo
++    const FOO = 'foo';
