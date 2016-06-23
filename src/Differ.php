@@ -134,9 +134,6 @@ class Differ
      */
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
-        preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
-
         if (is_string($from)) {
             $from = preg_split('(\r\n|\r|\n)', $from);
         }
@@ -177,14 +174,6 @@ class Differ
 
         $common = $lcs->calculate(array_values($from), array_values($to));
         $diff   = array();
-
-        if (isset($fromMatches[0]) && $toMatches[0] &&
-            count($fromMatches[0]) === count($toMatches[0]) &&
-            $fromMatches[0] !== $toMatches[0]) {
-            $diff[] = array(
-              '#Warning: Strings contain different line endings!', 0
-            );
-        }
 
         foreach ($start as $token) {
             $diff[] = array($token, 0 /* OLD */);
