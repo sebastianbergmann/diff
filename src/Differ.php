@@ -41,44 +41,22 @@ class Differ
     /**
      * Returns the diff between two arrays or strings as string.
      *
-     * @param array|string             $from
-     * @param array|string             $to
+     * @param array|string $from
+     * @param array|string $to
      * @param LongestCommonSubsequence $lcs
      *
      * @return string
      */
     public function diff($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        if (!is_array($from) && !is_string($from)) {
-            $from = (string) $from;
-        }
+        $from = $this->validateDiffInput($from);
 
-        if (!is_array($to) && !is_string($to)) {
-            $to = (string) $to;
-        }
+        $to = $this->validateDiffInput($to);
 
         $buffer = $this->header;
         $diff   = $this->diffToArray($from, $to, $lcs);
 
-        $inOld = false;
-        $i     = 0;
-        $old   = array();
-
-        foreach ($diff as $line) {
-            if ($line[1] ===  0 /* OLD */) {
-                if ($inOld === false) {
-                    $inOld = $i;
-                }
-            } elseif ($inOld !== false) {
-                if (($i - $inOld) > 5) {
-                    $old[$inOld] = $i - 1;
-                }
-
-                $inOld = false;
-            }
-
-            ++$i;
-        }
+        $old = $this->checkIfDiffInOld($diff);
 
         $start = isset($old[0]) ? $old[0] : 0;
         $end   = count($diff);
@@ -91,7 +69,7 @@ class Differ
 
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
-                $buffer  .= "\n";
+                $buffer .= "\n";
                 $newChunk = true;
                 $i        = $old[$i];
             }
@@ -116,6 +94,54 @@ class Differ
     }
 
     /**
+     * Casts variable to string if it is not a string or array.
+     *
+     * @param $input
+     *
+     * @return string
+     */
+    private function validateDiffInput($input)
+    {
+        if ( ! is_array($input) && ! is_string($input)) {
+            return (string)$input;
+        } else {
+            return $input;
+        }
+    }
+
+    /**
+     * Takes input of the diff array and returns the old array.
+     * Iterates through diff line by line,
+     * @param array $diff
+     *
+     * @return array
+     */
+    private function checkIfDiffInOld(Array $diff)
+    {
+        $inOld = false;
+        $i     = 0;
+        $old   = array();
+
+        foreach ($diff as $line) {
+            if ($line[1] === 0 /* OLD */) {
+                if ($inOld === false) {
+                    $inOld = $i;
+                }
+            } elseif ($inOld !== false) {
+                if (($i - $inOld) > 5) {
+                    $old[$inOld] = $i - 1;
+                }
+
+                $inOld = false;
+            }
+
+            ++$i;
+        }
+
+        return $old;
+    }
+
+    /**
      * Returns the diff between two arrays or strings as array.
      *
      * Each array element contains two elements:
@@ -126,8 +152,8 @@ class Differ
      * - 1: ADDED: $token was added to $from
      * - 0: OLD: $token is not changed in $to
      *
-     * @param array|string             $from
-     * @param array|string             $to
+     * @param array|string $from
+     * @param array|string $to
      * @param LongestCommonSubsequence $lcs
      *
      * @return array
@@ -180,9 +206,11 @@ class Differ
 
         if (isset($fromMatches[0]) && $toMatches[0] &&
             count($fromMatches[0]) === count($toMatches[0]) &&
-            $fromMatches[0] !== $toMatches[0]) {
+            $fromMatches[0] !== $toMatches[0]
+        ) {
             $diff[] = array(
-              '#Warning: Strings contain different line endings!', 0
+                '#Warning: Strings contain different line endings!',
+                0
             );
         }
 
