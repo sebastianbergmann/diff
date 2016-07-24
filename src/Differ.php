@@ -218,10 +218,7 @@ class Differ
         $common = $lcs->calculate(array_values($from), array_values($to));
         $diff   = array();
 
-        if (isset($fromMatches[0]) && $toMatches[0] &&
-            count($fromMatches[0]) === count($toMatches[0]) &&
-            $fromMatches[0] !== $toMatches[0]
-        ) {
+        if ($this->detectUnmatchedLineEndings($fromMatches, $toMatches)) {
             $diff[] = array(
                 '#Warning: Strings contain different line endings!',
                 0
@@ -334,7 +331,7 @@ class Differ
 
     /**
      * Adjust start point and removes common from/to lines.
-     * 
+     *
      * @param $length
      * @param $from
      * @param $to
@@ -373,5 +370,20 @@ class Differ
                 break;
             }
         }
+    }
+
+    /**
+     * Returns true if line ends don't match on fromMatches and toMatches.
+     *
+     * @param $fromMatches
+     * @param $toMatches
+     *
+     * @return bool
+     */
+    private function detectUnmatchedLineEndings($fromMatches, $toMatches)
+    {
+        return isset($fromMatches[0]) && $toMatches[0] &&
+               count($fromMatches[0]) === count($toMatches[0]) &&
+               $fromMatches[0] !== $toMatches[0];
     }
 }
