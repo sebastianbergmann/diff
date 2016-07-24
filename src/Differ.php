@@ -53,8 +53,7 @@ class Differ
 
         $to = $this->validateDiffInput($to);
 
-        $buffer = $this->header;
-        $diff   = $this->diffToArray($from, $to, $lcs);
+        $diff = $this->diffToArray($from, $to, $lcs);
 
         $old = $this->checkIfDiffInOld($diff);
 
@@ -65,30 +64,7 @@ class Differ
             $end = $tmp;
         }
 
-        $newChunk = true;
-
-        for ($i = $start; $i < $end; $i++) {
-            if (isset($old[$i])) {
-                $buffer .= "\n";
-                $newChunk = true;
-                $i        = $old[$i];
-            }
-
-            if ($newChunk) {
-                if ($this->showNonDiffLines === true) {
-                    $buffer .= "@@ @@\n";
-                }
-                $newChunk = false;
-            }
-
-            if ($diff[$i][1] === 1 /* ADDED */) {
-                $buffer .= '+' . $diff[$i][0] . "\n";
-            } elseif ($diff[$i][1] === 2 /* REMOVED */) {
-                $buffer .= '-' . $diff[$i][0] . "\n";
-            } elseif ($this->showNonDiffLines === true) {
-                $buffer .= ' ' . $diff[$i][0] . "\n";
-            }
-        }
+        $buffer = $this->getBuffer($diff, $old, $start, $end);
 
         return $buffer;
     }
@@ -112,6 +88,7 @@ class Differ
     /**
      * Takes input of the diff array and returns the old array.
      * Iterates through diff line by line,
+     *
      * @param array $diff
      *
      * @return array
@@ -139,6 +116,65 @@ class Differ
         }
 
         return $old;
+    }
+
+    /**
+     * Generates buffer in string format, returning the patch.
+     *
+     * @param $diff
+     * @param $old
+     * @param $start
+     * @param $end
+     *
+     * @return string
+     */
+    private function getBuffer($diff, $old, $start, $end)
+    {
+        $newChunk = true;
+        $buffer   = $this->header;
+
+        for ($i = $start; $i < $end; $i++) {
+            if (isset($old[$i])) {
+                $buffer .= "\n";
+                $newChunk = true;
+                $i        = $old[$i];
+            }
+
+            $buffer = $this->getDiffBufferElement($diff, $i, $newChunk, $buffer);
+
+            $newChunk = false;
+        }
+
+        return $buffer;
+    }
+
+    /**
+     * Gets individual buffer element.
+     *
+     * @param $diff
+     * @param $i
+     * @param $newChunk
+     * @param $buffer
+     *
+     * @return string
+     */
+    private function getDiffBufferElement($diff, $i, $newChunk, $buffer)
+    {
+        if ($newChunk) {
+            if ($this->showNonDiffLines === true) {
+                $buffer .= "@@ @@\n";
+            }
+        }
+
+        if ($diff[$i][1] === 1 /* ADDED */) {
+            $buffer .= '+' . $diff[$i][0] . "\n";
+        } elseif ($diff[$i][1] === 2 /* REMOVED */) {
+            $buffer .= '-' . $diff[$i][0] . "\n";
+        } elseif ($this->showNonDiffLines === true) {
+            $buffer .= ' ' . $diff[$i][0] . "\n";
+        }
+
+        return $buffer;
     }
 
     /**
