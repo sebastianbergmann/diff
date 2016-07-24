@@ -196,16 +196,11 @@ class Differ
      */
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        preg_match_all('(\r\n|\r|\n)', $from, $fromMatches);
-        preg_match_all('(\r\n|\r|\n)', $to, $toMatches);
+        $fromMatches = $this->getNewLineMatches($from);
+        $toMatches = $this->getNewLineMatches($to);
 
-        if (is_string($from)) {
-            $from = preg_split('(\r\n|\r|\n)', $from);
-        }
-
-        if (is_string($to)) {
-            $to = preg_split('(\r\n|\r|\n)', $to);
-        }
+        $from = $this->splitStringByLines($from);
+        $to = $this->splitStringByLines($to);
 
         $start      = array();
         $end        = array();
@@ -285,6 +280,31 @@ class Differ
         }
 
         return $diff;
+    }
+
+    /**
+     * @param $string
+     *
+     * @return mixed
+     */
+    private function getNewLineMatches($string) {
+        preg_match_all('(\r\n|\r|\n)', $string, $stringMatches);
+        return $stringMatches;
+
+    }
+
+    /**
+     * Checks if input is string, if so it will split it line-by-life.
+     * @param $input
+     *
+     * @return array
+     */
+    private function splitStringByLines($input) {
+        if (is_string($input)) {
+            return preg_split('(\r\n|\r|\n)', $input);
+        }
+
+        return $input;
     }
 
     /**
