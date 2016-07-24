@@ -197,10 +197,10 @@ class Differ
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
         $fromMatches = $this->getNewLineMatches($from);
-        $toMatches = $this->getNewLineMatches($to);
+        $toMatches   = $this->getNewLineMatches($to);
 
         $from = $this->splitStringByLines($from);
-        $to = $this->splitStringByLines($to);
+        $to   = $this->splitStringByLines($to);
 
         $start      = array();
         $end        = array();
@@ -208,25 +208,8 @@ class Differ
         $toLength   = count($to);
         $length     = min($fromLength, $toLength);
 
-        for ($i = 0; $i < $length; ++$i) {
-            if ($from[$i] === $to[$i]) {
-                $start[] = $from[$i];
-                unset($from[$i], $to[$i]);
-            } else {
-                break;
-            }
-        }
-
-        $length -= $i;
-
-        for ($i = 1; $i < $length; ++$i) {
-            if ($from[$fromLength - $i] === $to[$toLength - $i]) {
-                array_unshift($end, $from[$fromLength - $i]);
-                unset($from[$fromLength - $i], $to[$toLength - $i]);
-            } else {
-                break;
-            }
-        }
+        $this->adjustDiffStartPoint($length, $from, $to);
+        $this->adjustDiffEndPoint($length, $from, $to, $end, $fromLength, $toLength);
 
         if ($lcs === null) {
             $lcs = $this->selectLcsImplementation($from, $to);
@@ -284,23 +267,28 @@ class Differ
 
     /**
      * Get new strings denoting new lines from a given string.
+     *
      * @param $string
      *
      * @return mixed
      */
-    private function getNewLineMatches($string) {
+    private function getNewLineMatches($string)
+    {
         preg_match_all('(\r\n|\r|\n)', $string, $stringMatches);
+
         return $stringMatches;
 
     }
 
     /**
      * Checks if input is string, if so it will split it line-by-life.
+     *
      * @param $input
      *
      * @return array
      */
-    private function splitStringByLines($input) {
+    private function splitStringByLines($input)
+    {
         if (is_string($input)) {
             return preg_split('(\r\n|\r|\n)', $input);
         }
@@ -342,5 +330,48 @@ class Differ
         $itemSize = PHP_INT_SIZE == 4 ? 76 : 144;
 
         return $itemSize * pow(min(count($from), count($to)), 2);
+    }
+
+    /**
+     * Adjust start point and removes common from/to lines.
+     * 
+     * @param $length
+     * @param $from
+     * @param $to
+     */
+    private function adjustDiffStartPoint(&$length, &$from, &$to)
+    {
+        for ($i = 0; $i < $length; ++$i) {
+            if ($from[$i] === $to[$i]) {
+                $start[] = $from[$i];
+                unset($from[$i], $to[$i]);
+            } else {
+                break;
+            }
+        }
+
+        $length -= $i;
+    }
+
+    /**
+     * Adjusts end point and removes common from/to lines.
+     *
+     * @param $length
+     * @param $from
+     * @param $to
+     * @param $end
+     * @param $fromLength
+     * @param $toLength
+     */
+    private function adjustDiffEndPoint(&$length, &$from, &$to, $end, $fromLength, $toLength)
+    {
+        for ($i = 1; $i < $length; ++$i) {
+            if ($from[$fromLength - $i] === $to[$toLength - $i]) {
+                array_unshift($end, $from[$fromLength - $i]);
+                unset($from[$fromLength - $i], $to[$toLength - $i]);
+            } else {
+                break;
+            }
+        }
     }
 }
