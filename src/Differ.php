@@ -283,6 +283,7 @@ class Differ
     }
 
     /**
+     * Get new strings denoting new lines from a given string.
      * @param $string
      *
      * @return mixed
