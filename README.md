@@ -4,13 +4,13 @@ Diff implementation for PHP, factored out of PHPUnit into a stand-alone componen
 
 ## Installation
 
-To add this package as a local, per-project dependency to your project, simply add a dependency on `sebastian/diff` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a dependency on Diff:
+You can add this library as a local, per-project dependency to your project using [Composer](https://getcomposer.org/):
 
-    {
-        "require": {
-            "sebastian/diff": "*"
-        }
-    }
+    composer require sebastian/diff
+
+If you only need this library during development, for instance to run your project's test suite, then you should add it as a development-time dependency:
+
+    composer require --dev sebastian/diff
 
 ### Usage
 
