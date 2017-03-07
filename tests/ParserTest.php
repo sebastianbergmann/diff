@@ -12,6 +12,12 @@ namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers SebastianBergmann\Diff\Parser
+ * @uses SebastianBergmann\Diff\Chunk
+ * @uses SebastianBergmann\Diff\Diff
+ * @uses SebastianBergmann\Diff\Line
+ */
 class ParserTest extends TestCase
 {
     /**

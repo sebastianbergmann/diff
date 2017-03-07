@@ -13,7 +13,7 @@ namespace SebastianBergmann\Diff\LCS;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Some of these tests are volontary stressfull, in order to give some approximative benchmark hints.
+ * @covers SebastianBergmann\Diff\LCS\TimeEfficientImplementation
  */
 class TimeEfficientImplementationTest extends TestCase
 {
