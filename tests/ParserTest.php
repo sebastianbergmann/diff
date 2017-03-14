@@ -43,7 +43,7 @@ class ParserTest extends TestCase
 
         $this->assertEquals(20, $chunks[0]->getStart());
 
-        $this->assertCount(5, $chunks[0]->getLines());
+        $this->assertCount(4, $chunks[0]->getLines());
     }
 
     public function testParseWithMultipleChunks()
@@ -63,6 +63,6 @@ class ParserTest extends TestCase
 
         $this->assertCount(5, $chunks[0]->getLines());
         $this->assertCount(5, $chunks[1]->getLines());
-        $this->assertCount(5, $chunks[2]->getLines());
+        $this->assertCount(4, $chunks[2]->getLines());
     }
 }
