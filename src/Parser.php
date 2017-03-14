@@ -22,7 +22,12 @@ class Parser
      */
     public function parse($string)
     {
-        $lines     = preg_split('(\r\n|\r|\n)', $string);
+        $lines = preg_split('(\r\n|\r|\n)', $string);
+
+        if (!empty($lines) && $lines[count($lines) - 1] == '') {
+            array_pop($lines);
+        }
+
         $lineCount = count($lines);
         $diffs     = array();
         $diff      = null;
