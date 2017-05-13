@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Diff package.
+ * This file is part of sebastian/diff.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -41,32 +41,26 @@ class Differ
     /**
      * Returns the diff between two arrays or strings as string.
      *
-     * @param array|string $from
-     * @param array|string $to
+     * @param array|string             $from
+     * @param array|string             $to
      * @param LongestCommonSubsequence $lcs
      *
      * @return string
      */
     public function diff($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        $from = $this->validateDiffInput($from);
-
-        $to = $this->validateDiffInput($to);
-
-        $diff = $this->diffToArray($from, $to, $lcs);
-
-        $old = $this->checkIfDiffInOld($diff);
-
+        $from  = $this->validateDiffInput($from);
+        $to    = $this->validateDiffInput($to);
+        $diff  = $this->diffToArray($from, $to, $lcs);
+        $old   = $this->checkIfDiffInOld($diff);
         $start = isset($old[0]) ? $old[0] : 0;
-        $end   = count($diff);
+        $end   = \count($diff);
 
-        if ($tmp = array_search($end, $old)) {
+        if ($tmp = \array_search($end, $old)) {
             $end = $tmp;
         }
 
-        $buffer = $this->getBuffer($diff, $old, $start, $end);
-
-        return $buffer;
+        return $this->getBuffer($diff, $old, $start, $end);
     }
 
     /**
@@ -78,11 +72,11 @@ class Differ
      */
     private function validateDiffInput($input)
     {
-        if ( ! is_array($input) && ! is_string($input)) {
-            return (string)$input;
-        } else {
-            return $input;
+        if (!\is_array($input) && !\is_string($input)) {
+            return (string) $input;
         }
+
+        return $input;
     }
 
     /**
@@ -93,7 +87,7 @@ class Differ
      *
      * @return array
      */
-    private function checkIfDiffInOld(Array $diff)
+    private function checkIfDiffInOld(array $diff)
     {
         $inOld = false;
         $i     = 0;
@@ -188,8 +182,8 @@ class Differ
      * - 1: ADDED: $token was added to $from
      * - 0: OLD: $token is not changed in $to
      *
-     * @param array|string $from
-     * @param array|string $to
+     * @param array|string             $from
+     * @param array|string             $to
      * @param LongestCommonSubsequence $lcs
      *
      * @return array
@@ -198,15 +192,13 @@ class Differ
     {
         $fromMatches = $this->getNewLineMatches($from);
         $toMatches   = $this->getNewLineMatches($to);
-
-        $from = $this->splitStringByLines($from);
-        $to   = $this->splitStringByLines($to);
-
-        $start      = array();
-        $end        = array();
-        $fromLength = count($from);
-        $toLength   = count($to);
-        $length     = min($fromLength, $toLength);
+        $from        = $this->splitStringByLines($from);
+        $to          = $this->splitStringByLines($to);
+        $start       = array();
+        $end         = array();
+        $fromLength  = \count($from);
+        $toLength    = \count($to);
+        $length      = \min($fromLength, $toLength);
 
         $this->adjustDiffStartPoint($length, $from, $to);
         $this->adjustDiffEndPoint($length, $from, $to, $end, $fromLength, $toLength);
@@ -215,7 +207,7 @@ class Differ
             $lcs = $this->selectLcsImplementation($from, $to);
         }
 
-        $common = $lcs->calculate(array_values($from), array_values($to));
+        $common = $lcs->calculate(\array_values($from), \array_values($to));
         $diff   = array();
 
         if ($this->detectUnmatchedLineEndings($fromMatches, $toMatches)) {
@@ -229,29 +221,29 @@ class Differ
             $diff[] = array($token, 0 /* OLD */);
         }
 
-        reset($from);
-        reset($to);
+        \reset($from);
+        \reset($to);
 
         foreach ($common as $token) {
-            while ((($fromToken = reset($from)) !== $token)) {
-                $diff[] = array(array_shift($from), 2 /* REMOVED */);
+            while (($fromToken = \reset($from)) !== $token) {
+                $diff[] = array(\array_shift($from), 2 /* REMOVED */);
             }
 
-            while ((($toToken = reset($to)) !== $token)) {
-                $diff[] = array(array_shift($to), 1 /* ADDED */);
+            while (($toToken = \reset($to)) !== $token) {
+                $diff[] = array(\array_shift($to), 1 /* ADDED */);
             }
 
             $diff[] = array($token, 0 /* OLD */);
 
-            array_shift($from);
-            array_shift($to);
+            \array_shift($from);
+            \array_shift($to);
         }
 
-        while (($token = array_shift($from)) !== null) {
+        while (($token = \array_shift($from)) !== null) {
             $diff[] = array($token, 2 /* REMOVED */);
         }
 
-        while (($token = array_shift($to)) !== null) {
+        while (($token = \array_shift($to)) !== null) {
             $diff[] = array($token, 1 /* ADDED */);
         }
 
@@ -271,10 +263,9 @@ class Differ
      */
     private function getNewLineMatches($string)
     {
-        preg_match_all('(\r\n|\r|\n)', $string, $stringMatches);
+        \preg_match_all('(\r\n|\r|\n)', $string, $stringMatches);
 
         return $stringMatches;
-
     }
 
     /**
@@ -286,8 +277,8 @@ class Differ
      */
     private function splitStringByLines($input)
     {
-        if (is_string($input)) {
-            return preg_split('(\r\n|\r|\n)', $input);
+        if (\is_string($input)) {
+            return \preg_split('(\r\n|\r|\n)', $input);
         }
 
         return $input;
@@ -324,23 +315,24 @@ class Differ
      */
     private function calculateEstimatedFootprint(array $from, array $to)
     {
-        $itemSize = PHP_INT_SIZE == 4 ? 76 : 144;
+        $itemSize = PHP_INT_SIZE === 4 ? 76 : 144;
 
-        return $itemSize * pow(min(count($from), count($to)), 2);
+        return $itemSize * \pow(\min(\count($from), \count($to)), 2);
     }
 
     /**
      * Adjust start point and removes common from/to lines.
      *
-     * @param $length
-     * @param $from
-     * @param $to
+     * @param int   $length
+     * @param array $from
+     * @param array $to
      */
-    private function adjustDiffStartPoint(&$length, &$from, &$to)
+    private function adjustDiffStartPoint(&$length, array &$from, array &$to)
     {
         for ($i = 0; $i < $length; ++$i) {
             if ($from[$i] === $to[$i]) {
                 $start[] = $from[$i];
+
                 unset($from[$i], $to[$i]);
             } else {
                 break;
@@ -353,18 +345,18 @@ class Differ
     /**
      * Adjusts end point and removes common from/to lines.
      *
-     * @param $length
-     * @param $from
-     * @param $to
-     * @param $end
-     * @param $fromLength
-     * @param $toLength
+     * @param int   $length
+     * @param array $from
+     * @param array $to
+     * @param array $end
+     * @param int   $fromLength
+     * @param int   $toLength
      */
-    private function adjustDiffEndPoint(&$length, &$from, &$to, $end, $fromLength, $toLength)
+    private function adjustDiffEndPoint(&$length, array &$from, array &$to, array $end, $fromLength, $toLength)
     {
         for ($i = 1; $i < $length; ++$i) {
             if ($from[$fromLength - $i] === $to[$toLength - $i]) {
-                array_unshift($end, $from[$fromLength - $i]);
+                \array_unshift($end, $from[$fromLength - $i]);
                 unset($from[$fromLength - $i], $to[$toLength - $i]);
             } else {
                 break;
@@ -375,15 +367,16 @@ class Differ
     /**
      * Returns true if line ends don't match on fromMatches and toMatches.
      *
-     * @param $fromMatches
-     * @param $toMatches
+     * @param array $fromMatches
+     * @param array $toMatches
      *
      * @return bool
      */
-    private function detectUnmatchedLineEndings($fromMatches, $toMatches)
+    private function detectUnmatchedLineEndings(array $fromMatches, array $toMatches)
     {
-        return isset($fromMatches[0]) && $toMatches[0] &&
-               count($fromMatches[0]) === count($toMatches[0]) &&
+        return isset($fromMatches[0]) &&
+               $toMatches[0] &&
+               \count($fromMatches[0]) === \count($toMatches[0]) &&
                $fromMatches[0] !== $toMatches[0];
     }
 }

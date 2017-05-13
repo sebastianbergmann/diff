@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Diff package.
+ * This file is part of sebastian/diff.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -23,15 +23,15 @@ class TimeEfficientImplementationTest extends TestCase
 
     protected function setUp()
     {
-        $this->memory_limit = ini_get('memory_limit');
-        ini_set('memory_limit', '256M');
+        $this->memory_limit = \ini_get('memory_limit');
+        \ini_set('memory_limit', '256M');
 
         $this->implementation = new TimeEfficientImplementation;
     }
 
     protected function tearDown()
     {
-        ini_set('memory_limit', $this->memory_limit);
+        \ini_set('memory_limit', $this->memory_limit);
     }
 
     public function testBothEmpty()
@@ -70,7 +70,7 @@ class TimeEfficientImplementationTest extends TestCase
     public function testEqualSequences()
     {
         foreach ($this->stress_sizes as $size) {
-            $range  = range(1, $size);
+            $range  = \range(1, $size);
             $from   = $range;
             $to     = $range;
             $common = $this->implementation->calculate($from, $to);
@@ -92,8 +92,8 @@ class TimeEfficientImplementationTest extends TestCase
         $this->assertEquals(array(), $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = range($size + 1, $size * 2);
+            $from   = \range(1, $size);
+            $to     = \range($size + 1, $size * 2);
             $common = $this->implementation->calculate($from, $to);
             $this->assertEquals(array(), $common);
         }
@@ -114,9 +114,9 @@ class TimeEfficientImplementationTest extends TestCase
         $this->assertEquals($expected, $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from     = $size < 2 ? array(1) : range(1, $size + 1, 2);
-            $to       = $size < 3 ? array(1) : range(1, $size + 1, 3);
-            $expected = $size < 6 ? array(1) : range(1, $size + 1, 6);
+            $from     = $size < 2 ? array(1) : \range(1, $size + 1, 2);
+            $to       = $size < 3 ? array(1) : \range(1, $size + 1, 3);
+            $expected = $size < 6 ? array(1) : \range(1, $size + 1, 6);
             $common   = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($expected, $common);
@@ -126,8 +126,8 @@ class TimeEfficientImplementationTest extends TestCase
     public function testSingleElementSubsequenceAtStart()
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_slice($from, 0, 1);
+            $from   = \range(1, $size);
+            $to     = \array_slice($from, 0, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($to, $common);
@@ -137,8 +137,8 @@ class TimeEfficientImplementationTest extends TestCase
     public function testSingleElementSubsequenceAtMiddle()
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_slice($from, (int) $size / 2, 1);
+            $from   = \range(1, $size);
+            $to     = \array_slice($from, (int) $size / 2, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($to, $common);
@@ -148,8 +148,8 @@ class TimeEfficientImplementationTest extends TestCase
     public function testSingleElementSubsequenceAtEnd()
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_slice($from, $size - 1, 1);
+            $from   = \range(1, $size);
+            $to     = \array_slice($from, $size - 1, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($to, $common);
@@ -165,8 +165,8 @@ class TimeEfficientImplementationTest extends TestCase
         $this->assertEquals($expected, $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from   = range(1, $size);
-            $to     = array_reverse($from);
+            $from   = \range(1, $size);
+            $to     = \array_reverse($from);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals(array(1), $common);

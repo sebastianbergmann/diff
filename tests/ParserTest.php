@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the Diff package.
+ * This file is part of sebastian/diff.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers SebastianBergmann\Diff\Parser
+ *
  * @uses SebastianBergmann\Diff\Chunk
  * @uses SebastianBergmann\Diff\Diff
  * @uses SebastianBergmann\Diff\Line
@@ -32,7 +33,7 @@ class ParserTest extends TestCase
 
     public function testParse()
     {
-        $content = file_get_contents(__DIR__ . '/fixtures/patch.txt');
+        $content = \file_get_contents(__DIR__ . '/fixtures/patch.txt');
 
         $diffs = $this->parser->parse($content);
 
@@ -48,7 +49,7 @@ class ParserTest extends TestCase
 
     public function testParseWithMultipleChunks()
     {
-        $content = file_get_contents(__DIR__ . '/fixtures/patch2.txt');
+        $content = \file_get_contents(__DIR__ . '/fixtures/patch2.txt');
 
         $diffs = $this->parser->parse($content);
 
