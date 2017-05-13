@@ -65,4 +65,46 @@ class ParserTest extends TestCase
         $this->assertCount(5, $chunks[1]->getLines());
         $this->assertCount(4, $chunks[2]->getLines());
     }
+
+    public function testParseChunkWithEmptyStart()
+    {
+        $content = file_get_contents(__DIR__ . '/fixtures/patch_empty_start.txt');
+
+        $diffs = $this->parser->parse($content);
+
+        $this->assertCount(1, $diffs);
+
+        $diff = $diffs[0];
+        $chunks = $diff->getChunks();
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0];
+
+        $this->assertEquals(20, $chunk->getStart());
+        $this->assertEquals(0, $chunk->getStartRange());
+        $this->assertEquals(20, $chunk->getEnd());
+        $this->assertEquals(1, $chunk->getEndRange());
+        $this->assertCount(2, $chunk->getLines());
+    }
+
+    public function testParseChunkWithEmptyEnd()
+    {
+        $content = file_get_contents(__DIR__ . '/fixtures/patch_empty_end.txt');
+
+        $diffs = $this->parser->parse($content);
+
+        $this->assertCount(1, $diffs);
+
+        $diff = $diffs[0];
+        $chunks = $diff->getChunks();
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0];
+
+        $this->assertEquals(20, $chunk->getStart());
+        $this->assertEquals(1, $chunk->getStartRange());
+        $this->assertEquals(20, $chunk->getEnd());
+        $this->assertEquals(0, $chunk->getEndRange());
+        $this->assertCount(2, $chunk->getLines());
+    }
 }
