@@ -10,8 +10,6 @@
 
 namespace SebastianBergmann\Diff\LCS;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * @covers SebastianBergmann\Diff\LCS\MemoryEfficientImplementation
  */
