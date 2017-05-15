@@ -33,7 +33,7 @@ class MemoryEfficientImplementation implements LongestCommonSubsequence
         }
 
         if ($cFrom === 1) {
-            if (\in_array($from[0], $to)) {
+            if (\in_array($from[0], $to, true)) {
                 return array($from[0]);
             }
 
