@@ -185,4 +185,12 @@ abstract class LongestCommonSubsequenceTest extends TestCase
             $this->assertEquals(array(1), $common);
         }
     }
+
+    public function testStrictTypeCalculate()
+    {
+        $diff = $this->implementation->calculate(array('5'), array('05'));
+
+        $this->assertInternalType('array', $diff);
+        $this->assertCount(0, $diff);
+    }
 }
