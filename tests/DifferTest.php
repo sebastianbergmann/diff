@@ -63,9 +63,9 @@ class DifferTest extends TestCase
     }
 
     /**
-     * @param array  $expected
-     * @param string $from
-     * @param string $to
+     * @param array        $expected
+     * @param string|array $from
+     * @param string|array $to
      * @dataProvider arrayProvider
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
@@ -74,9 +74,9 @@ class DifferTest extends TestCase
     }
 
     /**
-     * @param string       $expected
-     * @param string|array $from
-     * @param string|array $to
+     * @param string $expected
+     * @param string $from
+     * @param string $to
      * @dataProvider textProvider
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
@@ -104,10 +104,10 @@ class DifferTest extends TestCase
 
     /**
      * @param string $diff
-     * @param array  $expected
+     * @param Diff[] $expected
      * @dataProvider diffProvider
      */
-    public function testParser($diff, $expected)
+    public function testParser($diff, array $expected)
     {
         $parser = new Parser;
         $result = $parser->parse($diff);
@@ -301,6 +301,11 @@ class DifferTest extends TestCase
                 'abcdde',
                 'abcde'
             ),
+            array(
+                "--- Original\n+++ New\n@@ @@\n-A\n+A1\n B\n",
+                "A\nB",
+                "A1\nB",
+            ),
         );
     }
 
@@ -316,5 +321,57 @@ EOL;
                 \unserialize($serialized_arr)
             )
         );
+    }
+
+    /**
+     * @param string $expected
+     * @param string $from
+     * @param string $to
+     * @dataProvider textForNoNonDiffLinesProvider
+     */
+    public function testDiffDoNotShowNonDiffLines($expected, $from, $to)
+    {
+        $differ = new Differ('', false);
+        $this->assertSame($expected, $differ->diff($from, $to));
+    }
+
+    public function textForNoNonDiffLinesProvider()
+    {
+        return array(
+            array(
+                '', 'a', 'a'
+            ),
+            array(
+                "-A\n+C\n",
+                "A\n\n\nB",
+                "C\n\n\nB",
+            ),
+        );
+    }
+
+    /**
+     * @requires PHPUnit 5.7
+     */
+    public function testDiffToArrayInvalidFromType()
+    {
+        $differ = new Differ;
+
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('#^"from" must be an array or string\.$#');
+
+        $differ->diffToArray(null, '');
+    }
+
+    /**
+     * @requires PHPUnit 5.7
+     */
+    public function testDiffInvalidToType()
+    {
+        $differ = new Differ;
+
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('#^"to" must be an array or string\.$#');
+
+        $differ->diffToArray('', new \stdClass);
     }
 }
