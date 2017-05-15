@@ -31,6 +31,7 @@ class Differ
 
     /**
      * @param string $header
+     * @param bool   $showNonDiffLines
      */
     public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
     {
@@ -115,10 +116,10 @@ class Differ
     /**
      * Generates buffer in string format, returning the patch.
      *
-     * @param $diff
-     * @param $old
-     * @param $start
-     * @param $end
+     * @param array $diff
+     * @param array $old
+     * @param int   $start
+     * @param int   $end
      *
      * @return string
      */
@@ -145,10 +146,10 @@ class Differ
     /**
      * Gets individual buffer element.
      *
-     * @param $diff
-     * @param $i
-     * @param $newChunk
-     * @param $buffer
+     * @param array  $diff
+     * @param int    $i
+     * @param bool   $newChunk
+     * @param string $buffer
      *
      * @return string
      */
@@ -175,7 +176,7 @@ class Differ
      * Returns the diff between two arrays or strings as array.
      *
      * Each array element contains two elements:
-     *   - [0] => string $token
+     *   - [0] => mixed $token
      *   - [1] => 2|1|0
      *
      * - 2: REMOVED: $token was removed from $from
@@ -190,18 +191,25 @@ class Differ
      */
     public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
     {
-        $fromMatches = $this->getNewLineMatches($from);
-        $toMatches   = $this->getNewLineMatches($to);
-        $from        = $this->splitStringByLines($from);
-        $to          = $this->splitStringByLines($to);
-        $start       = array();
-        $end         = array();
-        $fromLength  = \count($from);
-        $toLength    = \count($to);
-        $length      = \min($fromLength, $toLength);
+        if (\is_string($from)) {
+            $fromMatches = $this->getNewLineMatches($from);
+            $from        = $this->splitStringByLines($from);
+        } elseif (\is_array($from)) {
+            $fromMatches = array();
+        } else {
+            throw new \UnexpectedValueException('"from" must be an array or string.');
+        }
 
-        $this->adjustDiffStartPoint($length, $from, $to);
-        $this->adjustDiffEndPoint($length, $from, $to, $end, $fromLength, $toLength);
+        if (\is_string($to)) {
+            $toMatches = $this->getNewLineMatches($to);
+            $to        = $this->splitStringByLines($to);
+        } elseif (\is_array($to)) {
+            $toMatches = array();
+        } else {
+            throw new \UnexpectedValueException('"to" must be an array or string.');
+        }
+
+        list($from, $to, $start, $end) = self::getArrayDiffParted($from, $to);
 
         if ($lcs === null) {
             $lcs = $this->selectLcsImplementation($from, $to);
@@ -311,57 +319,13 @@ class Differ
      * @param array $from
      * @param array $to
      *
-     * @return int
+     * @return int|float
      */
     private function calculateEstimatedFootprint(array $from, array $to)
     {
         $itemSize = PHP_INT_SIZE === 4 ? 76 : 144;
 
         return $itemSize * \pow(\min(\count($from), \count($to)), 2);
-    }
-
-    /**
-     * Adjust start point and removes common from/to lines.
-     *
-     * @param int   $length
-     * @param array $from
-     * @param array $to
-     */
-    private function adjustDiffStartPoint(&$length, array &$from, array &$to)
-    {
-        for ($i = 0; $i < $length; ++$i) {
-            if ($from[$i] === $to[$i]) {
-                $start[] = $from[$i];
-
-                unset($from[$i], $to[$i]);
-            } else {
-                break;
-            }
-        }
-
-        $length -= $i;
-    }
-
-    /**
-     * Adjusts end point and removes common from/to lines.
-     *
-     * @param int   $length
-     * @param array $from
-     * @param array $to
-     * @param array $end
-     * @param int   $fromLength
-     * @param int   $toLength
-     */
-    private function adjustDiffEndPoint(&$length, array &$from, array &$to, array $end, $fromLength, $toLength)
-    {
-        for ($i = 1; $i < $length; ++$i) {
-            if ($from[$fromLength - $i] === $to[$toLength - $i]) {
-                \array_unshift($end, $from[$fromLength - $i]);
-                unset($from[$fromLength - $i], $to[$toLength - $i]);
-            } else {
-                break;
-            }
-        }
     }
 
     /**
@@ -374,9 +338,45 @@ class Differ
      */
     private function detectUnmatchedLineEndings(array $fromMatches, array $toMatches)
     {
-        return isset($fromMatches[0]) &&
-               $toMatches[0] &&
+        return isset($fromMatches[0], $toMatches[0]) &&
                \count($fromMatches[0]) === \count($toMatches[0]) &&
                $fromMatches[0] !== $toMatches[0];
+    }
+
+    /**
+     * @param array $from
+     * @param array $to
+     *
+     * @return array
+     */
+    private static function getArrayDiffParted(array &$from, array &$to)
+    {
+        $start = array();
+        $end   = array();
+
+        \reset($to);
+        foreach ($from as $k => $v) {
+            $toK = \key($to);
+            if ($toK === $k && $v === $to[$k]) {
+                $start[$k] = $v;
+                unset($from[$k], $to[$k]);
+            } else {
+                break;
+            }
+        }
+
+        $keys = \array_reverse(\array_keys($from));
+        \end($to);
+
+        foreach ($keys as $k) {
+            if (\key($to) === $k && $from[$k] === $to[$k]) {
+                $end = array($k => $from[$k]) + $end;
+                unset($from[$k], $to[$k]);
+            } else {
+                break;
+            }
+        }
+
+        return array($from, $to, $start, $end);
     }
 }
