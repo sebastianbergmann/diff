@@ -71,6 +71,7 @@ class Parser
     private function parseFileDiff(Diff $diff, array $lines)
     {
         $chunks = array();
+        $chunk  = null;
 
         foreach ($lines as $line) {
             if (\preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {

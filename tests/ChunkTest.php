@@ -56,4 +56,13 @@ class ChunkTest extends TestCase
     {
         $this->assertEquals(array(), $this->chunk->getLines());
     }
+
+    public function testLinesCanBeSet()
+    {
+        $this->assertEquals(array(), $this->chunk->getLines());
+
+        $testValue = array('line0', 'line1');
+        $this->chunk->setLines($testValue);
+        $this->assertEquals($testValue, $this->chunk->getLines());
+    }
 }

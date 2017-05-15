@@ -67,7 +67,7 @@ class Differ
     /**
      * Casts variable to string if it is not a string or array.
      *
-     * @param $input
+     * @param mixed $input
      *
      * @return string
      */
@@ -123,21 +123,22 @@ class Differ
      *
      * @return string
      */
-    private function getBuffer($diff, $old, $start, $end)
+    private function getBuffer(array $diff, array $old, $start, $end)
     {
-        $newChunk = true;
-        $buffer   = $this->header;
+        $buffer = $this->header;
+
+        if (!isset($old[$start])) {
+            $buffer = $this->getDiffBufferElementNew($diff, $buffer, $start);
+            ++$start;
+        }
 
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
-                $buffer .= "\n";
-                $newChunk = true;
-                $i        = $old[$i];
+                $i      = $old[$i];
+                $buffer = $this->getDiffBufferElementNew($diff, "\n" . $buffer, $i);
+            } else {
+                $buffer = $this->getDiffBufferElement($diff, $buffer, $i);
             }
-
-            $buffer = $this->getDiffBufferElement($diff, $i, $newChunk, $buffer);
-
-            $newChunk = false;
         }
 
         return $buffer;
@@ -147,29 +148,40 @@ class Differ
      * Gets individual buffer element.
      *
      * @param array  $diff
-     * @param int    $i
-     * @param bool   $newChunk
      * @param string $buffer
+     * @param int    $diffIndex
      *
      * @return string
      */
-    private function getDiffBufferElement($diff, $i, $newChunk, $buffer)
+    private function getDiffBufferElement(array $diff, $buffer, $diffIndex)
     {
-        if ($newChunk) {
-            if ($this->showNonDiffLines === true) {
-                $buffer .= "@@ @@\n";
-            }
-        }
-
-        if ($diff[$i][1] === 1 /* ADDED */) {
-            $buffer .= '+' . $diff[$i][0] . "\n";
-        } elseif ($diff[$i][1] === 2 /* REMOVED */) {
-            $buffer .= '-' . $diff[$i][0] . "\n";
+        if ($diff[$diffIndex][1] === 1 /* ADDED */) {
+            $buffer .= '+' . $diff[$diffIndex][0] . "\n";
+        } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
+            $buffer .= '-' . $diff[$diffIndex][0] . "\n";
         } elseif ($this->showNonDiffLines === true) {
-            $buffer .= ' ' . $diff[$i][0] . "\n";
+            $buffer .= ' ' . $diff[$diffIndex][0] . "\n";
         }
 
         return $buffer;
+    }
+
+    /**
+     * Gets individual buffer element with opening.
+     *
+     * @param array  $diff
+     * @param string $buffer
+     * @param int    $diffIndex
+     *
+     * @return string
+     */
+    private function getDiffBufferElementNew(array $diff, $buffer, $diffIndex)
+    {
+        if ($this->showNonDiffLines === true) {
+            $buffer .= "@@ @@\n";
+        }
+
+        return $this->getDiffBufferElement($diff, $buffer, $diffIndex);
     }
 
     /**
@@ -197,7 +209,7 @@ class Differ
         } elseif (\is_array($from)) {
             $fromMatches = array();
         } else {
-            throw new \UnexpectedValueException('"from" must be an array or string.');
+            throw new \InvalidArgumentException('"from" must be an array or string.');
         }
 
         if (\is_string($to)) {
@@ -206,7 +218,7 @@ class Differ
         } elseif (\is_array($to)) {
             $toMatches = array();
         } else {
-            throw new \UnexpectedValueException('"to" must be an array or string.');
+            throw new \InvalidArgumentException('"to" must be an array or string.');
         }
 
         list($from, $to, $start, $end) = self::getArrayDiffParted($from, $to);
@@ -265,9 +277,9 @@ class Differ
     /**
      * Get new strings denoting new lines from a given string.
      *
-     * @param $string
+     * @param string $string
      *
-     * @return mixed
+     * @return array
      */
     private function getNewLineMatches($string)
     {
@@ -277,19 +289,15 @@ class Differ
     }
 
     /**
-     * Checks if input is string, if so it will split it line-by-life.
+     * Checks if input is string, if so it will split it line-by-line.
      *
-     * @param $input
+     * @param string $input
      *
      * @return array
      */
     private function splitStringByLines($input)
     {
-        if (\is_string($input)) {
-            return \preg_split('(\r\n|\r|\n)', $input);
-        }
-
-        return $input;
+        return \preg_split('(\r\n|\r|\n)', $input);
     }
 
     /**
@@ -365,17 +373,23 @@ class Differ
             }
         }
 
-        $keys = \array_reverse(\array_keys($from));
+        \end($from);
         \end($to);
 
-        foreach ($keys as $k) {
-            if (\key($to) === $k && $from[$k] === $to[$k]) {
-                $end = array($k => $from[$k]) + $end;
-                unset($from[$k], $to[$k]);
-            } else {
+        do {
+            $fromK = \key($from);
+            $toK   = \key($to);
+
+            if (null === $fromK || null === $toK || \current($from) !== \current($to)) {
                 break;
             }
-        }
+
+            \prev($from);
+            \prev($to);
+
+            $end = array($fromK => $from[$fromK]) + $end;
+            unset($from[$fromK], $to[$toK]);
+        } while (true);
 
         return array($from, $to, $start, $end);
     }
