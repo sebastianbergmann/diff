@@ -29,7 +29,7 @@ class ChunkTest extends TestCase
 
     public function testCanBeCreatedWithoutArguments()
     {
-        $this->assertInstanceOf(Chunk::class, $this->chunk);
+        $this->assertInstanceOf('SebastianBergmann\Diff\Chuck', $this->chunk);
     }
 
     public function testStartCanBeRetrieved()
