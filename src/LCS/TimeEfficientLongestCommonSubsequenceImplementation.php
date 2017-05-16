@@ -8,9 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff;
+namespace SebastianBergmann\Diff\LCS;
 
-class TimeEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
+/**
+ * Time-efficient implementation of longest common subsequence calculation.
+ */
+class TimeEfficientImplementation implements LongestCommonSubsequence
 {
     /**
      * Calculates the longest common subsequence of two arrays.

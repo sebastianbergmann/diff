@@ -10,15 +10,15 @@
 
 namespace SebastianBergmann\Diff;
 
-use SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator;
-use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
+use SebastianBergmann\Diff\LCS\TimeEfficientImplementation;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @covers SebastianBergmann\Diff\Differ
  *
- * @uses SebastianBergmann\Diff\MemoryEfficientImplementation
- * @uses SebastianBergmann\Diff\TimeEfficientImplementation
+ * @uses SebastianBergmann\Diff\LCS\MemoryEfficientImplementation
+ * @uses SebastianBergmann\Diff\LCS\TimeEfficientImplementation
  * @uses SebastianBergmann\Diff\Chunk
  * @uses SebastianBergmann\Diff\Diff
  * @uses SebastianBergmann\Diff\Line
@@ -48,7 +48,7 @@ class DifferTest extends TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientImplementation));
     }
 
     /**
@@ -59,7 +59,7 @@ class DifferTest extends TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientImplementation));
     }
 
     /**
@@ -70,7 +70,7 @@ class DifferTest extends TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
+        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientImplementation));
     }
 
     /**
@@ -81,7 +81,7 @@ class DifferTest extends TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
+        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientImplementation));
     }
 
     public function testCustomHeaderCanBeUsed()
