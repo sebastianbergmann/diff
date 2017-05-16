@@ -10,9 +10,9 @@
 
 namespace SebastianBergmann\Diff;
 
-use SebastianBergmann\Diff\LCS\LongestCommonSubsequence;
-use SebastianBergmann\Diff\LCS\TimeEfficientImplementation;
-use SebastianBergmann\Diff\LCS\MemoryEfficientImplementation;
+use SebastianBergmann\Diff\LongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator;
 
 /**
  * Diff implementation.
@@ -44,11 +44,11 @@ class Differ
      *
      * @param array|string             $from
      * @param array|string             $to
-     * @param LongestCommonSubsequence $lcs
+     * @param LongestCommonSubsequenceCalculator $lcs
      *
      * @return string
      */
-    public function diff($from, $to, LongestCommonSubsequence $lcs = null)
+    public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null)
     {
         $from  = $this->validateDiffInput($from);
         $to    = $this->validateDiffInput($to);
@@ -185,11 +185,11 @@ class Differ
      *
      * @param array|string             $from
      * @param array|string             $to
-     * @param LongestCommonSubsequence $lcs
+     * @param LongestCommonSubsequenceCalculator $lcs
      *
      * @return array
      */
-    public function diffToArray($from, $to, LongestCommonSubsequence $lcs = null)
+    public function diffToArray($from, $to, LongestCommonSubsequenceCalculator $lcs = null)
     {
         if (\is_string($from)) {
             $fromMatches = $this->getNewLineMatches($from);
@@ -296,7 +296,7 @@ class Differ
      * @param array $from
      * @param array $to
      *
-     * @return LongestCommonSubsequence
+     * @return LongestCommonSubsequenceCalculator
      */
     private function selectLcsImplementation(array $from, array $to)
     {
@@ -307,10 +307,10 @@ class Differ
         $memoryLimit = 100 * 1024 * 1024;
 
         if ($this->calculateEstimatedFootprint($from, $to) > $memoryLimit) {
-            return new MemoryEfficientImplementation;
+            return new MemoryEfficientLongestCommonSubsequenceCalculator;
         }
 
-        return new TimeEfficientImplementation;
+        return new TimeEfficientLongestCommonSubsequenceCalculator;
     }
 
     /**
