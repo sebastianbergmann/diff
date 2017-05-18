@@ -22,7 +22,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     /**
      * @var string
      */
-    private $memory_limit;
+    private $memoryLimit;
 
     /**
      * @var int[]
@@ -31,7 +31,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
 
     protected function setUp()
     {
-        $this->memory_limit = \ini_get('memory_limit');
+        $this->memoryLimit = \ini_get('memory_limit');
         \ini_set('memory_limit', '256M');
 
         $this->implementation = $this->createImplementation();
@@ -44,7 +44,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
 
     protected function tearDown()
     {
-        \ini_set('memory_limit', $this->memory_limit);
+        \ini_set('memory_limit', $this->memoryLimit);
     }
 
     public function testBothEmpty()
@@ -71,10 +71,12 @@ abstract class LongestCommonSubsequenceTest extends TestCase
             false, false, false, false, false, false,
             true, true, true, true, true, true
         );
+
         $expected = array(
             false,
             true,
         );
+
         $common = $this->implementation->calculate($from, $to);
 
         $this->assertEquals($expected, $common);
