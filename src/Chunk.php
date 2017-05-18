@@ -26,6 +26,7 @@ class Chunk
      * @var int
      */
     private $end;
+
     /**
      * @var int
      */

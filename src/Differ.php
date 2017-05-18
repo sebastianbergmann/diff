@@ -363,10 +363,13 @@ class Differ
         $end   = array();
 
         \reset($to);
+
         foreach ($from as $k => $v) {
             $toK = \key($to);
+
             if ($toK === $k && $v === $to[$k]) {
                 $start[$k] = $v;
+
                 unset($from[$k], $to[$k]);
             } else {
                 break;
