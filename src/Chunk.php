@@ -44,7 +44,7 @@ class Chunk
      * @param int   $endRange
      * @param array $lines
      */
-    public function __construct($start = 0, $startRange = 1, $end = 0, $endRange = 1, array $lines = array())
+    public function __construct($start = 0, $startRange = 1, $end = 0, $endRange = 1, array $lines = [])
     {
         $this->start      = (int) $start;
         $this->startRange = (int) $startRange;

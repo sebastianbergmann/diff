@@ -12,7 +12,7 @@ return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules(
         [
-            'array_syntax' => ['syntax' => 'long'],
+            'array_syntax' => ['syntax' => 'short'],
             'binary_operator_spaces' => [
                 'align_double_arrow' => true,
                 'align_equals' => true

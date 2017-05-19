@@ -29,9 +29,9 @@ class Parser
         }
 
         $lineCount = \count($lines);
-        $diffs     = array();
+        $diffs     = [];
         $diff      = null;
-        $collected = array();
+        $collected = [];
 
         for ($i = 0; $i < $lineCount; ++$i) {
             if (\preg_match('(^---\\s+(?P<file>\\S+))', $lines[$i], $fromMatch) &&
@@ -40,7 +40,7 @@ class Parser
                     $this->parseFileDiff($diff, $collected);
 
                     $diffs[]   = $diff;
-                    $collected = array();
+                    $collected = [];
                 }
 
                 $diff = new Diff($fromMatch['file'], $toMatch['file']);
@@ -70,7 +70,7 @@ class Parser
      */
     private function parseFileDiff(Diff $diff, array $lines)
     {
-        $chunks = array();
+        $chunks = [];
         $chunk  = null;
 
         foreach ($lines as $line) {
@@ -83,7 +83,7 @@ class Parser
                 );
 
                 $chunks[]  = $chunk;
-                $diffLines = array();
+                $diffLines = [];
 
                 continue;
             }

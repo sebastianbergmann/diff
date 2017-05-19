@@ -32,7 +32,7 @@ class Diff
      * @param string  $to
      * @param Chunk[] $chunks
      */
-    public function __construct($from, $to, array $chunks = array())
+    public function __construct($from, $to, array $chunks = [])
     {
         $this->from   = $from;
         $this->to     = $to;

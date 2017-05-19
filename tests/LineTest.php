@@ -29,7 +29,7 @@ class LineTest extends TestCase
 
     public function testCanBeCreatedWithoutArguments()
     {
-        $this->assertInstanceOf('SebastianBergmann\Diff\Line', $this->line);
+        $this->assertInstanceOf(Line::class, $this->line);
     }
 
     public function testTypeCanBeRetrieved()

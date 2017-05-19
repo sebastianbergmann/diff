@@ -29,7 +29,7 @@ class ChunkTest extends TestCase
 
     public function testCanBeCreatedWithoutArguments()
     {
-        $this->assertInstanceOf('SebastianBergmann\Diff\Chunk', $this->chunk);
+        $this->assertInstanceOf(Chunk::class, $this->chunk);
     }
 
     public function testStartCanBeRetrieved()
@@ -54,14 +54,14 @@ class ChunkTest extends TestCase
 
     public function testLinesCanBeRetrieved()
     {
-        $this->assertEquals(array(), $this->chunk->getLines());
+        $this->assertEquals([], $this->chunk->getLines());
     }
 
     public function testLinesCanBeSet()
     {
-        $this->assertEquals(array(), $this->chunk->getLines());
+        $this->assertEquals([], $this->chunk->getLines());
 
-        $testValue = array('line0', 'line1');
+        $testValue = ['line0', 'line1'];
         $this->chunk->setLines($testValue);
         $this->assertEquals($testValue, $this->chunk->getLines());
     }

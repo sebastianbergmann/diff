@@ -38,12 +38,12 @@ class ParserTest extends TestCase
         $diffs = $this->parser->parse($content);
 
         $this->assertInternalType('array', $diffs);
-        $this->assertContainsOnlyInstancesOf('SebastianBergmann\Diff\Diff', $diffs);
+        $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
         $chunks = $diffs[0]->getChunks();
         $this->assertInternalType('array', $chunks);
-        $this->assertContainsOnlyInstancesOf('SebastianBergmann\Diff\Chunk', $chunks);
+        $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
 
         $this->assertCount(1, $chunks);
 
@@ -85,13 +85,13 @@ index abcdefg..abcdefh 100644
 A;
         $diffs = $this->parser->parse($content);
         $this->assertInternalType('array', $diffs);
-        $this->assertContainsOnlyInstancesOf('SebastianBergmann\Diff\Diff', $diffs);
+        $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
         $chunks = $diffs[0]->getChunks();
 
         $this->assertInternalType('array', $chunks);
-        $this->assertContainsOnlyInstancesOf('SebastianBergmann\Diff\Chunk', $chunks);
+        $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(1, $chunks);
 
         $chunk = $chunks[0];
@@ -102,7 +102,7 @@ A;
 
         $lines = $chunk->getLines();
         $this->assertInternalType('array', $lines);
-        $this->assertContainsOnlyInstancesOf('SebastianBergmann\Diff\Line', $lines);
+        $this->assertContainsOnlyInstancesOf(Line::class, $lines);
         $this->assertCount(2, $lines);
 
         /** @var Line $line */
