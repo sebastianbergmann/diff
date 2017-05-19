@@ -8,12 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\LCS;
+namespace SebastianBergmann\Diff;
 
-/**
- * Interface for implementations of longest common subsequence calculation.
- */
-interface LongestCommonSubsequence
+interface LongestCommonSubsequenceCalculator
 {
     /**
      * Calculates the longest common subsequence of two arrays.

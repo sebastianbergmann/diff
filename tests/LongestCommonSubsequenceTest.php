@@ -8,14 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\LCS;
+namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
 
 abstract class LongestCommonSubsequenceTest extends TestCase
 {
     /**
-     * @var LongestCommonSubsequence
+     * @var LongestCommonSubsequenceCalculator
      */
     private $implementation;
 
@@ -38,7 +38,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     }
 
     /**
-     * @return LongestCommonSubsequence
+     * @return LongestCommonSubsequenceCalculator
      */
     abstract protected function createImplementation();
 

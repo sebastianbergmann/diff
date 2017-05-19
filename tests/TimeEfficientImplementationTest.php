@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\LCS;
+namespace SebastianBergmann\Diff;
 
 /**
- * @covers SebastianBergmann\Diff\LCS\MemoryEfficientImplementation
+ * @covers SebastianBergmann\Diff\TimeEfficientImplementation
  */
-class MemoryEfficientImplementationTest extends LongestCommonSubsequenceTest
+class TimeEfficientImplementationTest extends LongestCommonSubsequenceTest
 {
     protected function createImplementation()
     {
-        return new MemoryEfficientImplementation;
+        return new TimeEfficientLongestCommonSubsequenceCalculator;
     }
 }
