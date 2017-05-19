@@ -304,6 +304,46 @@ class DifferTest extends TestCase
                 "A\nB",
                 "A1\nB",
             ],
+            [
+                <<<EOF
+--- Original
++++ New
+@@ @@
+ a
+-b
++p
+
+@@ @@
+ i
+-j
++w
+ k
+
+EOF
+            ,
+                "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk",
+                "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk",
+            ],
+            [
+                <<<EOF
+--- Original
++++ New
+@@ @@
+ a
+-b
++p
+
+@@ @@
+ i
+-j
++w
+ k
+
+EOF
+                ,
+                "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk",
+                "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk",
+            ],
         ];
     }
 
