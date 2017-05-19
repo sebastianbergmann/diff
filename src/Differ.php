@@ -135,7 +135,7 @@ class Differ
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
                 $i      = $old[$i];
-                $buffer = $this->getDiffBufferElementNew($diff, "\n" . $buffer, $i);
+                $buffer = $this->getDiffBufferElementNew($diff, $buffer, $i);
             } else {
                 $buffer = $this->getDiffBufferElement($diff, $buffer, $i);
             }
