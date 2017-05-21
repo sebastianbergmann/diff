@@ -119,65 +119,39 @@ class Differ
      *
      * @return string
      */
-    private function getBuffer(array $diff, array $old, $start, $end)
+    private function getBuffer($diff, $old, $start, $end)
     {
-        $buffer = $this->header;
-
-        if (!isset($old[$start])) {
-            $buffer = $this->getDiffBufferElementNew($diff, $buffer, $start);
-            ++$start;
-        }
-
+        $newChunk = true;
+        $buffer   = $this->header;
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
-                $i      = $old[$i];
-                $buffer = $this->getDiffBufferElementNew($diff, $buffer, $i);
-            } else {
-                $buffer = $this->getDiffBufferElement($diff, $buffer, $i);
+                $buffer .= "\n";
+                $newChunk = true;
+                $i        = $old[$i];
+            }
+            $buffer   = $this->getDiffBufferElement($diff, $i, $newChunk, $buffer);
+            $newChunk = false;
+        }
+
+        return $buffer;
+    }
+
+    private function getDiffBufferElement($diff, $i, $newChunk, $buffer)
+    {
+        if ($newChunk) {
+            if ($this->showNonDiffLines === true) {
+                $buffer .= "@@ @@\n";
             }
         }
-
-        return $buffer;
-    }
-
-    /**
-     * Gets individual buffer element.
-     *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
-     */
-    private function getDiffBufferElement(array $diff, $buffer, $diffIndex)
-    {
-        if ($diff[$diffIndex][1] === 1 /* ADDED */) {
-            $buffer .= '+' . $diff[$diffIndex][0] . "\n";
-        } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
-            $buffer .= '-' . $diff[$diffIndex][0] . "\n";
+        if ($diff[$i][1] === 1 /* ADDED */) {
+            $buffer .= '+' . $diff[$i][0] . "\n";
+        } elseif ($diff[$i][1] === 2 /* REMOVED */) {
+            $buffer .= '-' . $diff[$i][0] . "\n";
         } elseif ($this->showNonDiffLines === true) {
-            $buffer .= ' ' . $diff[$diffIndex][0] . "\n";
+            $buffer .= ' ' . $diff[$i][0] . "\n";
         }
 
         return $buffer;
-    }
-
-    /**
-     * Gets individual buffer element with opening.
-     *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
-     */
-    private function getDiffBufferElementNew(array $diff, $buffer, $diffIndex)
-    {
-        if ($this->showNonDiffLines === true) {
-            $buffer .= "@@ @@\n";
-        }
-
-        return $this->getDiffBufferElement($diff, $buffer, $diffIndex);
     }
 
     /**

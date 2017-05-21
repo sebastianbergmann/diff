@@ -312,6 +312,7 @@ class DifferTest extends TestCase
  a
 -b
 +p
+
 @@ @@
  i
 -j
@@ -331,6 +332,7 @@ EOF
  a
 -b
 +p
+
 @@ @@
  i
 -j
