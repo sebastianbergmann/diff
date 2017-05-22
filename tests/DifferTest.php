@@ -15,8 +15,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers SebastianBergmann\Diff\Differ
  *
- * @uses SebastianBergmann\Diff\MemoryEfficientImplementation
- * @uses SebastianBergmann\Diff\TimeEfficientImplementation
+ * @uses SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  * @uses SebastianBergmann\Diff\Chunk
  * @uses SebastianBergmann\Diff\Diff
  * @uses SebastianBergmann\Diff\Line
