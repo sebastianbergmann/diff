@@ -385,9 +385,6 @@ EOL;
         ];
     }
 
-    /**
-     * @requires PHPUnit 5.7
-     */
     public function testDiffToArrayInvalidFromType()
     {
         $differ = new Differ;
@@ -398,9 +395,6 @@ EOL;
         $differ->diffToArray(null, '');
     }
 
-    /**
-     * @requires PHPUnit 5.7
-     */
     public function testDiffInvalidToType()
     {
         $differ = new Differ;
