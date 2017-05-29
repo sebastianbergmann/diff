@@ -53,10 +53,6 @@ class Differ
         $start = isset($old[0]) ? $old[0] : 0;
         $end   = \count($diff);
 
-        if ($tmp = \array_search($end, $old)) {
-            $end = $tmp;
-        }
-
         return $this->getBuffer($diff, $old, $start, $end);
     }
 
