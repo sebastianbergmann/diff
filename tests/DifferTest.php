@@ -421,6 +421,6 @@ EOL;
 
         $reflectionProperty = $reflection->getProperty('showNonDiffLines');
         $reflectionProperty->setAccessible(true);
-        $this->asserTrue($reflectionProperty->getValue($this->differ));
+        $this->assertFalse($reflectionProperty->getValue($this->differ));
     }
 }
