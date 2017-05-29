@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
  * @uses SebastianBergmann\Diff\Line
  * @uses SebastianBergmann\Diff\Parser
  */
-class DifferTest extends TestCase
+final class DifferTest extends TestCase
 {
     const REMOVED = 2;
     const ADDED   = 1;

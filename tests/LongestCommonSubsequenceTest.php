@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -153,7 +153,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     {
         foreach ($this->stress_sizes as $size) {
             $from   = \range(1, $size);
-            $to     = \array_slice($from, (int) $size / 2, 1);
+            $to     = \array_slice($from, (int) ($size / 2), 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertEquals($to, $common);

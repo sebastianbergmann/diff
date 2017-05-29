@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers SebastianBergmann\Diff\Chunk
  */
-class ChunkTest extends TestCase
+final class ChunkTest extends TestCase
 {
     /**
      * @var Chunk

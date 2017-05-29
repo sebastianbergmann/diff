@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -10,17 +10,12 @@
 
 namespace SebastianBergmann\Diff;
 
-class TimeEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
+final class TimeEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
 {
     /**
-     * Calculates the longest common subsequence of two arrays.
-     *
-     * @param array $from
-     * @param array $to
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function calculate(array $from, array $to)
+    public function calculate(array $from, array $to): array
     {
         $common     = [];
         $fromLength = \count($from);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -10,17 +10,12 @@
 
 namespace SebastianBergmann\Diff;
 
-class MemoryEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
+final class MemoryEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
 {
     /**
-     * Calculates the longest common subsequence of two arrays.
-     *
-     * @param array $from
-     * @param array $to
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function calculate(array $from, array $to)
+    public function calculate(array $from, array $to): array
     {
         $cFrom = \count($from);
         $cTo   = \count($to);
@@ -45,7 +40,7 @@ class MemoryEfficientLongestCommonSubsequenceCalculator implements LongestCommon
         $jMax      = 0;
         $max       = 0;
 
-        for ($j = 0; $j <= $cTo; $j++) {
+        for ($j = 0; $j <= $cTo; ++$j) {
             $m = $llB[$j] + $llE[$cTo - $j];
 
             if ($m >= $max) {
@@ -63,22 +58,16 @@ class MemoryEfficientLongestCommonSubsequenceCalculator implements LongestCommon
         );
     }
 
-    /**
-     * @param array $from
-     * @param array $to
-     *
-     * @return array
-     */
-    private function length(array $from, array $to)
+    private function length(array $from, array $to): array
     {
         $current = \array_fill(0, \count($to) + 1, 0);
         $cFrom   = \count($from);
         $cTo     = \count($to);
 
-        for ($i = 0; $i < $cFrom; $i++) {
+        for ($i = 0; $i < $cFrom; ++$i) {
             $prev = $current;
 
-            for ($j = 0; $j < $cTo; $j++) {
+            for ($j = 0; $j < $cTo; ++$j) {
                 if ($from[$i] === $to[$j]) {
                     $current[$j + 1] = $prev[$j] + 1;
                 } else {

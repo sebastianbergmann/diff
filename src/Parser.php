@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -13,18 +13,13 @@ namespace SebastianBergmann\Diff;
 /**
  * Unified diff parser.
  */
-class Parser
+final class Parser
 {
-    /**
-     * @param string $string
-     *
-     * @return Diff[]
-     */
-    public function parse($string)
+    public function parse(string $string): array
     {
         $lines = \preg_split('(\r\n|\r|\n)', $string);
 
-        if (!empty($lines) && $lines[\count($lines) - 1] == '') {
+        if (!empty($lines) && $lines[\count($lines) - 1] === '') {
             \array_pop($lines);
         }
 
@@ -64,10 +59,6 @@ class Parser
         return $diffs;
     }
 
-    /**
-     * @param Diff  $diff
-     * @param array $lines
-     */
     private function parseFileDiff(Diff $diff, array $lines)
     {
         $chunks = [];
@@ -76,10 +67,10 @@ class Parser
         foreach ($lines as $line) {
             if (\preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {
                 $chunk = new Chunk(
-                    $match['start'],
-                    isset($match['startrange']) ? \max(1, $match['startrange']) : 1,
-                    $match['end'],
-                    isset($match['endrange']) ? \max(1, $match['endrange']) : 1
+                    (int) $match['start'],
+                    isset($match['startrange']) ? \max(1, (int) $match['startrange']) : 1,
+                    (int) $match['end'],
+                    isset($match['endrange']) ? \max(1, (int) $match['endrange']) : 1
                 );
 
                 $chunks[]  = $chunk;

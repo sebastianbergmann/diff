@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  * @uses SebastianBergmann\Diff\Diff
  * @uses SebastianBergmann\Diff\Line
  */
-class ParserTest extends TestCase
+final class ParserTest extends TestCase
 {
     /**
      * @var Parser
