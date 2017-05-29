@@ -35,6 +35,20 @@ final class Differ
         $this->showNonDiffLines = $showNonDiffLines;
     }
 
+    public function setHeader(string $header)
+    {
+        $this->header = $header;
+
+        return $this;
+    }
+
+    public function setShowNonDiffLines(bool $showNonDiffLines)
+    {
+        $this->showNonDiffLines = $showNonDiffLines;
+
+        return $this;
+    }
+
     /**
      * Returns the diff between two arrays or strings as string.
      *
