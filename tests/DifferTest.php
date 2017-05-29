@@ -46,7 +46,7 @@ final class DifferTest extends TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
+        $this->assertSame($expected, $this->differ->diffToArray($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
     }
 
     /**
@@ -57,7 +57,7 @@ final class DifferTest extends TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
+        $this->assertSame($expected, $this->differ->diff($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
     }
 
     /**
@@ -68,7 +68,7 @@ final class DifferTest extends TestCase
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
+        $this->assertSame($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
     }
 
     /**
@@ -79,14 +79,14 @@ final class DifferTest extends TestCase
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation($expected, $from, $to)
     {
-        $this->assertEquals($expected, $this->differ->diff($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
+        $this->assertSame($expected, $this->differ->diff($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
     }
 
     public function testCustomHeaderCanBeUsed()
     {
         $differ = new Differ('CUSTOM HEADER');
 
-        $this->assertEquals(
+        $this->assertSame(
             "CUSTOM HEADER@@ @@\n-a\n+b\n",
             $differ->diff('a', 'b')
         );
@@ -94,7 +94,7 @@ final class DifferTest extends TestCase
 
     public function testTypesOtherThanArrayAndStringCanBePassed()
     {
-        $this->assertEquals(
+        $this->assertSame(
             "--- Original\n+++ New\n@@ @@\n-1\n+2\n",
             $this->differ->diff(1, 2)
         );
