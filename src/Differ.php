@@ -64,10 +64,8 @@ final class Differ
         $to    = $this->validateDiffInput($to);
         $diff  = $this->diffToArray($from, $to, $lcs);
         $old   = $this->checkIfDiffInOld($diff);
-        $start = $old[0] ?? 0;
-        $end   = \count($diff);
 
-        return $this->getBuffer($diff, $old, $start, $end);
+        return $this->getBuffer($diff, $old);
     }
 
     /**
@@ -125,13 +123,13 @@ final class Differ
      *
      * @param array $diff
      * @param array $old
-     * @param int   $start
-     * @param int   $end
      *
      * @return string
      */
-    private function getBuffer(array $diff, array $old, int $start, int $end): string
+    private function getBuffer(array $diff, array $old): string
     {
+        $start = $old[0] ?? 0;
+        $end   = \count($diff);
         $buffer = $this->header;
 
         if (!isset($old[$start])) {
