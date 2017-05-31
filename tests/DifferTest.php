@@ -113,7 +113,7 @@ final class DifferTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function arrayProvider()
+    public function arrayProvider(): array
     {
         return [
             [
@@ -325,7 +325,7 @@ EOF
         ];
     }
 
-    public function diffProvider()
+    public function diffProvider(): array
     {
         $serialized_arr = <<<EOL
 a:1:{i:0;O:27:"SebastianBergmann\Diff\Diff":3:{s:33:" SebastianBergmann\Diff\Diff from";s:7:"old.txt";s:31:" SebastianBergmann\Diff\Diff to";s:7:"new.txt";s:35:" SebastianBergmann\Diff\Diff chunks";a:3:{i:0;O:28:"SebastianBergmann\Diff\Chunk":5:{s:35:" SebastianBergmann\Diff\Chunk start";i:1;s:40:" SebastianBergmann\Diff\Chunk startRange";i:3;s:33:" SebastianBergmann\Diff\Chunk end";i:1;s:38:" SebastianBergmann\Diff\Chunk endRange";i:4;s:35:" SebastianBergmann\Diff\Chunk lines";a:4:{i:0;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:1;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222111";}i:1;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"1111111";}i:2;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"1111111";}i:3;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"1111111";}}}i:1;O:28:"SebastianBergmann\Diff\Chunk":5:{s:35:" SebastianBergmann\Diff\Chunk start";i:5;s:40:" SebastianBergmann\Diff\Chunk startRange";i:10;s:33:" SebastianBergmann\Diff\Chunk end";i:6;s:38:" SebastianBergmann\Diff\Chunk endRange";i:8;s:35:" SebastianBergmann\Diff\Chunk lines";a:11:{i:0;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"1111111";}i:1;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"1111111";}i:2;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"1111111";}i:3;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:8:"+1121211";}i:4;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"1111111";}i:5;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:8:"-1111111";}i:6;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:8:"-1111111";}i:7;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:8:"-2222222";}i:8;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}i:9;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}i:10;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}}}i:2;O:28:"SebastianBergmann\Diff\Chunk":5:{s:35:" SebastianBergmann\Diff\Chunk start";i:17;s:40:" SebastianBergmann\Diff\Chunk startRange";i:5;s:33:" SebastianBergmann\Diff\Chunk end";i:16;s:38:" SebastianBergmann\Diff\Chunk endRange";i:6;s:35:" SebastianBergmann\Diff\Chunk lines";a:6:{i:0;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}i:1;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}i:2;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}i:3;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:8:"+2122212";}i:4;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}i:5;O:27:"SebastianBergmann\Diff\Line":2:{s:33:" SebastianBergmann\Diff\Line type";i:3;s:36:" SebastianBergmann\Diff\Line content";s:7:"2222222";}}}}}}
@@ -339,52 +339,91 @@ EOL;
         ];
     }
 
-//    /**
+    /**
+     * @param string $expected
+     * @param string $from
+     * @param string $to
+     * @dataProvider textForNoNonDiffLinesProvider
+     */
+    public function testDiffDoNotShowNonDiffLines($expected, $from, $to)
+    {
+        $differ = new Differ('', Differ::MODE_CHANGED_ONLY);
+        $this->assertSame($expected, $differ->diff($from, $to));
+    }
 
-//     * @param string $expected FIXME
+    public function textForNoNonDiffLinesProvider()
+    {
+        return [
+            [
+                '', 'a', 'a'
+            ],
+            [
+                "-A\n+C\n",
+                "A\n\n\nB",
+                "C\n\n\nB",
+            ],
+        ];
+    }
 
-//     * @param string $from
-//     * @param string $to
-//     * @dataProvider textForNoNonDiffLinesProvider
-//     */
-//    public function atestDiffDoNotShowNonDiffLines($expected, $from, $to)
-//    {
-//        $differ = new Differ('', false);
-//        $this->assertSame($expected, $differ->diff($from, $to));
-//    }
-//
-//    public function textForNoNonDiffLinesProvider()
-//    {
-//        return [
-//            [
-//                '', 'a', 'a'
-//            ],
-//            [
-//                "-A\n+C\n",
-//                "A\n\n\nB",
-//                "C\n\n\nB",
-//            ],
-//        ];
-//    }
+    /**
+     * @param string $expected
+     * @param string $from
+     * @param string $to
+     * @dataProvider textForDiffFull
+     */
+    public function testDiffFull($expected, $from, $to)
+    {
+        $differ = new Differ("FULL TEST\n", Differ::MODE_FULL);
+        $this->assertSame($expected, $differ->diff($from, $to));
+    }
+
+    public function textForDiffFull()
+    {
+        return [
+            [
+                'FULL TEST
+@@ -1,6 +1,6 @@
+-Z
++A
+ ' . '
+ ' . '
+ B
+ C
+',
+                "Z\n\n\nB\nC",
+                "A\n\n\nB\nC",
+            ],
+            [
+                'FULL TEST
+@@ -1,7 +1,7 @@
+ X
+ ' . '
+ ' . '
+ Y
+-
+-
+-Z
+',
+                "X\n\n\nY\n\n\nZ",
+                "X\n\n\nY",
+            ]
+        ];
+    }
 
     public function testDiffToArrayInvalidFromType()
     {
-        $differ = new Differ;
-
         $this->expectException('\InvalidArgumentException');
         $this->expectExceptionMessageRegExp('#^"from" must be an array or string\.$#');
 
-        $differ->diffToArray(null, '');
+        $this->differ->diffToArray(null, '');
     }
 
     public function testDiffInvalidToType()
     {
-        $differ = new Differ;
-
         $this->expectException('\InvalidArgumentException');
         $this->expectExceptionMessageRegExp('#^"to" must be an array or string\.$#');
 
-        $differ->diffToArray('', new \stdClass);
+        $this->differ->diffToArray('', new \stdClass);
     }
 
     public function testSettingFluent()
@@ -392,11 +431,26 @@ EOL;
         $diff = $this->differ->setHeader('testSettingFluent');
         $this->assertSame($this->differ, $diff);
 
+        $diff = $this->differ->setMode(Differ::MODE_CHANGED_ONLY);
+        $this->assertSame($this->differ, $diff);
+
         $reflection = new \ReflectionObject($this->differ);
 
         $reflectionProperty = $reflection->getProperty('header');
         $reflectionProperty->setAccessible(true);
         $this->assertSame('testSettingFluent', $reflectionProperty->getValue($this->differ));
+
+        $reflectionProperty = $reflection->getProperty('mode');
+        $reflectionProperty->setAccessible(true);
+        $this->assertSame(Differ::MODE_CHANGED_ONLY, $reflectionProperty->getValue($this->differ));
+    }
+
+    public function testSetInvalidMode()
+    {
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('#^Mode must be any of MODE_CHUNK \(1\) MODE_FULL \(2\) MODE_CHANGED_ONLY \(3\) got -1\.$#');
+
+        $this->differ->setMode(-1);
     }
 
     /**
@@ -410,7 +464,7 @@ EOL;
         $this->assertSame($expected, $this->differ->diff($from, $to));
     }
 
-    public function provideDiffWithLineNumbers()
+    public function provideDiffWithLineNumbers(): array
     {
         return [
             [

@@ -15,6 +15,15 @@ namespace SebastianBergmann\Diff;
  */
 final class Differ
 {
+    const MODE_CHUNK        = 1;
+    const MODE_FULL         = 2;
+    const MODE_CHANGED_ONLY = 3;
+
+    /**
+     * @var int
+     */
+    private $mode;
+
     /**
      * @var string
      */
@@ -22,13 +31,30 @@ final class Differ
 
     /**
      * @param string $header
+     * @param int    $mode
      */
-    public function __construct(string $header = "--- Original\n+++ New\n")
+    public function __construct(string $header = "--- Original\n+++ New\n", int $mode = self::MODE_CHUNK)
     {
-        $this->header = $header;
+        $this->setMode($mode);
+        $this->setHeader($header);
     }
 
-    public function setHeader(string $header)
+    public function setMode(int $mode): Differ
+    {
+        if ($mode !== self::MODE_CHUNK && $mode !== self::MODE_FULL && $mode !== self::MODE_CHANGED_ONLY) {
+            throw new \InvalidArgumentException(\sprintf(
+                'Mode must be any of MODE_CHUNK (%d) MODE_FULL (%d) MODE_CHANGED_ONLY (%d) got %s.',
+                self::MODE_CHUNK, self::MODE_FULL, self::MODE_CHANGED_ONLY,
+                $mode
+            ));
+        }
+
+        $this->mode = $mode;
+
+        return $this;
+    }
+
+    public function setHeader(string $header): Differ
     {
         $this->header = $header;
 
@@ -49,13 +75,7 @@ final class Differ
         $from = $this->validateDiffInput($from);
         $to   = $this->validateDiffInput($to);
 
-        $diff = $this->diffToArray($from, $to, $lcs);
-
-        // `old` is an array with key => value pairs . Each pair represents a start and end index of `diff`
-        // of a list of elements all containing `same` (0) entries.
-        $old  = $this->checkIfDiffInOld($diff);
-
-        return $this->getBuffer($diff, $old);
+        return $this->getBuffer($this->diffToArray($from, $to, $lcs));
     }
 
     /**
@@ -112,17 +132,25 @@ final class Differ
      * Generates buffer in string format, returning the patch.
      *
      * @param array $diff
-     * @param array $old
      *
      * @return string
      */
-    private function getBuffer(array $diff, array $old): string
+    private function getBuffer(array $diff): string
     {
         $buffer = \fopen('php://memory', 'r+b');
         \fwrite($buffer, $this->header);
 
-        // FIXME if $this->showNonDiffLines || show full | show chunked
-        $this->writeDiffChunked($buffer, $diff, $old);
+        if ($this->mode === self::MODE_CHUNK) {
+            $this->writeDiffChunked(
+                $buffer,
+                $diff,
+                $this->checkIfDiffInOld($diff)
+            );
+        } elseif ($this->mode === self::MODE_FULL) {
+            $this->writeDiffFull($buffer, $diff);
+        } else { //if ($this->mode === self::MODE_CHANGED_ONLY) {
+            $this->writeDiffChangedOnly($buffer, $diff);
+        }
 
         $diff = \stream_get_contents($buffer, -1, 0);
         \fclose($buffer);
@@ -130,6 +158,8 @@ final class Differ
         return $diff;
     }
 
+    // `old` is an array with key => value pairs . Each pair represents a start and end index of `diff`
+    // of a list of elements all containing `same` (0) entries.
     private function writeDiffChunked($output, array $diff, array $old)
     {
         $upperLimit = \count($diff);
@@ -197,7 +227,6 @@ final class Differ
         int $toRange
     ) {
         \fwrite($output, '@@ -' . (1 + $fromStart));
-
         if ($fromRange > 1) {
             \fwrite($output, ',' . $fromRange);
         }
@@ -214,7 +243,7 @@ final class Differ
                 \fwrite($output, '+' . $diff[$i][0] . "\n");
             } elseif ($diff[$i][1] === 2 /* REMOVED */) {
                 \fwrite($output, '-' . $diff[$i][0] . "\n");
-            } else {
+            } else { /* Not changed (old) */
                 \fwrite($output, ' ' . $diff[$i][0] . "\n");
             }
         }
@@ -237,6 +266,56 @@ final class Differ
         }
 
         return [$fromRange, $toRange];
+    }
+
+    private function writeDiffFull($output, array $diff)
+    {
+        $toRange   = 0;
+        $fromRange = 0;
+
+        foreach ($diff as $diffEntry) {
+            if ($diff[1] === 1) { // added
+                ++$toRange;
+            } elseif ($diff[1] === 2) { // removed
+                ++$fromRange;
+            } else { // { ($diff[1] === 0) { // same }
+                ++$fromRange;
+                ++$toRange;
+            }
+        }
+
+        \fwrite($output, '@@ -1');
+        if ($fromRange > 1) {
+            \fwrite($output, ',' . $fromRange);
+        }
+
+        \fwrite($output, ' +1');
+        if ($toRange > 1) {
+            \fwrite($output, ',' . $toRange);
+        }
+
+        \fwrite($output, " @@\n");
+
+        foreach ($diff as $diffEntry) {
+            if ($diffEntry[1] === 1 /* ADDED */) {
+                \fwrite($output, '+' . $diffEntry[0] . "\n");
+            } elseif ($diffEntry[1] === 2 /* REMOVED */) {
+                \fwrite($output, '-' . $diffEntry[0] . "\n");
+            } else { /* Not changed (old) */
+                \fwrite($output, ' ' . $diffEntry[0] . "\n");
+            }
+        }
+    }
+
+    private function writeDiffChangedOnly($output, array $diff)
+    {
+        foreach ($diff as $diffEntry) {
+            if ($diffEntry[1] === 1 /* ADDED */) {
+                \fwrite($output, '+' . $diffEntry[0] . "\n");
+            } elseif ($diffEntry[1] === 2 /* REMOVED */) {
+                \fwrite($output, '-' . $diffEntry[0] . "\n");
+            }
+        }
     }
 
     /**
