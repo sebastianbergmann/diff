@@ -309,6 +309,7 @@ final class Differ
 
     private function writeDiffChangedOnly($output, array $diff)
     {
+        \fwrite($output, "@@ @@\n");
         foreach ($diff as $diffEntry) {
             if ($diffEntry[1] === 1 /* ADDED */) {
                 \fwrite($output, '+' . $diffEntry[0] . "\n");
