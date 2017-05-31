@@ -274,9 +274,9 @@ final class Differ
         $fromRange = 0;
 
         foreach ($diff as $diffEntry) {
-            if ($diff[1] === 1) { // added
+            if ($diffEntry[1] === 1) { // added
                 ++$toRange;
-            } elseif ($diff[1] === 2) { // removed
+            } elseif ($diffEntry[1] === 2) { // removed
                 ++$fromRange;
             } else { // { ($diff[1] === 0) { // same }
                 ++$fromRange;
