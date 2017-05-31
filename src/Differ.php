@@ -21,30 +21,16 @@ final class Differ
     private $header;
 
     /**
-     * @var bool
-     */
-    private $showNonDiffLines;
-
-    /**
      * @param string $header
-     * @param bool   $showNonDiffLines
      */
-    public function __construct(string $header = "--- Original\n+++ New\n", bool $showNonDiffLines = true)
+    public function __construct(string $header = "--- Original\n+++ New\n")
     {
         $this->header           = $header;
-        $this->showNonDiffLines = $showNonDiffLines;
     }
 
     public function setHeader(string $header)
     {
         $this->header = $header;
-
-        return $this;
-    }
-
-    public function setShowNonDiffLines(bool $showNonDiffLines)
-    {
-        $this->showNonDiffLines = $showNonDiffLines;
 
         return $this;
     }
@@ -128,8 +114,8 @@ final class Differ
      */
     private function getBuffer(array $diff, array $old): string
     {
-        $start = $old[0] ?? 0;
-        $end   = \count($diff);
+        $start  = $old[0] ?? 0;
+        $end    = \count($diff);
         $buffer = $this->header;
 
         if (!isset($old[$start])) {
@@ -164,7 +150,7 @@ final class Differ
             $buffer .= '+' . $diff[$diffIndex][0] . "\n";
         } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
             $buffer .= '-' . $diff[$diffIndex][0] . "\n";
-        } elseif ($this->showNonDiffLines === true) {
+        } else {
             $buffer .= ' ' . $diff[$diffIndex][0] . "\n";
         }
 
@@ -182,10 +168,6 @@ final class Differ
      */
     private function getDiffBufferElementNew(array $diff, string $buffer, int $diffIndex): string
     {
-        if ($this->showNonDiffLines === true) {
-            $buffer .= "@@ @@\n";
-        }
-
         return $this->getDiffBufferElement($diff, $buffer, $diffIndex);
     }
 
@@ -203,6 +185,8 @@ final class Differ
      * @param array|string                       $from
      * @param array|string                       $to
      * @param LongestCommonSubsequenceCalculator $lcs
+     *
+     * @throws \InvalidArgumentException
      *
      * @return array
      */
