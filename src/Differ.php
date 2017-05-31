@@ -118,15 +118,19 @@ final class Differ
      */
     private function getBuffer(array $diff, array $old): string
     {
+        $buffer = \fopen('php://memory', 'r+b');
+        \fwrite($buffer, $this->header);
+
         // FIXME if $this->showNonDiffLines || show full | show chunked
-        $buffer = $this->header . $this->getDiffChunked($diff, $old);
+        $this->writeDiffChunked($buffer, $diff, $old);
 
-//        var_dump($buffer);die;
+        $diff = \stream_get_contents($buffer, -1, 0);
+        \fclose($buffer);
 
-        return $buffer;
+        return $diff;
     }
 
-    private function getDiffChunked(array $diff, array $old): string
+    private function writeDiffChunked($output, array $diff, array $old)
     {
         $upperLimit = \count($diff);
 
@@ -138,13 +142,13 @@ final class Differ
             }
 
             list($fromRange, $toRange) = $this->getChunkRange($diff, 0, $upperLimit);
+            $this->writeChunk($output, $diff, 0, $upperLimit, 0, $fromRange, 0, $toRange);
 
-            return $this->getChunk($diff, 0, $upperLimit, 0, $fromRange, 0, $toRange);
+            return;
         }
 
         \reset($old);
         $start     = 0;
-        $buffer    = '';
         $fromStart = 0;
         $toStart   = 0;
 
@@ -153,7 +157,7 @@ final class Differ
             $end = \key($old);
             if (0 !== $end) {
                 list($fromRange, $toRange) = $this->getChunkRange($diff, $start, $end);
-                $buffer .= $this->getChunk($diff, $start, $end, $fromStart, $fromRange, $toStart, $toRange);
+                $this->writeChunk($output, $diff, $start, $end, $fromStart, $fromRange, $toStart, $toRange);
 
                 // correct start of diff with the range covered
                 $fromStart += $fromRange;
@@ -178,13 +182,12 @@ final class Differ
         // create a chunk till the end if needed
         if ($start < $upperLimit) {
             list($fromRange, $toRange) = $this->getChunkRange($diff, $start, $upperLimit);
-            $buffer .= $this->getChunk($diff, $start, $upperLimit, $fromStart, $fromRange, $toStart, $toRange);
+            $this->writeChunk($output, $diff, $start, $upperLimit, $fromStart, $fromRange, $toStart, $toRange);
         } // else { not possible with the current duff builder, however should not be an issue here }
-
-        return $buffer;
     }
 
-    private function getChunk(
+    private function writeChunk(
+        $output,
         array $diff,
         int $diffStartIndex,
         int $diffEndIndex,
@@ -192,31 +195,29 @@ final class Differ
         int $fromRange,
         int $toStart,
         int $toRange
-    ): string {
-        $buffer = '@@ -' . (1 + $fromStart);
+    ) {
+        \fwrite($output, '@@ -' . (1 + $fromStart));
 
         if ($fromRange > 1) {
-            $buffer .= ',' . $fromRange;
+            \fwrite($output, ',' . $fromRange);
         }
 
-        $buffer .= ' +' . (1 + $toStart);
+        \fwrite($output, ' +' . (1 + $toStart));
         if ($toRange > 1) {
-            $buffer .= ',' . $toRange;
+            \fwrite($output, ',' . $toRange);
         }
 
-        $buffer .= " @@\n";
+        \fwrite($output, " @@\n");
 
         for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
             if ($diff[$i][1] === 1 /* ADDED */) {
-                $buffer .= '+' . $diff[$i][0] . "\n";
+                \fwrite($output, '+' . $diff[$i][0] . "\n");
             } elseif ($diff[$i][1] === 2 /* REMOVED */) {
-                $buffer .= '-' . $diff[$i][0] . "\n";
+                \fwrite($output, '-' . $diff[$i][0] . "\n");
             } else {
-                $buffer .= ' ' . $diff[$i][0] . "\n";
+                \fwrite($output, ' ' . $diff[$i][0] . "\n");
             }
         }
-
-        return $buffer;
     }
 
     private function getChunkRange(array $diff, int $diffStartIndex, int $diffEndIndex): array
