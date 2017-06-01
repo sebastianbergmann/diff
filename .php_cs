@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 $header = <<<'EOF'
 This file is part of sebastian/diff.
 
@@ -22,6 +22,7 @@ return PhpCsFixer\Config::create()
             'braces' => true,
             'cast_spaces' => true,
             'concat_space' => ['spacing' => 'one'],
+            'declare_strict_types' => true,
             'elseif' => true,
             'encoding' => true,
             'full_opening_tag' => true,
