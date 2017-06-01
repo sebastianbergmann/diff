@@ -34,11 +34,11 @@ class LineTest extends TestCase
 
     public function testTypeCanBeRetrieved()
     {
-        $this->assertEquals(Line::UNCHANGED, $this->line->getType());
+        $this->assertSame(Line::UNCHANGED, $this->line->getType());
     }
 
     public function testContentCanBeRetrieved()
     {
-        $this->assertEquals('', $this->line->getContent());
+        $this->assertSame('', $this->line->getContent());
     }
 }

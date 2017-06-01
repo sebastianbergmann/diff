@@ -47,7 +47,7 @@ class ParserTest extends TestCase
 
         $this->assertCount(1, $chunks);
 
-        $this->assertEquals(20, $chunks[0]->getStart());
+        $this->assertSame(20, $chunks[0]->getStart());
 
         $this->assertCount(4, $chunks[0]->getLines());
     }
@@ -63,9 +63,9 @@ class ParserTest extends TestCase
         $chunks = $diffs[0]->getChunks();
         $this->assertCount(3, $chunks);
 
-        $this->assertEquals(20, $chunks[0]->getStart());
-        $this->assertEquals(320, $chunks[1]->getStart());
-        $this->assertEquals(600, $chunks[2]->getStart());
+        $this->assertSame(20, $chunks[0]->getStart());
+        $this->assertSame(320, $chunks[1]->getStart());
+        $this->assertSame(600, $chunks[2]->getStart());
 
         $this->assertCount(5, $chunks[0]->getLines());
         $this->assertCount(5, $chunks[1]->getLines());
