@@ -59,6 +59,7 @@ return PhpCsFixer\Config::create()
             'phpdoc_trim' => true,
             'phpdoc_types' => true,
             'phpdoc_var_without_name' => true,
+            'pow_to_exponentiation' => true,
             'self_accessor' => true,
             'simplified_null_return' => true,
             'single_blank_line_at_eof' => true,
