@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers SebastianBergmann\Diff\Chunk
  */
-class ChunkTest extends TestCase
+final class ChunkTest extends TestCase
 {
     /**
      * @var Chunk
@@ -34,35 +34,35 @@ class ChunkTest extends TestCase
 
     public function testStartCanBeRetrieved()
     {
-        $this->assertEquals(0, $this->chunk->getStart());
+        $this->assertSame(0, $this->chunk->getStart());
     }
 
     public function testStartRangeCanBeRetrieved()
     {
-        $this->assertEquals(1, $this->chunk->getStartRange());
+        $this->assertSame(1, $this->chunk->getStartRange());
     }
 
     public function testEndCanBeRetrieved()
     {
-        $this->assertEquals(0, $this->chunk->getEnd());
+        $this->assertSame(0, $this->chunk->getEnd());
     }
 
     public function testEndRangeCanBeRetrieved()
     {
-        $this->assertEquals(1, $this->chunk->getEndRange());
+        $this->assertSame(1, $this->chunk->getEndRange());
     }
 
     public function testLinesCanBeRetrieved()
     {
-        $this->assertEquals([], $this->chunk->getLines());
+        $this->assertSame([], $this->chunk->getLines());
     }
 
     public function testLinesCanBeSet()
     {
-        $this->assertEquals([], $this->chunk->getLines());
+        $this->assertSame([], $this->chunk->getLines());
 
         $testValue = ['line0', 'line1'];
         $this->chunk->setLines($testValue);
-        $this->assertEquals($testValue, $this->chunk->getLines());
+        $this->assertSame($testValue, $this->chunk->getLines());
     }
 }

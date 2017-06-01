@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -13,26 +13,52 @@ namespace SebastianBergmann\Diff;
 /**
  * Diff implementation.
  */
-class Differ
+final class Differ
 {
+    const MODE_CHUNK        = 1;
+    const MODE_FULL         = 2;
+    const MODE_CHANGED_ONLY = 3;
+
+    /**
+     * @var int
+     */
+    private $mode;
+
     /**
      * @var string
      */
     private $header;
 
     /**
-     * @var bool
-     */
-    private $showNonDiffLines;
-
-    /**
      * @param string $header
-     * @param bool   $showNonDiffLines
+     * @param int    $mode
      */
-    public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
+    public function __construct(string $header = "--- Original\n+++ New\n", int $mode = self::MODE_CHUNK)
     {
-        $this->header           = $header;
-        $this->showNonDiffLines = $showNonDiffLines;
+        $this->setMode($mode);
+        $this->setHeader($header);
+    }
+
+    public function setMode(int $mode): Differ
+    {
+        if ($mode !== self::MODE_CHUNK && $mode !== self::MODE_FULL && $mode !== self::MODE_CHANGED_ONLY) {
+            throw new \InvalidArgumentException(\sprintf(
+                'Mode must be any of MODE_CHUNK (%d) MODE_FULL (%d) MODE_CHANGED_ONLY (%d) got %s.',
+                self::MODE_CHUNK, self::MODE_FULL, self::MODE_CHANGED_ONLY,
+                $mode
+            ));
+        }
+
+        $this->mode = $mode;
+
+        return $this;
+    }
+
+    public function setHeader(string $header): Differ
+    {
+        $this->header = $header;
+
+        return $this;
     }
 
     /**
@@ -44,20 +70,12 @@ class Differ
      *
      * @return string
      */
-    public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null)
+    public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null): string
     {
-        $from  = $this->validateDiffInput($from);
-        $to    = $this->validateDiffInput($to);
-        $diff  = $this->diffToArray($from, $to, $lcs);
-        $old   = $this->checkIfDiffInOld($diff);
-        $start = isset($old[0]) ? $old[0] : 0;
-        $end   = \count($diff);
+        $from = $this->validateDiffInput($from);
+        $to   = $this->validateDiffInput($to);
 
-        if ($tmp = \array_search($end, $old)) {
-            $end = $tmp;
-        }
-
-        return $this->getBuffer($diff, $old, $start, $end);
+        return $this->getBuffer($this->diffToArray($from, $to, $lcs));
     }
 
     /**
@@ -67,7 +85,7 @@ class Differ
      *
      * @return string
      */
-    private function validateDiffInput($input)
+    private function validateDiffInput($input): string
     {
         if (!\is_array($input) && !\is_string($input)) {
             return (string) $input;
@@ -78,13 +96,14 @@ class Differ
 
     /**
      * Takes input of the diff array and returns the old array.
-     * Iterates through diff line by line,
+     *
+     * Iterates through diff line by line.
      *
      * @param array $diff
      *
      * @return array
      */
-    private function checkIfDiffInOld(array $diff)
+    private function checkIfDiffInOld(array $diff): array
     {
         $inOld = false;
         $i     = 0;
@@ -113,71 +132,191 @@ class Differ
      * Generates buffer in string format, returning the patch.
      *
      * @param array $diff
-     * @param array $old
-     * @param int   $start
-     * @param int   $end
      *
      * @return string
      */
-    private function getBuffer(array $diff, array $old, $start, $end)
+    private function getBuffer(array $diff): string
     {
-        $buffer = $this->header;
+        $buffer = \fopen('php://memory', 'r+b');
+        \fwrite($buffer, $this->header);
 
-        if (!isset($old[$start])) {
-            $buffer = $this->getDiffBufferElementNew($diff, $buffer, $start);
-            ++$start;
+        if ($this->mode === self::MODE_CHUNK) {
+            $this->writeDiffChunked(
+                $buffer,
+                $diff,
+                $this->checkIfDiffInOld($diff)
+            );
+        } elseif ($this->mode === self::MODE_FULL) {
+            $this->writeDiffFull($buffer, $diff);
+        } else { //if ($this->mode === self::MODE_CHANGED_ONLY) {
+            $this->writeDiffChangedOnly($buffer, $diff);
         }
 
-        for ($i = $start; $i < $end; $i++) {
-            if (isset($old[$i])) {
-                $i      = $old[$i];
-                $buffer = $this->getDiffBufferElementNew($diff, $buffer, $i);
-            } else {
-                $buffer = $this->getDiffBufferElement($diff, $buffer, $i);
+        $diff = \stream_get_contents($buffer, -1, 0);
+        \fclose($buffer);
+
+        return $diff;
+    }
+
+    // `old` is an array with key => value pairs . Each pair represents a start and end index of `diff`
+    // of a list of elements all containing `same` (0) entries.
+    private function writeDiffChunked($output, array $diff, array $old)
+    {
+        $upperLimit = \count($diff);
+
+        if (!\count($old)) {
+            // no common parts, i.e. one diff of one chunk
+            // do not add lines from the end that do not contain changes, but keep the last same for context
+            while (isset($diff[$upperLimit - 2]) && 0 === $diff[$upperLimit - 2][1]) {
+                --$upperLimit;
+            }
+
+            list($fromRange, $toRange) = $this->getChunkRange($diff, 0, $upperLimit);
+            $this->writeChunk($output, $diff, 0, $upperLimit, 0, $fromRange, 0, $toRange);
+
+            return;
+        }
+
+        \reset($old);
+        $start     = 0;
+        $fromStart = 0;
+        $toStart   = 0;
+
+        // iterate the diff, go from chunk to chunk skipping same chunk of lines between those
+        do {
+            $end = \key($old);
+            if (0 !== $end) {
+                list($fromRange, $toRange) = $this->getChunkRange($diff, $start, $end);
+                $this->writeChunk($output, $diff, $start, $end, $fromStart, $fromRange, $toStart, $toRange);
+
+                // correct start of diff with the range covered
+                $fromStart += $fromRange;
+                $toStart += $toRange;
+            }
+
+            // update start with the `old` (i.e. not modified) range we are about to skip
+            // so from this 'end' till the next 'start'
+            $start = \current($old);
+
+            $fromStart += ($start - $end) + 1;
+            $toStart += ($start - $end) + 1;
+
+            ++$start;
+        } while (false !== \next($old));
+
+        // do not add lines from the end that do not contain changes, but keep the last same for context
+        while (isset($diff[$upperLimit - 2]) && 0 === $diff[$upperLimit - 2][1]) {
+            --$upperLimit;
+        }
+
+        // create a chunk till the end if needed
+        if ($start < $upperLimit) {
+            list($fromRange, $toRange) = $this->getChunkRange($diff, $start, $upperLimit);
+            $this->writeChunk($output, $diff, $start, $upperLimit, $fromStart, $fromRange, $toStart, $toRange);
+        } // else { not possible with the current duff builder, however should not be an issue here }
+    }
+
+    private function writeChunk(
+        $output,
+        array $diff,
+        int $diffStartIndex,
+        int $diffEndIndex,
+        int $fromStart,
+        int $fromRange,
+        int $toStart,
+        int $toRange
+    ) {
+        \fwrite($output, '@@ -' . (1 + $fromStart));
+        if ($fromRange > 1) {
+            \fwrite($output, ',' . $fromRange);
+        }
+
+        \fwrite($output, ' +' . (1 + $toStart));
+        if ($toRange > 1) {
+            \fwrite($output, ',' . $toRange);
+        }
+
+        \fwrite($output, " @@\n");
+
+        for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
+            if ($diff[$i][1] === 1 /* ADDED */) {
+                \fwrite($output, '+' . $diff[$i][0] . "\n");
+            } elseif ($diff[$i][1] === 2 /* REMOVED */) {
+                \fwrite($output, '-' . $diff[$i][0] . "\n");
+            } else { /* Not changed (old) */
+                \fwrite($output, ' ' . $diff[$i][0] . "\n");
+            }
+        }
+    }
+
+    private function getChunkRange(array $diff, int $diffStartIndex, int $diffEndIndex): array
+    {
+        $toRange   = 0;
+        $fromRange = 0;
+
+        for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
+            if ($diff[$i][1] === 1) { // added
+                ++$toRange;
+            } elseif ($diff[$i][1] === 2) { // removed
+                ++$fromRange;
+            } else { // { ($diff[$i][1] === 0) { // same }
+                ++$fromRange;
+                ++$toRange;
             }
         }
 
-        return $buffer;
+        return [$fromRange, $toRange];
     }
 
-    /**
-     * Gets individual buffer element.
-     *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
-     */
-    private function getDiffBufferElement(array $diff, $buffer, $diffIndex)
+    private function writeDiffFull($output, array $diff)
     {
-        if ($diff[$diffIndex][1] === 1 /* ADDED */) {
-            $buffer .= '+' . $diff[$diffIndex][0] . "\n";
-        } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
-            $buffer .= '-' . $diff[$diffIndex][0] . "\n";
-        } elseif ($this->showNonDiffLines === true) {
-            $buffer .= ' ' . $diff[$diffIndex][0] . "\n";
+        $toRange   = 0;
+        $fromRange = 0;
+
+        foreach ($diff as $diffEntry) {
+            if ($diffEntry[1] === 1) { // added
+                ++$toRange;
+            } elseif ($diffEntry[1] === 2) { // removed
+                ++$fromRange;
+            } else { // { ($diff[1] === 0) { // same }
+                ++$fromRange;
+                ++$toRange;
+            }
         }
 
-        return $buffer;
+        \fwrite($output, '@@ -1');
+        if ($fromRange > 1) {
+            \fwrite($output, ',' . $fromRange);
+        }
+
+        \fwrite($output, ' +1');
+        if ($toRange > 1) {
+            \fwrite($output, ',' . $toRange);
+        }
+
+        \fwrite($output, " @@\n");
+
+        foreach ($diff as $diffEntry) {
+            if ($diffEntry[1] === 1 /* ADDED */) {
+                \fwrite($output, '+' . $diffEntry[0] . "\n");
+            } elseif ($diffEntry[1] === 2 /* REMOVED */) {
+                \fwrite($output, '-' . $diffEntry[0] . "\n");
+            } else { /* Not changed (old) */
+                \fwrite($output, ' ' . $diffEntry[0] . "\n");
+            }
+        }
     }
 
-    /**
-     * Gets individual buffer element with opening.
-     *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
-     */
-    private function getDiffBufferElementNew(array $diff, $buffer, $diffIndex)
+    private function writeDiffChangedOnly($output, array $diff)
     {
-        if ($this->showNonDiffLines === true) {
-            $buffer .= "@@ @@\n";
+        \fwrite($output, "@@ @@\n");
+        foreach ($diff as $diffEntry) {
+            if ($diffEntry[1] === 1 /* ADDED */) {
+                \fwrite($output, '+' . $diffEntry[0] . "\n");
+            } elseif ($diffEntry[1] === 2 /* REMOVED */) {
+                \fwrite($output, '-' . $diffEntry[0] . "\n");
+            }
         }
-
-        return $this->getDiffBufferElement($diff, $buffer, $diffIndex);
     }
 
     /**
@@ -195,9 +334,11 @@ class Differ
      * @param array|string                       $to
      * @param LongestCommonSubsequenceCalculator $lcs
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
-    public function diffToArray($from, $to, LongestCommonSubsequenceCalculator $lcs = null)
+    public function diffToArray($from, $to, LongestCommonSubsequenceCalculator $lcs = null): array
     {
         if (\is_string($from)) {
             $fromMatches = $this->getNewLineMatches($from);
@@ -233,6 +374,7 @@ class Differ
             ];
         }
 
+        /** @var array $start */
         foreach ($start as $token) {
             $diff[] = [$token, 0 /* OLD */];
         }
@@ -263,6 +405,7 @@ class Differ
             $diff[] = [$token, 1 /* ADDED */];
         }
 
+        /** @var array $end */
         foreach ($end as $token) {
             $diff[] = [$token, 0 /* OLD */];
         }
@@ -277,7 +420,7 @@ class Differ
      *
      * @return array
      */
-    private function getNewLineMatches($string)
+    private function getNewLineMatches(string $string): array
     {
         \preg_match_all('(\r\n|\r|\n)', $string, $stringMatches);
 
@@ -291,7 +434,7 @@ class Differ
      *
      * @return array
      */
-    private function splitStringByLines($input)
+    private function splitStringByLines(string $input): array
     {
         return \preg_split('(\r\n|\r|\n)', $input);
     }
@@ -302,7 +445,7 @@ class Differ
      *
      * @return LongestCommonSubsequenceCalculator
      */
-    private function selectLcsImplementation(array $from, array $to)
+    private function selectLcsImplementation(array $from, array $to): LongestCommonSubsequenceCalculator
     {
         // We do not want to use the time-efficient implementation if its memory
         // footprint will probably exceed this value. Note that the footprint
@@ -329,7 +472,7 @@ class Differ
     {
         $itemSize = PHP_INT_SIZE === 4 ? 76 : 144;
 
-        return $itemSize * \pow(\min(\count($from), \count($to)), 2);
+        return $itemSize * \min(\count($from), \count($to)) ** 2;
     }
 
     /**
@@ -340,11 +483,13 @@ class Differ
      *
      * @return bool
      */
-    private function detectUnmatchedLineEndings(array $fromMatches, array $toMatches)
+    private function detectUnmatchedLineEndings(array $fromMatches, array $toMatches): bool
     {
-        return isset($fromMatches[0], $toMatches[0]) &&
-               \count($fromMatches[0]) === \count($toMatches[0]) &&
-               $fromMatches[0] !== $toMatches[0];
+        return
+            isset($fromMatches[0], $toMatches[0])
+            && \count($fromMatches[0]) === \count($toMatches[0])
+            && $fromMatches[0] !== $toMatches[0]
+        ;
     }
 
     /**
@@ -353,7 +498,7 @@ class Differ
      *
      * @return array
      */
-    private static function getArrayDiffParted(array &$from, array &$to)
+    private static function getArrayDiffParted(array &$from, array &$to): array
     {
         $start = [];
         $end   = [];

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -20,5 +20,5 @@ interface LongestCommonSubsequenceCalculator
      *
      * @return array
      */
-    public function calculate(array $from, array $to);
+    public function calculate(array $from, array $to): array;
 }

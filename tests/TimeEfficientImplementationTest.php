@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of sebastian/diff.
  *
@@ -13,7 +13,7 @@ namespace SebastianBergmann\Diff;
 /**
  * @covers SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
-class TimeEfficientImplementationTest extends LongestCommonSubsequenceTest
+final class TimeEfficientImplementationTest extends LongestCommonSubsequenceTest
 {
     protected function createImplementation()
     {
