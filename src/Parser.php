@@ -13,7 +13,7 @@ namespace SebastianBergmann\Diff;
 /**
  * Unified diff parser.
  */
-class Parser
+final class Parser
 {
     /**
      * @param string $string

@@ -18,8 +18,10 @@ use PHPUnit\Framework\TestCase;
  * @uses SebastianBergmann\Diff\Chunk
  * @uses SebastianBergmann\Diff\Diff
  * @uses SebastianBergmann\Diff\Line
+ *
+ * @internal
  */
-class ParserTest extends TestCase
+final class ParserTest extends TestCase
 {
     /**
      * @var Parser

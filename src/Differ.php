@@ -13,7 +13,7 @@ namespace SebastianBergmann\Diff;
 /**
  * Diff implementation.
  */
-class Differ
+final class Differ
 {
     /**
      * @var string

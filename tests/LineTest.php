@@ -14,8 +14,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers SebastianBergmann\Diff\Line
+ *
+ * @interal
  */
-class LineTest extends TestCase
+final class LineTest extends TestCase
 {
     /**
      * @var Line

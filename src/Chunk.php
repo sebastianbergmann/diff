@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\Diff;
 
-class Chunk
+final class Chunk
 {
     /**
      * @var int

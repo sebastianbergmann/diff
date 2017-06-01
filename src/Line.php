@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\Diff;
 
-class Line
+final class Line
 {
     const ADDED     = 1;
     const REMOVED   = 2;
