@@ -24,7 +24,7 @@ class Parser
     {
         $lines = \preg_split('(\r\n|\r|\n)', $string);
 
-        if (!empty($lines) && $lines[\count($lines) - 1] == '') {
+        if (!empty($lines) && $lines[\count($lines) - 1] === '') {
             \array_pop($lines);
         }
 
@@ -76,10 +76,10 @@ class Parser
         foreach ($lines as $line) {
             if (\preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {
                 $chunk = new Chunk(
-                    $match['start'],
-                    isset($match['startrange']) ? \max(1, $match['startrange']) : 1,
-                    $match['end'],
-                    isset($match['endrange']) ? \max(1, $match['endrange']) : 1
+                    (int) $match['start'],
+                    isset($match['startrange']) ? \max(1, (int) $match['startrange']) : 1,
+                    (int) $match['end'],
+                    isset($match['endrange']) ? \max(1, (int) $match['endrange']) : 1
                 );
 
                 $chunks[]  = $chunk;
