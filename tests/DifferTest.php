@@ -410,4 +410,16 @@ EOL;
 
         $differ->diffToArray('', new \stdClass);
     }
+
+    public function testSettingFluent()
+    {
+        $diff = $this->differ->setHeader('testSettingFluent');
+        $this->assertSame($this->differ, $diff);
+
+        $reflection = new \ReflectionObject($this->differ);
+
+        $reflectionProperty = $reflection->getProperty('header');
+        $reflectionProperty->setAccessible(true);
+        $this->assertSame('testSettingFluent', $reflectionProperty->getValue($this->differ));
+    }
 }

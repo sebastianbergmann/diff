@@ -29,10 +29,17 @@ class Differ
      * @param string $header
      * @param bool   $showNonDiffLines
      */
-    public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
+    public function __construct(string $header = "--- Original\n+++ New\n", $showNonDiffLines = true)
     {
-        $this->header           = $header;
+        $this->setHeader($header);
         $this->showNonDiffLines = $showNonDiffLines;
+    }
+
+    public function setHeader(string $header): Differ
+    {
+        $this->header = $header;
+
+        return $this;
     }
 
     /**
