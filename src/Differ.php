@@ -329,7 +329,7 @@ class Differ
     {
         $itemSize = PHP_INT_SIZE === 4 ? 76 : 144;
 
-        return $itemSize * \pow(\min(\count($from), \count($to)), 2);
+        return $itemSize * \min(\count($from), \count($to)) ** 2;
     }
 
     /**
