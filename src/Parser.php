@@ -20,7 +20,7 @@ final class Parser
      *
      * @return Diff[]
      */
-    public function parse($string)
+    public function parse(string $string): array
     {
         $lines = \preg_split('(\r\n|\r|\n)', $string);
 
@@ -64,10 +64,6 @@ final class Parser
         return $diffs;
     }
 
-    /**
-     * @param Diff  $diff
-     * @param array $lines
-     */
     private function parseFileDiff(Diff $diff, array $lines)
     {
         $chunks = [];

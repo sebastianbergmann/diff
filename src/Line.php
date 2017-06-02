@@ -26,28 +26,18 @@ final class Line
      */
     private $content;
 
-    /**
-     * @param int    $type
-     * @param string $content
-     */
-    public function __construct($type = self::UNCHANGED, $content = '')
+    public function __construct(int $type = self::UNCHANGED, string $content = '')
     {
         $this->type    = $type;
         $this->content = $content;
     }
 
-    /**
-     * @return string
-     */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @return int
-     */
-    public function getType()
+    public function getType(): int
     {
         return $this->type;
     }

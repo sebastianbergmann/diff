@@ -32,25 +32,19 @@ final class Diff
      * @param string  $to
      * @param Chunk[] $chunks
      */
-    public function __construct($from, $to, array $chunks = [])
+    public function __construct(string $from, string $to, array $chunks = [])
     {
         $this->from   = $from;
         $this->to     = $to;
         $this->chunks = $chunks;
     }
 
-    /**
-     * @return string
-     */
-    public function getFrom()
+    public function getFrom(): string
     {
         return $this->from;
     }
 
-    /**
-     * @return string
-     */
-    public function getTo()
+    public function getTo(): string
     {
         return $this->to;
     }
@@ -58,7 +52,7 @@ final class Diff
     /**
      * @return Chunk[]
      */
-    public function getChunks()
+    public function getChunks(): array
     {
         return $this->chunks;
     }

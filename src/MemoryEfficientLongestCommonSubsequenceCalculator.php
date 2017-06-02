@@ -13,14 +13,9 @@ namespace SebastianBergmann\Diff;
 final class MemoryEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
 {
     /**
-     * Calculates the longest common subsequence of two arrays.
-     *
-     * @param array $from
-     * @param array $to
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function calculate(array $from, array $to)
+    public function calculate(array $from, array $to): array
     {
         $cFrom = \count($from);
         $cTo   = \count($to);
@@ -63,13 +58,7 @@ final class MemoryEfficientLongestCommonSubsequenceCalculator implements Longest
         );
     }
 
-    /**
-     * @param array $from
-     * @param array $to
-     *
-     * @return array
-     */
-    private function length(array $from, array $to)
+    private function length(array $from, array $to): array
     {
         $current = \array_fill(0, \count($to) + 1, 0);
         $cFrom   = \count($from);

@@ -20,5 +20,5 @@ interface LongestCommonSubsequenceCalculator
      *
      * @return array
      */
-    public function calculate(array $from, array $to);
+    public function calculate(array $from, array $to): array;
 }
