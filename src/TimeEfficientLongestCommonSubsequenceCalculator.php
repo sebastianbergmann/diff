@@ -13,14 +13,9 @@ namespace SebastianBergmann\Diff;
 final class TimeEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
 {
     /**
-     * Calculates the longest common subsequence of two arrays.
-     *
-     * @param array $from
-     * @param array $to
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function calculate(array $from, array $to)
+    public function calculate(array $from, array $to): array
     {
         $common     = [];
         $fromLength = \count($from);

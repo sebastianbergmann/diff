@@ -25,11 +25,7 @@ final class Differ
      */
     private $showNonDiffLines;
 
-    /**
-     * @param string $header
-     * @param bool   $showNonDiffLines
-     */
-    public function __construct($header = "--- Original\n+++ New\n", $showNonDiffLines = true)
+    public function __construct(string $header = "--- Original\n+++ New\n", bool $showNonDiffLines = true)
     {
         $this->header           = $header;
         $this->showNonDiffLines = $showNonDiffLines;
@@ -38,13 +34,13 @@ final class Differ
     /**
      * Returns the diff between two arrays or strings as string.
      *
-     * @param array|string                       $from
-     * @param array|string                       $to
-     * @param LongestCommonSubsequenceCalculator $lcs
+     * @param array|string                            $from
+     * @param array|string                            $to
+     * @param LongestCommonSubsequenceCalculator|null $lcs
      *
      * @return string
      */
-    public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null)
+    public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null): string
     {
         $from  = $this->validateDiffInput($from);
         $to    = $this->validateDiffInput($to);
@@ -63,7 +59,7 @@ final class Differ
      *
      * @return string
      */
-    private function validateDiffInput($input)
+    private function validateDiffInput($input): string
     {
         if (!\is_array($input) && !\is_string($input)) {
             return (string) $input;
@@ -80,7 +76,7 @@ final class Differ
      *
      * @return array
      */
-    private function checkIfDiffInOld(array $diff)
+    private function checkIfDiffInOld(array $diff): array
     {
         $inOld = false;
         $i     = 0;
@@ -115,7 +111,7 @@ final class Differ
      *
      * @return string
      */
-    private function getBuffer(array $diff, array $old, $start, $end)
+    private function getBuffer(array $diff, array $old, int $start, int $end): string
     {
         $buffer = $this->header;
 
@@ -145,7 +141,7 @@ final class Differ
      *
      * @return string
      */
-    private function getDiffBufferElement(array $diff, $buffer, $diffIndex)
+    private function getDiffBufferElement(array $diff, string $buffer, int $diffIndex): string
     {
         if ($diff[$diffIndex][1] === 1 /* ADDED */) {
             $buffer .= '+' . $diff[$diffIndex][0] . "\n";
@@ -167,7 +163,7 @@ final class Differ
      *
      * @return string
      */
-    private function getDiffBufferElementNew(array $diff, $buffer, $diffIndex)
+    private function getDiffBufferElementNew(array $diff, string $buffer, int $diffIndex): string
     {
         if ($this->showNonDiffLines === true) {
             $buffer .= "@@ @@\n";
@@ -193,7 +189,7 @@ final class Differ
      *
      * @return array
      */
-    public function diffToArray($from, $to, LongestCommonSubsequenceCalculator $lcs = null)
+    public function diffToArray($from, $to, LongestCommonSubsequenceCalculator $lcs = null): array
     {
         if (\is_string($from)) {
             $fromMatches = $this->getNewLineMatches($from);
@@ -273,7 +269,7 @@ final class Differ
      *
      * @return array
      */
-    private function getNewLineMatches($string)
+    private function getNewLineMatches(string $string): array
     {
         \preg_match_all('(\r\n|\r|\n)', $string, $stringMatches);
 
@@ -287,7 +283,7 @@ final class Differ
      *
      * @return array
      */
-    private function splitStringByLines($input)
+    private function splitStringByLines(string $input): array
     {
         return \preg_split('(\r\n|\r|\n)', $input);
     }
@@ -298,7 +294,7 @@ final class Differ
      *
      * @return LongestCommonSubsequenceCalculator
      */
-    private function selectLcsImplementation(array $from, array $to)
+    private function selectLcsImplementation(array $from, array $to): LongestCommonSubsequenceCalculator
     {
         // We do not want to use the time-efficient implementation if its memory
         // footprint will probably exceed this value. Note that the footprint
@@ -336,20 +332,14 @@ final class Differ
      *
      * @return bool
      */
-    private function detectUnmatchedLineEndings(array $fromMatches, array $toMatches)
+    private function detectUnmatchedLineEndings(array $fromMatches, array $toMatches): bool
     {
         return isset($fromMatches[0], $toMatches[0]) &&
                \count($fromMatches[0]) === \count($toMatches[0]) &&
                $fromMatches[0] !== $toMatches[0];
     }
 
-    /**
-     * @param array $from
-     * @param array $to
-     *
-     * @return array
-     */
-    private static function getArrayDiffParted(array &$from, array &$to)
+    private static function getArrayDiffParted(array &$from, array &$to): array
     {
         $start = [];
         $end   = [];
