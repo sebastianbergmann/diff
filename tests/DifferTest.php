@@ -87,7 +87,7 @@ final class DifferTest extends TestCase
         $differ = new Differ('CUSTOM HEADER');
 
         $this->assertSame(
-            "CUSTOM HEADER@@ @@\n-a\n+b\n",
+            "CUSTOM HEADER@@ -1 +1 @@\n-a\n+b\n",
             $differ->diff('a', 'b')
         );
     }
@@ -95,7 +95,7 @@ final class DifferTest extends TestCase
     public function testTypesOtherThanArrayAndStringCanBePassed()
     {
         $this->assertSame(
-            "--- Original\n+++ New\n@@ @@\n-1\n+2\n",
+            "--- Original\n+++ New\n@@ -1 +1 @@\n-1\n+2\n",
             $this->differ->diff(1, 2)
         );
     }
@@ -260,47 +260,47 @@ final class DifferTest extends TestCase
     {
         return [
             [
-                "--- Original\n+++ New\n@@ @@\n-a\n+b\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-a\n+b\n",
                 'a',
                 'b'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-ba\n+bc\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-ba\n+bc\n",
                 'ba',
                 'bc'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-ab\n+cb\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-ab\n+cb\n",
                 'ab',
                 'cb'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-abc\n+adc\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-abc\n+adc\n",
                 'abc',
                 'adc'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-ab\n+abc\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-ab\n+abc\n",
                 'ab',
                 'abc'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-bc\n+abc\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-bc\n+abc\n",
                 'bc',
                 'abc'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-abc\n+abbc\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-abc\n+abbc\n",
                 'abc',
                 'abbc'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-abcdde\n+abcde\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-abcdde\n+abcde\n",
                 'abcdde',
                 'abcde'
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-A\n+A1\n B\n",
+                "--- Original\n+++ New\n@@ -1,2 +1,2 @@\n-A\n+A1\n B\n",
                 "A\nB",
                 "A1\nB",
             ],
@@ -308,12 +308,11 @@ final class DifferTest extends TestCase
                 <<<EOF
 --- Original
 +++ New
-@@ @@
+@@ -1,2 +1,2 @@
  a
 -b
 +p
-@@ @@
- i
+@@ -10,2 +10,2 @@
 -j
 +w
  k
@@ -348,7 +347,7 @@ EOL;
      */
     public function testDiffDoNotShowNonDiffLines(string $expected, string $from, string $to)
     {
-        $differ = new Differ('', false);
+        $differ = new Differ('', Differ::MODE_CHANGED_ONLY);
         $this->assertSame($expected, $differ->diff($from, $to));
     }
 
@@ -380,5 +379,321 @@ EOL;
         $this->expectExceptionMessageRegExp('#^"to" must be an array or string\.$#');
 
         $this->differ->diffToArray('', new \stdClass);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $from
+     * @param string $to
+     * @dataProvider textForDiffFull
+     */
+    public function testDiffFull($expected, $from, $to)
+    {
+        $differ = new Differ("FULL TEST\n", Differ::MODE_FULL);
+        $this->assertSame($expected, $differ->diff($from, $to));
+    }
+
+    public function textForDiffFull(): array
+    {
+        return [
+            [
+                'FULL TEST
+@@ -1,5 +1,5 @@
+-Z
++A
+ ' . '
+ ' . '
+ B
+ C
+',
+                "Z\n\n\nB\nC",
+                "A\n\n\nB\nC",
+            ],
+            [
+                'FULL TEST
+@@ -1,7 +1,4 @@
+ X
+ ' . '
+ ' . '
+ Y
+-
+-
+-Z
+',
+                "X\n\n\nY\n\n\nZ",
+                "X\n\n\nY",
+            ]
+        ];
+    }
+
+    public function testSetInvalidMode()
+    {
+        $this->expectException('\InvalidArgumentException');
+        $this->expectExceptionMessageRegExp('#^Mode must be any of MODE_CHUNK \(1\) MODE_FULL \(2\) MODE_CHANGED_ONLY \(3\) got -1\.$#');
+
+        new Differ('', -1);
+    }
+
+    /**
+     * @param string $expected
+     * @param string $from
+     * @param string $to
+     * @dataProvider provideDiffWithLineNumbers
+     */
+    public function testDiffWithLineNumbers($expected, $from, $to)
+    {
+        $this->assertSame($expected, $this->differ->diff($from, $to));
+    }
+
+    public function provideDiffWithLineNumbers(): array
+    {
+        return [
+            [
+                '--- Original
++++ New
+@@ -1,2 +1,2 @@
+-b
++a
+ ' . '
+',
+                "b\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+                "a\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            ],
+            'same' => [
+                '--- Original
++++ New
+@@ -1 +1 @@
+ AT
+',
+                "AT\n",
+                "AT\n",
+            ],
+            'diff line 1' => [
+                '--- Original
++++ New
+@@ -1 +1 @@
+-AA
++BA
+',
+                'AA',
+                'BA',
+            ],
+            'diff line +1' => [
+                '--- Original
++++ New
+@@ -1 +1,2 @@
+-AZ
++
++B
+',
+                'AZ',
+                "\nB",
+            ],
+            'diff line -1' => [
+                '--- Original
++++ New
+@@ -1,2 +1 @@
+-
+-AF
++B
+',
+                "\nAF",
+                'B',
+            ],
+            'diff line @1' => [
+                '--- Original
++++ New
+@@ -1,2 +1,2 @@
+ ' . '
+-AG
++B
+',
+                "\nAG",
+                "\nB",
+            ],
+            'same multiple lines' => [
+                '--- Original
++++ New
+@@ -1,4 +1,4 @@
+ ' . '
+ ' . '
+-V
++B
+ C213
+'
+
+                ,
+                "\n\nV\nC213",
+                "\n\nB\nC213",
+            ],
+            'diff last line' => [
+                '--- Original
++++ New
+@@ -8 +8 @@
+-E
++B
+',
+                "A\n\n\n\n\n\n\nE",
+                "A\n\n\n\n\n\n\nB",
+            ],
+            'diff line middle' => [
+                '--- Original
++++ New
+@@ -8,2 +8,2 @@
+-X
++Z
+ 
+',
+                "A\n\n\n\n\n\n\nX\n\n\n\n\n\n\nAY",
+                "A\n\n\n\n\n\n\nZ\n\n\n\n\n\n\nAY",
+            ],
+            'diff last line II' => [
+                '--- Original
++++ New
+@@ -15 +15 @@
+-A
++B
+',
+                "A\n\n\n\n\n\n\nA\n\n\n\n\n\n\nA",
+                "A\n\n\n\n\n\n\nA\n\n\n\n\n\n\nB",
+            ],
+            [
+                '--- Original
++++ New
+@@ -1,8 +1,8 @@
+ A
+-B
++B1
+ D
+ E
+ EE
+ F
+-G
++G1
+ H
+',
+                "A\nB\nD\nE\nEE\nF\nG\nH",
+                "A\nB1\nD\nE\nEE\nF\nG1\nH",
+            ],
+            [
+                '--- Original
++++ New
+@@ -1 +1,2 @@
+ Z
++
+@@ -10,2 +11,2 @@
+-i
++x
+ j
+',
+                'Z
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j',
+                'Z
+
+a
+b
+c
+d
+e
+f
+g
+h
+x
+j'
+            ],
+            [
+                '--- Original
++++ New
+@@ -1,6 +1,4 @@
+-
+-a
++b
+ A
+-a
+-
++b
+ ' . '
+',
+                "\na\nA\na\n\n\nA",
+                "b\nA\nb\n\nA"
+            ],
+            [
+                '--- Original
++++ New
+@@ -1,3 +1 @@
+-
+-
+ A
+'
+                ,
+                "\n\nA\n1",
+                "A\n1",
+            ],
+            [
+                <<<EOF
+--- Original
++++ New
+@@ -1,4 +1,2 @@
+-
+-
+ a
+-b
++p
+@@ -12,2 +10,2 @@
+-j
++w
+ k
+
+EOF
+                ,
+                "\n\na\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk",
+                "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk",
+            ],
+            [
+                '--- Original
++++ New
+@@ -11,2 +11,2 @@
+-A
++C
+ ' . '
+',
+                "E\n\n\n\n\nB\n\n\n\n\nA\n\n\n\n\n\n\n\n\nD1",
+                "E\n\n\n\n\nB\n\n\n\n\nC\n\n\n\n\n\n\n\n\nD1",
+            ],
+            [
+                '--- Original
++++ New
+@@ -8 +8 @@
+-Z
++U
+@@ -15 +15 @@
+-X
++V
+@@ -22 +22 @@
+-Y
++W
+@@ -29 +29 @@
+-W
++X
+@@ -36 +36 @@
+-V
++Y
+@@ -43 +43 @@
+-U
++Z
+',
+                "\n\n\n\n\n\n\nZ\n\n\n\n\n\n\nX\n\n\n\n\n\n\nY\n\n\n\n\n\n\nW\n\n\n\n\n\n\nV\n\n\n\n\n\n\nU",
+                "\n\n\n\n\n\n\nU\n\n\n\n\n\n\nV\n\n\n\n\n\n\nW\n\n\n\n\n\n\nX\n\n\n\n\n\n\nY\n\n\n\n\n\n\nZ"
+            ],
+        ];
     }
 }
