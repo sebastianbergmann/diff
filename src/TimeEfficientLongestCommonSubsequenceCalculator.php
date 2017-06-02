@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\Diff;
 
-class TimeEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
+final class TimeEfficientLongestCommonSubsequenceCalculator implements LongestCommonSubsequenceCalculator
 {
     /**
      * Calculates the longest common subsequence of two arrays.
