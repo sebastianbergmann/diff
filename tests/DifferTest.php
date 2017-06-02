@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
  * @uses SebastianBergmann\Diff\Line
  * @uses SebastianBergmann\Diff\Parser
  */
-class DifferTest extends TestCase
+final class DifferTest extends TestCase
 {
     const REMOVED = 2;
     const ADDED   = 1;

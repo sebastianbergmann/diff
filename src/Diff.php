@@ -10,7 +10,7 @@
 
 namespace SebastianBergmann\Diff;
 
-class Diff
+final class Diff
 {
     /**
      * @var string
