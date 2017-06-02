@@ -16,6 +16,8 @@ use PHPUnit\Framework\TestCase;
  * @covers SebastianBergmann\Diff\Diff
  *
  * @uses SebastianBergmann\Diff\Chunk
+ *
+ * @internal
  */
 final class DiffTest extends TestCase
 {

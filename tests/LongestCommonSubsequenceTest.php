@@ -12,6 +12,11 @@ namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
 abstract class LongestCommonSubsequenceTest extends TestCase
 {
     /**

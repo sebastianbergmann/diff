@@ -14,8 +14,10 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers SebastianBergmann\Diff\Chunk
+ *
+ * @internal
  */
-class ChunkTest extends TestCase
+final class ChunkTest extends TestCase
 {
     /**
      * @var Chunk

@@ -12,8 +12,10 @@ namespace SebastianBergmann\Diff;
 
 /**
  * @covers SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ *
+ * @internal
  */
-class MemoryEfficientImplementationTest extends LongestCommonSubsequenceTest
+final class MemoryEfficientImplementationTest extends LongestCommonSubsequenceTest
 {
     protected function createImplementation()
     {
