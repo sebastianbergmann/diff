@@ -45,11 +45,8 @@ final class Differ
         $from  = $this->validateDiffInput($from);
         $to    = $this->validateDiffInput($to);
         $diff  = $this->diffToArray($from, $to, $lcs);
-        $old   = $this->checkIfDiffInOld($diff);
-        $start = isset($old[0]) ? $old[0] : 0;
-        $end   = \count($diff);
 
-        return $this->getBuffer($diff, $old, $start, $end);
+        return $this->getDiff($diff);
     }
 
     /**
@@ -69,14 +66,15 @@ final class Differ
     }
 
     /**
-     * Takes input of the diff array and returns the old array.
-     * Iterates through diff line by line,
+     * Takes input of the diff array and returns the common parts.
+     * Iterates through diff line by line.
      *
      * @param array $diff
+     * @param int   $lineThreshold
      *
      * @return array
      */
-    private function checkIfDiffInOld(array $diff): array
+    private function getCommonChunks(array $diff, int $lineThreshold = 5): array
     {
         $inOld = false;
         $i     = 0;
@@ -88,7 +86,7 @@ final class Differ
                     $inOld = $i;
                 }
             } elseif ($inOld !== false) {
-                if (($i - $inOld) > 5) {
+                if (($i - $inOld) > $lineThreshold) {
                     $old[$inOld] = $i - 1;
                 }
 
@@ -105,14 +103,15 @@ final class Differ
      * Generates buffer in string format, returning the patch.
      *
      * @param array $diff
-     * @param array $old
-     * @param int   $start
-     * @param int   $end
      *
      * @return string
      */
-    private function getBuffer(array $diff, array $old, int $start, int $end): string
+    private function getDiff(array $diff): string
     {
+        $old   = $this->getCommonChunks($diff, 5);
+        $start = isset($old[0]) ? $old[0] : 0;
+        $end   = \count($diff);
+
         $buffer = $this->header;
 
         if (!isset($old[$start])) {
