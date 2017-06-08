@@ -42,9 +42,9 @@ final class Differ
      */
     public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null): string
     {
-        $from  = $this->validateDiffInput($from);
-        $to    = $this->validateDiffInput($to);
-        $diff  = $this->diffToArray($from, $to, $lcs);
+        $from = $this->validateDiffInput($from);
+        $to   = $this->validateDiffInput($to);
+        $diff = $this->diffToArray($from, $to, $lcs);
 
         return $this->getDiff($diff);
     }
