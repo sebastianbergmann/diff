@@ -76,27 +76,35 @@ final class Differ
      */
     private function getCommonChunks(array $diff, int $lineThreshold = 5): array
     {
-        $inOld = false;
-        $i     = 0;
-        $old   = [];
+        $diffSize     = \count($diff);
+        $capturing    = false;
+        $chunkStart   = 0;
+        $chunkSize    = 0;
+        $commonChunks = [];
 
-        foreach ($diff as $line) {
-            if ($line[1] === 0 /* OLD */) {
-                if ($inOld === false) {
-                    $inOld = $i;
+        for ($i = 0; $i < $diffSize; ++$i) {
+            if ($diff[$i][1] === 0 /* OLD */) {
+                if ($capturing === false) {
+                    $capturing  = true;
+                    $chunkStart = $i;
+                    $chunkSize  = 0;
+                } else {
+                    ++$chunkSize;
                 }
-            } elseif ($inOld !== false) {
-                if (($i - $inOld) > $lineThreshold) {
-                    $old[$inOld] = $i - 1;
+            } elseif ($capturing !== false) {
+                if ($chunkSize >= $lineThreshold) {
+                    $commonChunks[$chunkStart] = $chunkStart + $chunkSize;
                 }
 
-                $inOld = false;
+                $capturing = false;
             }
-
-            ++$i;
         }
 
-        return $old;
+        if ($capturing !== false && $chunkSize >= $lineThreshold) {
+            $commonChunks[$chunkStart] = $chunkStart + $chunkSize;
+        }
+
+        return $commonChunks;
     }
 
     /**
@@ -111,6 +119,15 @@ final class Differ
         $old   = $this->getCommonChunks($diff, 5);
         $start = isset($old[0]) ? $old[0] : 0;
         $end   = \count($diff);
+
+        if (\count($old)) {
+            \end($old);
+            $tmp = \key($old);
+            \reset($old);
+            if ($old[$tmp] === $end - 1) {
+                $end = $tmp;
+            }
+        }
 
         $buffer = $this->header;
 
