@@ -10,25 +10,22 @@
 
 namespace SebastianBergmann\Diff;
 
+use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
+use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
+
 /**
  * Diff implementation.
  */
 final class Differ
 {
     /**
-     * @var string
+     * @var DiffOutputBuilderInterface
      */
-    private $header;
+    private $outputBuilder;
 
-    /**
-     * @var bool
-     */
-    private $showNonDiffLines;
-
-    public function __construct(string $header = "--- Original\n+++ New\n", bool $showNonDiffLines = true)
+    public function __construct(DiffOutputBuilderInterface $outputBuilder = null)
     {
-        $this->header           = $header;
-        $this->showNonDiffLines = $showNonDiffLines;
+        $this->outputBuilder = $outputBuilder ?? new UnifiedDiffOutputBuilder();
     }
 
     /**
@@ -46,7 +43,7 @@ final class Differ
         $to   = $this->validateDiffInput($to);
         $diff = $this->diffToArray($from, $to, $lcs);
 
-        return $this->getDiff($diff);
+        return $this->outputBuilder->getDiff($diff);
     }
 
     /**
@@ -63,129 +60,6 @@ final class Differ
         }
 
         return $input;
-    }
-
-    /**
-     * Takes input of the diff array and returns the common parts.
-     * Iterates through diff line by line.
-     *
-     * @param array $diff
-     * @param int   $lineThreshold
-     *
-     * @return array
-     */
-    private function getCommonChunks(array $diff, int $lineThreshold = 5): array
-    {
-        $diffSize     = \count($diff);
-        $capturing    = false;
-        $chunkStart   = 0;
-        $chunkSize    = 0;
-        $commonChunks = [];
-
-        for ($i = 0; $i < $diffSize; ++$i) {
-            if ($diff[$i][1] === 0 /* OLD */) {
-                if ($capturing === false) {
-                    $capturing  = true;
-                    $chunkStart = $i;
-                    $chunkSize  = 0;
-                } else {
-                    ++$chunkSize;
-                }
-            } elseif ($capturing !== false) {
-                if ($chunkSize >= $lineThreshold) {
-                    $commonChunks[$chunkStart] = $chunkStart + $chunkSize;
-                }
-
-                $capturing = false;
-            }
-        }
-
-        if ($capturing !== false && $chunkSize >= $lineThreshold) {
-            $commonChunks[$chunkStart] = $chunkStart + $chunkSize;
-        }
-
-        return $commonChunks;
-    }
-
-    /**
-     * Generates buffer in string format, returning the patch.
-     *
-     * @param array $diff
-     *
-     * @return string
-     */
-    private function getDiff(array $diff): string
-    {
-        $old   = $this->getCommonChunks($diff, 5);
-        $start = isset($old[0]) ? $old[0] : 0;
-        $end   = \count($diff);
-
-        if (\count($old)) {
-            \end($old);
-            $tmp = \key($old);
-            \reset($old);
-            if ($old[$tmp] === $end - 1) {
-                $end = $tmp;
-            }
-        }
-
-        $buffer = $this->header;
-
-        if (!isset($old[$start])) {
-            $buffer = $this->getDiffBufferElementNew($diff, $buffer, $start);
-            ++$start;
-        }
-
-        for ($i = $start; $i < $end; $i++) {
-            if (isset($old[$i])) {
-                $i      = $old[$i];
-                $buffer = $this->getDiffBufferElementNew($diff, $buffer, $i);
-            } else {
-                $buffer = $this->getDiffBufferElement($diff, $buffer, $i);
-            }
-        }
-
-        return $buffer;
-    }
-
-    /**
-     * Gets individual buffer element.
-     *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
-     */
-    private function getDiffBufferElement(array $diff, string $buffer, int $diffIndex): string
-    {
-        if ($diff[$diffIndex][1] === 1 /* ADDED */) {
-            $buffer .= '+' . $diff[$diffIndex][0] . "\n";
-        } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
-            $buffer .= '-' . $diff[$diffIndex][0] . "\n";
-        } elseif ($this->showNonDiffLines === true) {
-            $buffer .= ' ' . $diff[$diffIndex][0] . "\n";
-        }
-
-        return $buffer;
-    }
-
-    /**
-     * Gets individual buffer element with opening.
-     *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
-     */
-    private function getDiffBufferElementNew(array $diff, string $buffer, int $diffIndex): string
-    {
-        if ($this->showNonDiffLines === true) {
-            $buffer .= "@@ @@\n";
-        }
-
-        return $this->getDiffBufferElement($diff, $buffer, $diffIndex);
     }
 
     /**
