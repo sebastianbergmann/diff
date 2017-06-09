@@ -11,9 +11,15 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder;
+use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
+use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 /**
  * @covers SebastianBergmann\Diff\Differ
+ * @covers SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
+ * @covers SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder
+ * @covers SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
  *
  * @uses SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
  * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
@@ -84,7 +90,7 @@ final class DifferTest extends TestCase
 
     public function testCustomHeaderCanBeUsed()
     {
-        $differ = new Differ('CUSTOM HEADER');
+        $differ = new Differ(new UnifiedDiffOutputBuilder('CUSTOM HEADER'));
 
         $this->assertSame(
             "CUSTOM HEADER@@ @@\n-a\n+b\n",
@@ -361,7 +367,7 @@ EOL;
      */
     public function testDiffDoNotShowNonDiffLines(string $expected, string $from, string $to)
     {
-        $differ = new Differ('', false);
+        $differ = new Differ(new DiffOnlyOutputBuilder(''));
         $this->assertSame($expected, $differ->diff($from, $to));
     }
 
@@ -404,16 +410,22 @@ EOL;
      */
     public function testGetCommonChunks(array $expected, string $from, string $to, int $lineThreshold = 5)
     {
-        $method = (new \ReflectionObject($this->differ))->getMethod('getCommonChunks');
-        $method->setAccessible(true);
+        $output = new class extends AbstractChunkOutputBuilder {
+            public function getDiff(array $diff): string
+            {
+                return '';
+            }
 
-        $result = $method->invoke(
-            $this->differ,
-            $this->differ->diffToArray($from, $to),
-            $lineThreshold
+            public function getChunks(array $diff, $lineThreshold)
+            {
+                return $this->getCommonChunks($diff, $lineThreshold);
+            }
+        };
+
+        $this->assertSame(
+            $expected,
+            $output->getChunks($this->differ->diffToArray($from, $to), $lineThreshold)
         );
-
-        $this->assertSame($expected, $result);
     }
 
     public function provideGetCommonChunks(): array
