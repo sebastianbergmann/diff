@@ -111,7 +111,7 @@ final class Differ
         if ($this->detectUnmatchedLineEndings($fromMatches, $toMatches)) {
             $diff[] = [
                 '#Warning: Strings contain different line endings!',
-                0
+                3
             ];
         }
 

@@ -30,6 +30,7 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
  */
 final class DifferTest extends TestCase
 {
+    const WARNING = 3;
     const REMOVED = 2;
     const ADDED   = 1;
     const OLD     = 0;
@@ -61,7 +62,7 @@ final class DifferTest extends TestCase
      * @param string $to
      * @dataProvider textProvider
      */
-    public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation($expected, $from, $to)
+    public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(string $expected, string $from, string $to)
     {
         $this->assertSame($expected, $this->differ->diff($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
     }
@@ -88,14 +89,51 @@ final class DifferTest extends TestCase
         $this->assertSame($expected, $this->differ->diff($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
     }
 
-    public function testCustomHeaderCanBeUsed()
+    /**
+     * @param string $expected
+     * @param string $from
+     * @param string $to
+     * @param string $header
+     * @dataProvider headerProvider
+     */
+    public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header)
     {
-        $differ = new Differ(new UnifiedDiffOutputBuilder('CUSTOM HEADER'));
+        $differ = new Differ(new UnifiedDiffOutputBuilder($header));
 
         $this->assertSame(
-            "CUSTOM HEADER@@ @@\n-a\n+b\n",
-            $differ->diff('a', 'b')
+            $expected,
+            $differ->diff($from, $to)
         );
+    }
+
+    public function headerProvider()
+    {
+        return [
+            [
+                "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
+                'a',
+                'b',
+                'CUSTOM HEADER'
+            ],
+            [
+                "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
+                'a',
+                'b',
+                "CUSTOM HEADER\n"
+            ],
+            [
+                "CUSTOM HEADER\n\n@@ @@\n-a\n+b\n",
+                'a',
+                'b',
+                "CUSTOM HEADER\n\n"
+            ],
+            [
+                "@@ @@\n-a\n+b\n",
+                'a',
+                'b',
+                ''
+            ],
+        ];
     }
 
     public function testTypesOtherThanArrayAndStringCanBePassed()
@@ -245,7 +283,7 @@ final class DifferTest extends TestCase
                 [
                     [
                         '#Warning: Strings contain different line endings!',
-                        self::OLD,
+                        self::WARNING,
                     ],
                     [
                         '<?php',
@@ -363,11 +401,13 @@ EOL;
      * @param string $expected
      * @param string $from
      * @param string $to
+     * @param string $header
      * @dataProvider textForNoNonDiffLinesProvider
      */
-    public function testDiffDoNotShowNonDiffLines(string $expected, string $from, string $to)
+    public function testDiffDoNotShowNonDiffLines(string $expected, string $from, string $to, string $header = '')
     {
-        $differ = new Differ(new DiffOnlyOutputBuilder(''));
+        $differ = new Differ(new DiffOnlyOutputBuilder($header));
+
         $this->assertSame($expected, $differ->diff($from, $to));
     }
 
@@ -375,12 +415,34 @@ EOL;
     {
         return [
             [
-                '', 'a', 'a'
+                ' #Warning: Strings contain different line endings!
+-A
++B
+',
+                "A\r\n",
+                "B\n",
+            ],
+            [
+                '',
+                'a',
+                'a'
             ],
             [
                 "-A\n+C\n",
                 "A\n\n\nB",
                 "C\n\n\nB",
+            ],
+            [
+                "header\n",
+                'a',
+                'a',
+                'header'
+            ],
+            [
+                "header\n",
+                'a',
+                'a',
+                "header\n"
             ],
         ];
     }

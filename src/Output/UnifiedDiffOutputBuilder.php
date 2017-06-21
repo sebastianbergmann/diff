@@ -40,7 +40,13 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             }
         }
 
-        $buffer = $this->header;
+        $buffer = '';
+        if ('' !== $this->header) {
+            $buffer = $this->header;
+            if ("\n" !== \substr($this->header, -1, 1)) {
+                $buffer .= "\n";
+            }
+        }
 
         if (!isset($old[$start])) {
             $buffer = $this->getDiffBufferElementNew($diff, $buffer, $start);
@@ -88,7 +94,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             $buffer .= '+' . $diff[$diffIndex][0] . "\n";
         } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
             $buffer .= '-' . $diff[$diffIndex][0] . "\n";
-        } else {
+        } else { /* Not changed (OLD) 0 or Warning 3 */
             $buffer .= ' ' . $diff[$diffIndex][0] . "\n";
         }
 

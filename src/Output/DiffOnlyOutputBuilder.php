@@ -28,14 +28,22 @@ final class DiffOnlyOutputBuilder implements DiffOutputBuilderInterface
     public function getDiff(array $diff): string
     {
         $buffer = \fopen('php://memory', 'r+b');
-        \fwrite($buffer, $this->header);
+
+        if ('' !== $this->header) {
+            \fwrite($buffer, $this->header);
+            if ("\n" !== \substr($this->header, -1, 1)) {
+                \fwrite($buffer, "\n");
+            }
+        }
 
         foreach ($diff as $diffEntry) {
             if ($diffEntry[1] === 1 /* ADDED */) {
                 \fwrite($buffer, '+' . $diffEntry[0] . "\n");
             } elseif ($diffEntry[1] === 2 /* REMOVED */) {
                 \fwrite($buffer, '-' . $diffEntry[0] . "\n");
-            }
+            } elseif ($diffEntry[1] === 3 /* WARNING */) {
+                \fwrite($buffer, ' ' . $diffEntry[0] . "\n");
+            } // else { /* Not changed (old) 0 */
         }
 
         $diff = \stream_get_contents($buffer, -1, 0);
