@@ -27,7 +27,28 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
     public function getDiff(array $diff): string
     {
-        $old   = $this->getCommonChunks($diff, 5);
+        $buffer = \fopen('php://memory', 'r+b');
+
+        if ('' !== $this->header) {
+            \fwrite($buffer, $this->header);
+            if ("\n" !== \substr($this->header, -1, 1)) {
+                \fwrite($buffer, "\n");
+            }
+        }
+
+        $this->writeDiffChunked($buffer, $diff, $this->getCommonChunks($diff));
+
+        $diff = \stream_get_contents($buffer, -1, 0);
+
+        \fclose($buffer);
+
+        return $diff;
+    }
+
+    // `old` is an array with key => value pairs . Each pair represents a start and end index of `diff`
+    // of a list of elements all containing `same` (0) entries.
+    private function writeDiffChunked($output, array $diff, array $old)
+    {
         $start = isset($old[0]) ? $old[0] : 0;
         $end   = \count($diff);
 
@@ -40,64 +61,50 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             }
         }
 
-        $buffer = '';
-        if ('' !== $this->header) {
-            $buffer = $this->header;
-            if ("\n" !== \substr($this->header, -1, 1)) {
-                $buffer .= "\n";
-            }
-        }
-
         if (!isset($old[$start])) {
-            $buffer = $this->getDiffBufferElementNew($diff, $buffer, $start);
+            $this->writeDiffBufferElementNew($diff, $output, $start);
             ++$start;
         }
 
         for ($i = $start; $i < $end; $i++) {
             if (isset($old[$i])) {
-                $i      = $old[$i];
-                $buffer = $this->getDiffBufferElementNew($diff, $buffer, $i);
+                $i = $old[$i];
+                $this->writeDiffBufferElementNew($diff, $output, $i);
             } else {
-                $buffer = $this->getDiffBufferElement($diff, $buffer, $i);
+                $this->writeDiffBufferElement($diff, $output, $i);
             }
         }
-
-        return $buffer;
     }
 
     /**
      * Gets individual buffer element with opening.
      *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
+     * @param array    $diff
+     * @param resource $buffer
+     * @param int      $diffIndex
      */
-    private function getDiffBufferElementNew(array $diff, string $buffer, int $diffIndex): string
+    private function writeDiffBufferElementNew(array $diff, $buffer, int $diffIndex)
     {
-        return $this->getDiffBufferElement($diff, $buffer . "@@ @@\n", $diffIndex);
+        \fwrite($buffer, "@@ @@\n");
+
+        $this->writeDiffBufferElement($diff, $buffer, $diffIndex);
     }
 
     /**
      * Gets individual buffer element.
      *
-     * @param array  $diff
-     * @param string $buffer
-     * @param int    $diffIndex
-     *
-     * @return string
+     * @param array    $diff
+     * @param resource $buffer
+     * @param int      $diffIndex
      */
-    private function getDiffBufferElement(array $diff, string $buffer, int $diffIndex): string
+    private function writeDiffBufferElement(array $diff, $buffer, int $diffIndex)
     {
         if ($diff[$diffIndex][1] === 1 /* ADDED */) {
-            $buffer .= '+' . $diff[$diffIndex][0] . "\n";
+            \fwrite($buffer, '+' . $diff[$diffIndex][0] . "\n");
         } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
-            $buffer .= '-' . $diff[$diffIndex][0] . "\n";
+            \fwrite($buffer, '-' . $diff[$diffIndex][0] . "\n");
         } else { /* Not changed (OLD) 0 or Warning 3 */
-            $buffer .= ' ' . $diff[$diffIndex][0] . "\n";
+            \fwrite($buffer, ' ' . $diff[$diffIndex][0] . "\n");
         }
-
-        return $buffer;
     }
 }
