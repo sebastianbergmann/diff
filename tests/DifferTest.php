@@ -296,7 +296,25 @@ final class DifferTest extends TestCase
                 ],
                 "<?php\r\n",
                 "<?php\n",
-            ]
+            ],
+            'test line diff detection in array input' => [
+                [
+                    [
+                        "#Warning: Strings contain different line endings!\n",
+                        self::WARNING,
+                    ],
+                    [
+                        "<?php\r\n",
+                        self::REMOVED,
+                    ],
+                    [
+                        "<?php\n",
+                        self::ADDED,
+                    ],
+                ],
+                ["<?php\r\n"],
+                ["<?php\n"],
+            ],
         ];
     }
 
@@ -384,6 +402,11 @@ EOF
                 "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-<?php\r\n+<?php\n A\n",
                 "<?php\r\nA\n",
                 "<?php\nA\n",
+            ],
+            [
+                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-a\r\n+\n+c\r",
+                "a\r\n",
+                "\nc\r",
             ],
         ];
     }
@@ -611,7 +634,7 @@ EOL;
         $this->assertSame($expected, $method->invoke($this->differ, $input));
     }
 
-    public function provideSplitStringByLinesCases()
+    public function provideSplitStringByLinesCases(): array
     {
         return [
             [

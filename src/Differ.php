@@ -82,20 +82,14 @@ final class Differ
     public function diffToArray($from, $to, LongestCommonSubsequenceCalculator $lcs = null): array
     {
         if (\is_string($from)) {
-            $fromMatches = $this->getNewLineMatches($from);
-            $from        = $this->splitStringByLines($from);
-        } elseif (\is_array($from)) {
-            $fromMatches = [];
-        } else {
+            $from = $this->splitStringByLines($from);
+        } elseif (!\is_array($from)) {
             throw new \InvalidArgumentException('"from" must be an array or string.');
         }
 
         if (\is_string($to)) {
-            $toMatches = $this->getNewLineMatches($to);
-            $to        = $this->splitStringByLines($to);
-        } elseif (\is_array($to)) {
-            $toMatches = [];
-        } else {
+            $to = $this->splitStringByLines($to);
+        } elseif (!\is_array($to)) {
             throw new \InvalidArgumentException('"to" must be an array or string.');
         }
 
@@ -107,13 +101,6 @@ final class Differ
 
         $common = $lcs->calculate(\array_values($from), \array_values($to));
         $diff   = [];
-
-        if ($this->detectUnmatchedLineEndings($fromMatches, $toMatches)) {
-            $diff[] = [
-                "#Warning: Strings contain different line endings!\n",
-                3
-            ];
-        }
 
         foreach ($start as $token) {
             $diff[] = [$token, 0 /* OLD */];
@@ -149,21 +136,11 @@ final class Differ
             $diff[] = [$token, 0 /* OLD */];
         }
 
+        if ($this->detectUnmatchedLineEndings($diff)) {
+            \array_unshift($diff, ["#Warning: Strings contain different line endings!\n", 3]);
+        }
+
         return $diff;
-    }
-
-    /**
-     * Get new strings denoting new lines from a given string.
-     *
-     * @param string $string
-     *
-     * @return array
-     */
-    private function getNewLineMatches(string $string): array
-    {
-        \preg_match_all('(\r\n|\r|\n)', $string, $stringMatches);
-
-        return $stringMatches;
     }
 
     /**
@@ -215,18 +192,70 @@ final class Differ
     }
 
     /**
-     * Returns true if line ends don't match on fromMatches and toMatches.
+     * Returns true if line ends don't match in a diff.
      *
-     * @param array $fromMatches
-     * @param array $toMatches
+     * @param array $diff
      *
      * @return bool
      */
-    private function detectUnmatchedLineEndings(array $fromMatches, array $toMatches): bool
+    private function detectUnmatchedLineEndings(array $diff): bool
     {
-        return isset($fromMatches[0], $toMatches[0]) &&
-               \count($fromMatches[0]) === \count($toMatches[0]) &&
-               $fromMatches[0] !== $toMatches[0];
+        $newLineBreaks = ['' => true];
+        $oldLineBreaks = ['' => true];
+
+        foreach ($diff as $entry) {
+            if (0 === $entry[1]) { /* OLD */
+                $ln                 = $this->getLinebreak($entry[0]);
+                $oldLineBreaks[$ln] = true;
+                $newLineBreaks[$ln] = true;
+            } elseif (1 === $entry[1]) {  /* ADDED */
+                $newLineBreaks[$this->getLinebreak($entry[0])] = true;
+            } elseif (2 === $entry[1]) {  /* REMOVED */
+                $oldLineBreaks[$this->getLinebreak($entry[0])] = true;
+            }
+        }
+
+        // if either input or output is a single line without breaks than no warning should be raised
+        if (['' => true] === $newLineBreaks || ['' => true] === $oldLineBreaks) {
+            return false;
+        }
+
+        // two way compare
+        foreach ($newLineBreaks as $break => $set) {
+            if (!isset($oldLineBreaks[$break])) {
+                return true;
+            }
+        }
+
+        foreach ($oldLineBreaks as $break => $set) {
+            if (!isset($newLineBreaks[$break])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getLinebreak($line): string
+    {
+        if (!\is_string($line)) {
+            return '';
+        }
+
+        $lc = \substr($line, -1);
+        if ("\r" === $lc) {
+            return "\r";
+        }
+
+        if ("\n" !== $lc) {
+            return '';
+        }
+
+        if ("\r\n" === \substr($line, -2)) {
+            return "\r\n";
+        }
+
+        return "\n";
     }
 
     private static function getArrayDiffParted(array &$from, array &$to): array
