@@ -38,12 +38,21 @@ final class DiffOnlyOutputBuilder implements DiffOutputBuilderInterface
 
         foreach ($diff as $diffEntry) {
             if ($diffEntry[1] === 1 /* ADDED */) {
-                \fwrite($buffer, '+' . $diffEntry[0] . "\n");
+                \fwrite($buffer, '+' . $diffEntry[0]);
             } elseif ($diffEntry[1] === 2 /* REMOVED */) {
-                \fwrite($buffer, '-' . $diffEntry[0] . "\n");
+                \fwrite($buffer, '-' . $diffEntry[0]);
             } elseif ($diffEntry[1] === 3 /* WARNING */) {
-                \fwrite($buffer, ' ' . $diffEntry[0] . "\n");
-            } // else { /* Not changed (old) 0 */
+                \fwrite($buffer, ' ' . $diffEntry[0]);
+
+                continue; // Warnings should not be tested for line break, it will always be there
+            } else { /* Not changed (old) 0 */
+                continue; // we didn't write the non changs line, so do not add a line break either
+            }
+
+            $lc = \substr($diffEntry[0], -1);
+            if ($lc !== "\n" && $lc !== "\r") {
+                \fwrite($buffer, "\n"); // \No newline at end of file
+            }
         }
 
         $diff = \stream_get_contents($buffer, -1, 0);

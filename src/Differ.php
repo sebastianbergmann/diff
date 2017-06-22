@@ -110,7 +110,7 @@ final class Differ
 
         if ($this->detectUnmatchedLineEndings($fromMatches, $toMatches)) {
             $diff[] = [
-                '#Warning: Strings contain different line endings!',
+                "#Warning: Strings contain different line endings!\n",
                 3
             ];
         }
@@ -175,7 +175,7 @@ final class Differ
      */
     private function splitStringByLines(string $input): array
     {
-        return \preg_split('(\r\n|\r|\n)', $input);
+        return \preg_split('/(.*\R)/', $input, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
     }
 
     /**

@@ -100,11 +100,20 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     private function writeDiffBufferElement(array $diff, $buffer, int $diffIndex)
     {
         if ($diff[$diffIndex][1] === 1 /* ADDED */) {
-            \fwrite($buffer, '+' . $diff[$diffIndex][0] . "\n");
+            \fwrite($buffer, '+' . $diff[$diffIndex][0]);
         } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
-            \fwrite($buffer, '-' . $diff[$diffIndex][0] . "\n");
-        } else { /* Not changed (OLD) 0 or Warning 3 */
-            \fwrite($buffer, ' ' . $diff[$diffIndex][0] . "\n");
+            \fwrite($buffer, '-' . $diff[$diffIndex][0]);
+        } elseif ($diff[$diffIndex][1] === 3 /* WARNING */) {
+            \fwrite($buffer, ' ' . $diff[$diffIndex][0]);
+
+            return; // Warnings should not be tested for line break, it will always be there
+        } else { /* OLD Not changed (0) */
+            \fwrite($buffer, ' ' . $diff[$diffIndex][0]);
+        }
+
+        $lc = \substr($diff[$diffIndex][0], -1);
+        if ($lc !== "\n" && $lc !== "\r") {
+            \fwrite($buffer, "\n"); // \No newline at end of file
         }
     }
 }
