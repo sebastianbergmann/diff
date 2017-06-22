@@ -282,20 +282,20 @@ final class DifferTest extends TestCase
             'test line diff detection' => [
                 [
                     [
-                        '#Warning: Strings contain different line endings!',
+                        "#Warning: Strings contain different line endings!\n",
                         self::WARNING,
                     ],
                     [
-                        '<?php',
-                        self::OLD,
+                        "<?php\r\n",
+                        self::REMOVED,
                     ],
                     [
-                        '',
-                        self::OLD,
+                        "<?php\n",
+                        self::ADDED,
                     ],
                 ],
                 "<?php\r\n",
-                "<?php\n"
+                "<?php\n",
             ]
         ];
     }
@@ -380,6 +380,11 @@ EOF
                 "A\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1",
                 "B\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1",
             ],
+            [
+                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-<?php\r\n+<?php\n A\n",
+                "<?php\r\nA\n",
+                "<?php\nA\n",
+            ],
         ];
     }
 
@@ -415,12 +420,14 @@ EOL;
     {
         return [
             [
-                ' #Warning: Strings contain different line endings!
--A
-+B
-',
+                " #Warning: Strings contain different line endings!\n-A\r\n+B\n",
                 "A\r\n",
                 "B\n",
+            ],
+            [
+                "-A\n+B\n",
+                "\nA",
+                "\nB"
             ],
             [
                 '',
@@ -545,12 +552,12 @@ EOL;
                 "B\n\n\n\n\n\n\nX\nA\nZ\n\n",
             ],
             'same trailing' => [
-                [2 => 15],
+                [2 => 14],
                 "A\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
                 "B\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
             ],
             'same part in between, same trailing' => [
-                [2 => 7, 10 => 16],
+                [2 => 7, 10 => 15],
                 "A\n\n\n\n\n\n\nA\n\n\n\n\n\n\n",
                 "B\n\n\n\n\n\n\nB\n\n\n\n\n\n\n",
             ],
@@ -586,6 +593,86 @@ EOL;
                 [0 => 5, 8 => 13],
                 "A\nA\nA\nA\nA\nA\nX\nC\nC\nC\nC\nC\nC\nX",
                 "A\nA\nA\nA\nA\nA\nB\nC\nC\nC\nC\nC\nC\nY",
+            ],
+        ];
+    }
+
+    /**
+     * @param array  $expected
+     * @param string $input
+     * @dataProvider provideSplitStringByLinesCases
+     */
+    public function testSplitStringByLines(array $expected, string $input)
+    {
+        $reflection = new \ReflectionObject($this->differ);
+        $method     = $reflection->getMethod('splitStringByLines');
+        $method->setAccessible(true);
+
+        $this->assertSame($expected, $method->invoke($this->differ, $input));
+    }
+
+    public function provideSplitStringByLinesCases()
+    {
+        return [
+            [
+                [],
+                ''
+            ],
+            [
+                ['a'],
+                'a'
+            ],
+            [
+                ["a\n"],
+                "a\n"
+            ],
+            [
+                ["a\r"],
+                "a\r"
+            ],
+            [
+                ["a\r\n"],
+                "a\r\n"
+            ],
+            [
+                ["\n"],
+                "\n"
+            ],
+            [
+                ["\r"],
+                "\r"
+            ],
+            [
+                ["\r\n"],
+                "\r\n"
+            ],
+            [
+                [
+                    "A\n",
+                    "B\n",
+                    "\n",
+                    "C\n"
+                ],
+                "A\nB\n\nC\n",
+            ],
+            [
+                [
+                    "A\r\n",
+                    "B\n",
+                    "\n",
+                    "C\r"
+                ],
+                "A\r\nB\n\nC\r",
+            ],
+            [
+                [
+                    "\n",
+                    "A\r\n",
+                    "B\n",
+                    "\n",
+                    'C'
+                ],
+                "\nA\r\nB\n\nC",
             ],
         ];
     }
