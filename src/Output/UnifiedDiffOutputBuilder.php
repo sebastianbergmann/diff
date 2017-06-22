@@ -20,9 +20,15 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
      */
     private $header;
 
-    public function __construct(string $header = "--- Original\n+++ New\n")
+    /**
+     * @var bool
+     */
+    private $addLineNumbers;
+
+    public function __construct(string $header = "--- Original\n+++ New\n", bool $addLineNumbers = false)
     {
-        $this->header = $header;
+        $this->header         = $header;
+        $this->addLineNumbers = $addLineNumbers;
     }
 
     public function getDiff(array $diff): string
@@ -49,71 +55,111 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     // of a list of elements all containing `same` (0) entries.
     private function writeDiffChunked($output, array $diff, array $old)
     {
-        $start = isset($old[0]) ? $old[0] : 0;
-        $end   = \count($diff);
+        $upperLimit = \count($diff);
+        $start      = 0;
+        $fromStart  = 0;
+        $toStart    = 0;
 
-        if (\count($old)) {
-            \end($old);
+        if (\count($old)) { // no common parts, list all diff entries
+            \reset($old);
+
+            // iterate the diff, go from chunk to chunk skipping common chunk of lines between those
+            do {
+                $commonStart = \key($old);
+                $commonEnd   = \current($old);
+
+                if ($commonStart !== $start) {
+                    list($fromRange, $toRange) = $this->getChunkRange($diff, $start, $commonStart);
+                    $this->writeChunk($output, $diff, $start, $commonStart, $fromStart, $fromRange, $toStart, $toRange);
+
+                    $fromStart += $fromRange;
+                    $toStart += $toRange;
+                }
+
+                $start        = $commonEnd + 1;
+                $commonLength = $commonEnd - $commonStart + 1; // calculate number of non-change lines in the common part
+                $fromStart += $commonLength;
+                $toStart += $commonLength;
+            } while (false !== \next($old));
+
+            \end($old); // short cut for finding possible last `change entry`
             $tmp = \key($old);
             \reset($old);
-            if ($old[$tmp] === $end - 1) {
-                $end = $tmp;
+            if ($old[$tmp] === $upperLimit - 1) {
+                $upperLimit = $tmp;
             }
         }
 
-        if (!isset($old[$start])) {
-            $this->writeDiffBufferElementNew($diff, $output, $start);
-            ++$start;
+        if ($start < $upperLimit - 1) { // check for trailing (non) diff entries
+            do {
+                --$upperLimit;
+            } while (isset($diff[$upperLimit][1]) && $diff[$upperLimit][1] === 0);
+            ++$upperLimit;
+
+            list($fromRange, $toRange) = $this->getChunkRange($diff, $start, $upperLimit);
+            $this->writeChunk($output, $diff, $start, $upperLimit, $fromStart, $fromRange, $toStart, $toRange);
+        }
+    }
+
+    private function writeChunk(
+        $output,
+        array $diff,
+        int $diffStartIndex,
+        int $diffEndIndex,
+        int $fromStart,
+        int $fromRange,
+        int $toStart,
+        int $toRange
+    ) {
+        if ($this->addLineNumbers) {
+            \fwrite($output, '@@ -' . (1 + $fromStart));
+
+            if ($fromRange > 1) {
+                \fwrite($output, ',' . $fromRange);
+            }
+
+            \fwrite($output, ' +' . (1 + $toStart));
+            if ($toRange > 1) {
+                \fwrite($output, ',' . $toRange);
+            }
+
+            \fwrite($output, " @@\n");
+        } else {
+            \fwrite($output, "@@ @@\n");
         }
 
-        for ($i = $start; $i < $end; $i++) {
-            if (isset($old[$i])) {
-                $i = $old[$i];
-                $this->writeDiffBufferElementNew($diff, $output, $i);
-            } else {
-                $this->writeDiffBufferElement($diff, $output, $i);
+        for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
+            if ($diff[$i][1] === 1 /* ADDED */) {
+                \fwrite($output, '+' . $diff[$i][0]);
+            } elseif ($diff[$i][1] === 2 /* REMOVED */) {
+                \fwrite($output, '-' . $diff[$i][0]);
+            } else { /* Not changed (old) 0 or Warning 3 */
+                \fwrite($output, ' ' . $diff[$i][0]);
+            }
+
+            $lc = \substr($diff[$i][0], -1);
+            if ($lc !== "\n" && $lc !== "\r") {
+                \fwrite($output, "\n"); // \No newline at end of file
             }
         }
     }
 
-    /**
-     * Gets individual buffer element with opening.
-     *
-     * @param array    $diff
-     * @param resource $buffer
-     * @param int      $diffIndex
-     */
-    private function writeDiffBufferElementNew(array $diff, $buffer, int $diffIndex)
+    private function getChunkRange(array $diff, int $diffStartIndex, int $diffEndIndex): array
     {
-        \fwrite($buffer, "@@ @@\n");
+        $toRange   = 0;
+        $fromRange = 0;
 
-        $this->writeDiffBufferElement($diff, $buffer, $diffIndex);
-    }
-
-    /**
-     * Gets individual buffer element.
-     *
-     * @param array    $diff
-     * @param resource $buffer
-     * @param int      $diffIndex
-     */
-    private function writeDiffBufferElement(array $diff, $buffer, int $diffIndex)
-    {
-        if ($diff[$diffIndex][1] === 1 /* ADDED */) {
-            \fwrite($buffer, '+' . $diff[$diffIndex][0]);
-        } elseif ($diff[$diffIndex][1] === 2 /* REMOVED */) {
-            \fwrite($buffer, '-' . $diff[$diffIndex][0]);
-        } elseif ($diff[$diffIndex][1] === 3 /* WARNING */) {
-            \fwrite($buffer, ' ' . $diff[$diffIndex][0]);
-
-            return; // Warnings should not be tested for line break, it will always be there
-        } else { /* OLD Not changed (0) */
-            \fwrite($buffer, ' ' . $diff[$diffIndex][0]);
+        for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
+            if ($diff[$i][1] === 1) { // added
+                ++$toRange;
+            } elseif ($diff[$i][1] === 2) { // removed
+                ++$fromRange;
+            } elseif ($diff[$i][1] === 0) { // same
+                ++$fromRange;
+                ++$toRange;
+            }
         }
 
-        $lc = \substr($diff[$diffIndex][0], -1);
-        if ($lc !== "\n" && $lc !== "\r") {
-            \fwrite($buffer, "\n"); // \No newline at end of file
-        }
+        return [$fromRange, $toRange];
     }
 }
