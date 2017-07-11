@@ -19,7 +19,6 @@ final class DifferTestTest extends TestCase
 {
     private $fileFrom;
     private $filePatch;
-    private $fileTo;
 
     protected function setUp()
     {
