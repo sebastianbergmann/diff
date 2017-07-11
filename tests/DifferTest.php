@@ -1005,4 +1005,40 @@ EOF
             ],
         ];
     }
+
+    public function testConstructorNull()
+    {
+        $diff       = new Differ(null);
+        $reflection = new \ReflectionObject($diff);
+        $property   = $reflection->getProperty('outputBuilder');
+        $property->setAccessible(true);
+
+        $this->assertInstanceOf(UnifiedDiffOutputBuilder::class, $property->getValue($diff));
+    }
+
+    public function testConstructorString()
+    {
+        $diff       = new Differ("--- Original\n+++ New\n");
+        $reflection = new \ReflectionObject($diff);
+        $property   = $reflection->getProperty('outputBuilder');
+        $property->setAccessible(true);
+
+        $this->assertInstanceOf(UnifiedDiffOutputBuilder::class, $property->getValue($diff));
+    }
+
+    public function testConstructorInvalidArgInt()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got integer "1"\.$/');
+
+        new Differ(1);
+    }
+
+    public function testConstructorInvalidArgObject()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessageRegExp('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got instance of "SplFileInfo"\.$/');
+
+        new Differ(new \SplFileInfo(__FILE__));
+    }
 }
