@@ -76,6 +76,7 @@ final class DifferTestTest extends TestCase
         $patched = \file_get_contents($this->fileFrom);
         $this->assertSame($patched, $to);
 
+        @\unlink($this->fileFrom . '.orig');
         @\unlink($this->fileFrom);
         @\unlink($this->filePatch);
     }
