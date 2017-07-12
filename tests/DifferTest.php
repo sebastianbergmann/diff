@@ -1008,22 +1008,20 @@ EOF
 
     public function testConstructorNull()
     {
-        $diff       = new Differ(null);
-        $reflection = new \ReflectionObject($diff);
-        $property   = $reflection->getProperty('outputBuilder');
-        $property->setAccessible(true);
-
-        $this->assertInstanceOf(UnifiedDiffOutputBuilder::class, $property->getValue($diff));
+        $this->assertAttributeInstanceOf(
+            UnifiedDiffOutputBuilder::class,
+            'outputBuilder',
+            new Differ(null)
+        );
     }
 
     public function testConstructorString()
     {
-        $diff       = new Differ("--- Original\n+++ New\n");
-        $reflection = new \ReflectionObject($diff);
-        $property   = $reflection->getProperty('outputBuilder');
-        $property->setAccessible(true);
-
-        $this->assertInstanceOf(UnifiedDiffOutputBuilder::class, $property->getValue($diff));
+        $this->assertAttributeInstanceOf(
+            UnifiedDiffOutputBuilder::class,
+            'outputBuilder',
+            new Differ("--- Original\n+++ New\n")
+        );
     }
 
     public function testConstructorInvalidArgInt()
