@@ -25,23 +25,27 @@ final class Differ
 
     /**
      * @param DiffOutputBuilderInterface $outputBuilder
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct($outputBuilder = null)
     {
         if ($outputBuilder instanceof DiffOutputBuilderInterface) {
             $this->outputBuilder = $outputBuilder;
         } elseif (null === $outputBuilder) {
-            $this->outputBuilder = new UnifiedDiffOutputBuilder();
+            $this->outputBuilder = new UnifiedDiffOutputBuilder;
         } elseif (\is_string($outputBuilder)) {
             // PHPUnit 6.1.4, 6.2.0, 6.2.1, 6.2.2, and 6.2.3 support
-            // @ see https://github.com/sebastianbergmann/phpunit/issues/2734#issuecomment-314514056
-            // @ deprecated
+            // @see https://github.com/sebastianbergmann/phpunit/issues/2734#issuecomment-314514056
+            // @deprecated
             $this->outputBuilder = new UnifiedDiffOutputBuilder($outputBuilder);
         } else {
-            throw new \InvalidArgumentException(\sprintf(
-                'Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got %s.',
-                \is_object($outputBuilder) ? 'instance of "' . \get_class($outputBuilder) . '"' : \gettype($outputBuilder) . ' "' . $outputBuilder . '"'
-            ));
+            throw new InvalidArgumentException(
+                \sprintf(
+                    'Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got %s.',
+                    \is_object($outputBuilder) ? 'instance of "' . \get_class($outputBuilder) . '"' : \gettype($outputBuilder) . ' "' . $outputBuilder . '"'
+                )
+            );
         }
     }
 
