@@ -2,7 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [3.0.0] - 2017-MM-DD
+## [2.0.0] - 2017-MM-DD
 
 ### Added
 
@@ -12,4 +12,4 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
-[3.0.0]: https://github.com/sebastianbergmann/diff/compare/1.4...3.0.0
+[2.0.0]: https://github.com/sebastianbergmann/diff/compare/1.4...2.0.0
