@@ -114,12 +114,12 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         if ($this->addLineNumbers) {
             \fwrite($output, '@@ -' . (1 + $fromStart));
 
-            if ($fromRange > 1) {
+            if ($fromRange !== 1) {
                 \fwrite($output, ',' . $fromRange);
             }
 
             \fwrite($output, ' +' . (1 + $toStart));
-            if ($toRange > 1) {
+            if ($toRange !== 1) {
                 \fwrite($output, ',' . $toRange);
             }
 
