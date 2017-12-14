@@ -10,10 +10,20 @@
 
 namespace SebastianBergmann\Diff\Output;
 
+use SebastianBergmann\Diff\ConfigurationException;
+
 /**
- * Builds a diff string representation in unified diff format in chunks.
+ * Strict Unified diff output builder.
+ *
+ * @name Unified diff output builder
+ *
+ * @description Generates (strict) Unified diff's (unidiffs) with hunks.
+ *
+ * @author SpacePossum
+ *
+ * @api
  */
-final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
+final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 {
     /**
      * @var int
@@ -23,17 +33,17 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     /**
      * @var bool
      */
-    private $collapseRanges = true;
+    private $changed;
+
+    /**
+     * @var bool
+     */
+    private $collapseRanges;
 
     /**
      * @var int >= 0
      */
-    private $commonLineThreshold = 6;
-
-    /**
-     * @var int >= 0
-     */
-    private $contextLines = 3;
+    private $commonLineThreshold;
 
     /**
      * @var string
@@ -41,29 +51,78 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     private $header;
 
     /**
-     * @var bool
+     * @var int >= 0
      */
-    private $addLineNumbers;
+    private $contextLines;
 
-    public function __construct(string $header = "--- Original\n+++ New\n", bool $addLineNumbers = false)
+    private static $default = [
+        'collapseRanges'      => true, // ranges of length one are rendered with the trailing `,1`
+        'commonLineThreshold' => 6,    // number of same lines before ending a new hunk and creating a new one (if needed)
+        'contextLines'        => 3,    // like `diff:  -u, -U NUM, --unified[=NUM]`, for patch/git apply compatibility best to keep at least @ 3
+        'fromFile'            => null,
+        'fromFileDate'        => null,
+        'toFile'              => null,
+        'toFileDate'          => null,
+    ];
+
+    public function __construct(array $options = [])
     {
-        $this->header         = $header;
-        $this->addLineNumbers = $addLineNumbers;
+        $options = \array_merge(self::$default, $options);
+
+        if (!\is_bool($options['collapseRanges'])) {
+            throw new ConfigurationException('collapseRanges', 'a bool', $options['collapseRanges']);
+        }
+
+        if (!\is_int($options['contextLines']) || $options['contextLines'] < 0) {
+            throw new ConfigurationException('contextLines', 'an int >= 0', $options['contextLines']);
+        }
+
+        if (!\is_int($options['commonLineThreshold']) || $options['commonLineThreshold'] < 1) {
+            throw new ConfigurationException('commonLineThreshold', 'an int > 0', $options['commonLineThreshold']);
+        }
+
+        foreach (['fromFile', 'toFile'] as $option) {
+            if (!\is_string($options[$option])) {
+                throw new ConfigurationException($option, 'a string', $options[$option]);
+            }
+        }
+
+        foreach (['fromFileDate', 'toFileDate'] as $option) {
+            if (null !== $options[$option] && !\is_string($options[$option])) {
+                throw new ConfigurationException($option, 'a string or <null>', $options[$option]);
+            }
+        }
+
+        $this->header = \sprintf(
+            "--- %s%s\n+++ %s%s\n",
+            $options['fromFile'],
+            null === $options['fromFileDate'] ? '' : "\t" . $options['fromFileDate'],
+            $options['toFile'],
+            null === $options['toFileDate'] ? '' : "\t" . $options['toFileDate']
+        );
+
+        $this->collapseRanges      = $options['collapseRanges'];
+        $this->commonLineThreshold = $options['commonLineThreshold'];
+        $this->contextLines        = $options['contextLines'];
     }
 
     public function getDiff(array $diff): string
     {
-        $buffer = \fopen('php://memory', 'r+b');
-
-        if ('' !== $this->header) {
-            \fwrite($buffer, $this->header);
-            if ("\n" !== \substr($this->header, -1, 1)) {
-                \fwrite($buffer, "\n");
-            }
+        if (0 === \count($diff)) {
+            return '';
         }
 
-        if (0 !== \count($diff)) {
-            $this->writeDiffHunks($buffer, $diff);
+        $this->changed = false;
+
+        $buffer = \fopen('php://memory', 'r+b');
+        \fwrite($buffer, $this->header);
+
+        $this->writeDiffHunks($buffer, $diff);
+
+        if (!$this->changed) {
+            \fclose($buffer);
+
+            return '';
         }
 
         $diff = \stream_get_contents($buffer, -1, 0);
@@ -77,7 +136,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         return "\n" !== $last && "\r" !== $last
             ? $diff . "\n"
             : $diff
-            ;
+        ;
     }
 
     private function writeDiffHunks($output, array $diff)
@@ -114,7 +173,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         $cutOff      = \max($this->commonLineThreshold, $this->contextLines);
         $hunkCapture = false;
-        $sameCount   = $toRange   = $fromRange = 0;
+        $sameCount   = $toRange = $fromRange = 0;
         $toStart     = $fromStart = 1;
 
         foreach ($diff as $i => $entry) {
@@ -174,6 +233,8 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
                 continue;
             }
 
+            $this->changed = true;
+
             if (false === $hunkCapture) {
                 $hunkCapture = $i;
             }
@@ -228,35 +289,37 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         int $toRange,
         $output
     ) {
-        if ($this->addLineNumbers) {
-            \fwrite($output, '@@ -' . $fromStart);
+        \fwrite($output, '@@ -' . $fromStart);
 
-            if (!$this->collapseRanges || 1 !== $fromRange) {
-                \fwrite($output, ',' . $fromRange);
-            }
-
-            \fwrite($output, ' +' . $toStart);
-            if (!$this->collapseRanges || 1 !== $toRange) {
-                \fwrite($output, ',' . $toRange);
-            }
-
-            \fwrite($output, " @@\n");
-        } else {
-            \fwrite($output, "@@ @@\n");
+        if (!$this->collapseRanges || 1 !== $fromRange) {
+            \fwrite($output, ',' . $fromRange);
         }
+
+        \fwrite($output, ' +' . $toStart);
+        if (!$this->collapseRanges || 1 !== $toRange) {
+            \fwrite($output, ',' . $toRange);
+        }
+
+        \fwrite($output, " @@\n");
 
         for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
             if ($diff[$i][1] === 1) { // added
+                $this->changed = true;
                 \fwrite($output, '+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === 2) { // removed
+                $this->changed = true;
                 \fwrite($output, '-' . $diff[$i][0]);
             } elseif ($diff[$i][1] === 0) { // same
                 \fwrite($output, ' ' . $diff[$i][0]);
             } elseif ($diff[$i][1] === self::$noNewlineAtOEFid) {
-                \fwrite($output, "\n"); // $diff[$i][0]
-            } else { /* Not changed (old) 0 or Warning 3 */
-                \fwrite($output, ' ' . $diff[$i][0]);
+                $this->changed = true;
+                \fwrite($output, $diff[$i][0]);
             }
+            //} elseif ($diff[$i][1] === 3) { // custom comment inserted by PHPUnit/diff package
+                //  skip
+            //} else {
+                //  unknown/invalid
+            //}
         }
     }
 }

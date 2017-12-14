@@ -10,7 +10,6 @@
 
 namespace SebastianBergmann\Diff;
 
-use SebastianBergmann\Diff\InvalidArgumentException;
 use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
