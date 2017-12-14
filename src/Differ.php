@@ -61,8 +61,8 @@ final class Differ
      */
     public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null): string
     {
-        $from = $this->validateDiffInput($from);
-        $to   = $this->validateDiffInput($to);
+        $from = $this->normalizeDiffInput($from);
+        $to   = $this->normalizeDiffInput($to);
         $diff = $this->diffToArray($from, $to, $lcs);
 
         return $this->outputBuilder->getDiff($diff);
@@ -73,9 +73,9 @@ final class Differ
      *
      * @param mixed $input
      *
-     * @return string
+     * @return string|array
      */
-    private function validateDiffInput($input): string
+    private function normalizeDiffInput($input)
     {
         if (!\is_array($input) && !\is_string($input)) {
             return (string) $input;

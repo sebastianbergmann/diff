@@ -90,6 +90,19 @@ final class DifferTest extends TestCase
         );
     }
 
+    public function testArrayDiffs()
+    {
+        $this->assertSame(
+            '--- Original
++++ New
+@@ @@
+-one
++two
+',
+            $this->differ->diff(array('one'), array('two'))
+        );
+    }
+
     public function arrayProvider(): array
     {
         return [
