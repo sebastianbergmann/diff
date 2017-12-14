@@ -8,21 +8,21 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff;
+namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
 
 /**
  * @requires OS Linux
  */
-final class DifferTestTest extends TestCase
+final class UnifiedDiffOutputBuilderTestTest extends TestCase
 {
     private $fileFrom;
     private $filePatch;
 
     protected function setUp()
     {
-        $dir             = \realpath(__DIR__ . '/../') . '/';
+        $dir             = \realpath(__DIR__ . '/../../') . '/';
         $this->fileFrom  = $dir . 'from.txt';
         $this->filePatch = $dir . 'patch.txt';
     }
@@ -37,10 +37,9 @@ final class DifferTestTest extends TestCase
 
     public function provideDiffWithLineNumbers()
     {
-        require_once __DIR__ . '/DifferTest.php';
-        $test  = new DifferTest();
+        require_once __DIR__ . '/UnifiedDiffOutputBuilderTest.php';
+        $test  = new UnifiedDiffOutputBuilderTest();
         $tests = $test->provideDiffWithLineNumbers();
-
         $tests = \array_filter(
             $tests,
             function ($key) {
