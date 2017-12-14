@@ -99,7 +99,7 @@ final class DifferTest extends TestCase
 -one
 +two
 ',
-            $this->differ->diff(array('one'), array('two'))
+            $this->differ->diff(['one'], ['two'])
         );
     }
 
@@ -273,42 +273,7 @@ final class DifferTest extends TestCase
                 'b',
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-ba\n+bc\n",
-                'ba',
-                'bc',
-            ],
-            [
-                "--- Original\n+++ New\n@@ @@\n-ab\n+cb\n",
-                'ab',
-                'cb',
-            ],
-            [
-                "--- Original\n+++ New\n@@ @@\n-abc\n+adc\n",
-                'abc',
-                'adc',
-            ],
-            [
-                "--- Original\n+++ New\n@@ @@\n-ab\n+abc\n",
-                'ab',
-                'abc',
-            ],
-            [
-                "--- Original\n+++ New\n@@ @@\n-bc\n+abc\n",
-                'bc',
-                'abc',
-            ],
-            [
-                "--- Original\n+++ New\n@@ @@\n-abc\n+abbc\n",
-                'abc',
-                'abbc',
-            ],
-            [
-                "--- Original\n+++ New\n@@ @@\n-abcdde\n+abcde\n",
-                'abcdde',
-                'abcde',
-            ],
-            [
-                "--- Original\n+++ New\n@@ @@\n-A\n+A1\n",
+                "--- Original\n+++ New\n@@ @@\n-A\n+A1\n B\n",
                 "A\nB",
                 "A1\nB",
             ],
@@ -320,14 +285,21 @@ final class DifferTest extends TestCase
  a
 -b
 +p
+ c
+ d
+ e
 @@ @@
+ g
+ h
+ i
 -j
 +w
+ k
 
 EOF
             ,
-                "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk",
-                "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk",
+                "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\n",
+                "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk\n",
             ],
             [
                 <<<EOF
@@ -336,19 +308,22 @@ EOF
 @@ @@
 -A
 +B
+ 1
+ 2
+ 3
 
 EOF
             ,
-                "A\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1",
-                "B\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1",
+                "A\n1\n2\n3\n4\n5\n6\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
+                "B\n1\n2\n3\n4\n5\n6\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-<?php\r\n+<?php\n",
+                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-<?php\r\n+<?php\n A\n",
                 "<?php\r\nA\n",
                 "<?php\nA\n",
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-a\r\n+\n+c\r",
+                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-a\r\n+\n+c\r\n",
                 "a\r\n",
                 "\nc\r",
             ],
