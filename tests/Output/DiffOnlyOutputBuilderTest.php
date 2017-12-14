@@ -15,6 +15,9 @@ use SebastianBergmann\Diff\Differ;
 
 /**
  * @covers SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder
+ *
+ * @uses SebastianBergmann\Diff\Differ
+ * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
 final class DiffOnlyOutputBuilderTest extends TestCase
 {

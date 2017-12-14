@@ -13,6 +13,12 @@ namespace SebastianBergmann\Diff\Output;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @covers SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
+ *
+ * @uses SebastianBergmann\Diff\Differ
+ * @uses SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
+ * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ *
  * @requires OS Linux
  */
 final class UnifiedDiffOutputBuilderTestTest extends TestCase
