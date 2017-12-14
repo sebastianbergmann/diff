@@ -10,6 +10,7 @@
 
 namespace SebastianBergmann\Diff;
 
+use SebastianBergmann\Diff\InvalidArgumentException;
 use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
@@ -105,13 +106,13 @@ final class Differ
         if (\is_string($from)) {
             $from = $this->splitStringByLines($from);
         } elseif (!\is_array($from)) {
-            throw new \InvalidArgumentException('"from" must be an array or string.');
+            throw new InvalidArgumentException('"from" must be an array or string.');
         }
 
         if (\is_string($to)) {
             $to = $this->splitStringByLines($to);
         } elseif (!\is_array($to)) {
-            throw new \InvalidArgumentException('"to" must be an array or string.');
+            throw new InvalidArgumentException('"to" must be an array or string.');
         }
 
         list($from, $to, $start, $end) = self::getArrayDiffParted($from, $to);

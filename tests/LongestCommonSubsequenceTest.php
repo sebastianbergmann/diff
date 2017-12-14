@@ -63,7 +63,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     {
         $from = [
             false, 0, 0.0, '', null, [],
-            true, 1, 1.0, 'foo', ['foo', 'bar'], ['foo' => 'bar']
+            true, 1, 1.0, 'foo', ['foo', 'bar'], ['foo' => 'bar'],
         ];
         $to     = $from;
         $common = $this->implementation->calculate($from, $to);
@@ -72,7 +72,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
 
         $to = [
             false, false, false, false, false, false,
-            true, true, true, true, true, true
+            true, true, true, true, true, true,
         ];
 
         $expected = [
