@@ -25,7 +25,7 @@ final class Differ
     private $outputBuilder;
 
     /**
-     * @param DiffOutputBuilderInterface $outputBuilder
+     * @param string|null|DiffOutputBuilderInterface $outputBuilder
      *
      * @throws InvalidArgumentException
      */
