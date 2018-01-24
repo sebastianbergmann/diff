@@ -20,6 +20,8 @@ use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
  *
  * @covers SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
+ * @uses SebastianBergmann\Diff\Differ
+ *
  * @internal
  */
 final class StrictUnifiedDiffOutputBuilderTest extends TestCase
