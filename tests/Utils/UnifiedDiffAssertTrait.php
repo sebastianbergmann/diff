@@ -10,11 +10,6 @@
 
 namespace SebastianBergmann\Diff\Utils;
 
-/**
- * @author SpacePossum
- *
- * @internal
- */
 trait UnifiedDiffAssertTrait
 {
     /**

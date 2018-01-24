@@ -15,13 +15,7 @@ use SebastianBergmann\Diff\ConfigurationException;
 /**
  * Strict Unified diff output builder.
  *
- * @name Unified diff output builder
- *
- * @description Generates (strict) Unified diff's (unidiffs) with hunks.
- *
- * @author SpacePossum
- *
- * @api
+ * Generates (strict) Unified diff's (unidiffs) with hunks.
  */
 final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 {
