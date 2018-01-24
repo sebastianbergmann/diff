@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @author SpacePossum
  *
- * @covers SebastianBergmann\Diff\UnifiedDiffAssertTrait
+ * @covers SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait
  *
  * @internal
  */
