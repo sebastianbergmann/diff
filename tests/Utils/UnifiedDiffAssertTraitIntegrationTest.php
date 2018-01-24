@@ -14,13 +14,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 /**
- * @author SpacePossum
- *
  * @requires OS Linux
  *
  * @coversNothing
- *
- * @internal
  */
 final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 {

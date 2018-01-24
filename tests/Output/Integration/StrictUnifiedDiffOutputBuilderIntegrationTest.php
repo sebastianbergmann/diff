@@ -16,13 +16,9 @@ use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
 
 /**
- * @author SpacePossum
+ * @covers SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
  * @requires OS Linux
- *
- * @coversNothing
- *
- * @internal
  */
 final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {

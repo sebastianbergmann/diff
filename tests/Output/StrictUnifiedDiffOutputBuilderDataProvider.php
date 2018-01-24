@@ -11,11 +11,7 @@
 namespace SebastianBergmann\Diff\Output;
 
 /**
- * @author SpacePossum
- *
  * @coversNothing
- *
- * @internal
  */
 final class StrictUnifiedDiffOutputBuilderDataProvider
 {

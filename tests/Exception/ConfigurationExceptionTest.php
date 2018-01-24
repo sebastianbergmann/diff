@@ -13,11 +13,7 @@ namespace SebastianBergmann\Diff;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @author SpacePossum
- *
  * @covers SebastianBergmann\Diff\ConfigurationException
- *
- * @internal
  */
 final class ConfigurationExceptionTest extends TestCase
 {
