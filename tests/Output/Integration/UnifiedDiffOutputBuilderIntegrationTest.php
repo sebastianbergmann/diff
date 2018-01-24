@@ -18,7 +18,6 @@ use Symfony\Component\Process\Process;
  * @covers SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
  *
  * @uses SebastianBergmann\Diff\Differ
- * @uses SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
  * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  *
  * @requires OS Linux

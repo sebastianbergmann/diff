@@ -18,6 +18,9 @@ use Symfony\Component\Process\Process;
 /**
  * @covers SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
+ * @uses SebastianBergmann\Diff\Differ
+ * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ *
  * @requires OS Linux
  */
 final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
