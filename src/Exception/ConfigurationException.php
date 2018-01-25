@@ -13,18 +13,18 @@ namespace SebastianBergmann\Diff;
 final class ConfigurationException extends InvalidArgumentException
 {
     /**
-     * @param string         $option
-     * @param string         $expected
-     * @param mixed          $value
-     * @param int            $code
-     * @param Exception|null $previous
+     * @param string          $option
+     * @param string          $expected
+     * @param mixed           $value
+     * @param int             $code
+     * @param \Exception|null $previous
      */
     public function __construct(
         string $option,
         string $expected,
         $value,
         int $code = 0,
-        Exception $previous = null
+        \Exception $previous = null
     ) {
         parent::__construct(
             \sprintf(
