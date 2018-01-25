@@ -71,7 +71,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             throw new ConfigurationException('contextLines', 'an int >= 0', $options['contextLines']);
         }
 
-        if (!\is_int($options['commonLineThreshold']) || $options['commonLineThreshold'] < 1) {
+        if (!\is_int($options['commonLineThreshold']) || $options['commonLineThreshold'] <= 0) {
             throw new ConfigurationException('commonLineThreshold', 'an int > 0', $options['commonLineThreshold']);
         }
 
