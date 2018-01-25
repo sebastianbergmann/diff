@@ -10,9 +10,6 @@
 
 namespace SebastianBergmann\Diff\Output;
 
-/**
- * @coversNothing
- */
 final class UnifiedDiffOutputBuilderDataProvider
 {
     public static function provideDiffWithLineNumbers(): array
