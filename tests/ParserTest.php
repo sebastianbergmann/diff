@@ -11,6 +11,7 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Diff\Utils\FileUtils;
 
 /**
  * @covers SebastianBergmann\Diff\Parser
@@ -33,7 +34,7 @@ final class ParserTest extends TestCase
 
     public function testParse()
     {
-        $content = \file_get_contents(__DIR__ . '/fixtures/patch.txt');
+        $content = FileUtils::getFileContent(__DIR__ . '/fixtures/patch.txt');
 
         $diffs = $this->parser->parse($content);
 
@@ -54,7 +55,7 @@ final class ParserTest extends TestCase
 
     public function testParseWithMultipleChunks()
     {
-        $content = \file_get_contents(__DIR__ . '/fixtures/patch2.txt');
+        $content = FileUtils::getFileContent(__DIR__ . '/fixtures/patch2.txt');
 
         $diffs = $this->parser->parse($content);
 
@@ -166,7 +167,7 @@ A;
         return [
             [
                 "--- old.txt	2014-11-04 08:51:02.661868729 +0300\n+++ new.txt	2014-11-04 08:51:02.665868730 +0300\n@@ -1,3 +1,4 @@\n+2222111\n 1111111\n 1111111\n 1111111\n@@ -5,10 +6,8 @@\n 1111111\n 1111111\n 1111111\n +1121211\n 1111111\n -1111111\n -1111111\n -2222222\n 2222222\n 2222222\n 2222222\n@@ -17,5 +16,6 @@\n 2222222\n 2222222\n 2222222\n +2122212\n 2222222\n 2222222\n",
-                \unserialize(\file_get_contents(__DIR__ . '/fixtures/serialized_diff.bin')),
+                \unserialize(FileUtils::getFileContent(__DIR__ . '/fixtures/serialized_diff.bin')),
             ],
         ];
     }
