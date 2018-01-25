@@ -70,7 +70,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
             )
         );
 
-        $this->assertValidUnifiedDiffFormat(\file_get_contents($this->filePatch));
+        $this->assertValidUnifiedDiffFormat(FileUtils::getFileContent($this->filePatch));
     }
 
     /**

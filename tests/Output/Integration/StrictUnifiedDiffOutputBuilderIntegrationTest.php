@@ -12,6 +12,7 @@ namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Utils\FileUtils;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
 
@@ -37,12 +38,12 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     protected function setUp()
     {
-        $this->dir       = realpath(__DIR__ . '/../../fixtures/out').'/';
+        $this->dir       = \realpath(__DIR__ . '/../../fixtures/out') . '/';
         $this->fileFrom  = $this->dir . 'from.txt';
         $this->fileTo    = $this->dir . 'to.txt';
         $this->filePatch = $this->dir . 'diff.patch';
 
-        if (!is_dir($this->dir)) {
+        if (!\is_dir($this->dir)) {
             throw new \RuntimeException('Integration test working directory not found.');
         }
 
@@ -64,8 +65,8 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      */
     public function testIntegrationUsingPHPFileInVendorGitApply(string $fileFrom, string $fileTo)
     {
-        $from = self::getFileContent($fileFrom);
-        $to   = self::getFileContent($fileTo);
+        $from = FileUtils::getFileContent($fileFrom);
+        $to   = FileUtils::getFileContent($fileTo);
 
         $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
 
@@ -94,8 +95,8 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      */
     public function testIntegrationUsingPHPFileInVendorPatch(string $fileFrom, string $fileTo)
     {
-        $from = self::getFileContent($fileFrom);
-        $to   = self::getFileContent($fileTo);
+        $from = FileUtils::getFileContent($fileFrom);
+        $to   = FileUtils::getFileContent($fileTo);
 
         $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
 
@@ -294,21 +295,5 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $diffLines[1] = \preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1);
 
         return \implode('', $diffLines);
-    }
-
-    private static function getFileContent(string $file): string
-    {
-        $content = @\file_get_contents($file);
-        if (false === $content) {
-            $error = \error_get_last();
-
-            throw new \RuntimeException(\sprintf(
-                'Failed to read content of file "%s".%s',
-                $file,
-                $error ? ' ' . $error['message'] : ''
-            ));
-        }
-
-        return $content;
     }
 }
