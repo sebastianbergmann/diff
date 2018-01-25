@@ -11,6 +11,7 @@
 namespace SebastianBergmann\Diff\Output;
 
 use SebastianBergmann\Diff\ConfigurationException;
+use SebastianBergmann\Diff\Differ;
 
 /**
  * Strict Unified diff output builder.
@@ -19,11 +20,6 @@ use SebastianBergmann\Diff\ConfigurationException;
  */
 final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 {
-    /**
-     * @var int
-     */
-    private static $noNewlineAtOEFid = 998877;
-
     /**
      * @var bool
      */
@@ -142,7 +138,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         if (0 === $diff[$upperLimit - 1][1]) {
             $lc = \substr($diff[$upperLimit - 1][0], -1);
             if ("\n" !== $lc) {
-                \array_splice($diff, $upperLimit, 0, [["\n\\ No newline at end of file\n", self::$noNewlineAtOEFid]]);
+                \array_splice($diff, $upperLimit, 0, [["\n\\ No newline at end of file\n", Differ::NO_LINE_END_EOF_WARNING]]);
             }
         } else {
             // search back for the last `+` and `-` line,
@@ -153,7 +149,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                     unset($toFind[$diff[$i][1]]);
                     $lc = \substr($diff[$i][0], -1);
                     if ("\n" !== $lc) {
-                        \array_splice($diff, $i + 1, 0, [["\n\\ No newline at end of file\n", self::$noNewlineAtOEFid]]);
+                        \array_splice($diff, $i + 1, 0, [["\n\\ No newline at end of file\n", Differ::NO_LINE_END_EOF_WARNING]]);
                     }
 
                     if (!\count($toFind)) {
@@ -223,7 +219,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
             $sameCount = 0;
 
-            if ($entry[1] === self::$noNewlineAtOEFid) {
+            if ($entry[1] === Differ::NO_LINE_END_EOF_WARNING) {
                 continue;
             }
 
@@ -233,11 +229,11 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                 $hunkCapture = $i;
             }
 
-            if (1 === $entry[1]) { // added
+            if (Differ::ADDED === $entry[1]) { // added
                 ++$toRange;
             }
 
-            if (2 === $entry[1]) { // removed
+            if (Differ::REMOVED === $entry[1]) { // removed
                 ++$fromRange;
             }
         }
@@ -297,19 +293,19 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         \fwrite($output, " @@\n");
 
         for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
-            if ($diff[$i][1] === 1) { // added
+            if ($diff[$i][1] === Differ::ADDED) {
                 $this->changed = true;
                 \fwrite($output, '+' . $diff[$i][0]);
-            } elseif ($diff[$i][1] === 2) { // removed
+            } elseif ($diff[$i][1] === Differ::REMOVED) {
                 $this->changed = true;
                 \fwrite($output, '-' . $diff[$i][0]);
-            } elseif ($diff[$i][1] === 0) { // same
+            } elseif ($diff[$i][1] === Differ::OLD) {
                 \fwrite($output, ' ' . $diff[$i][0]);
-            } elseif ($diff[$i][1] === self::$noNewlineAtOEFid) {
+            } elseif ($diff[$i][1] === Differ::NO_LINE_END_EOF_WARNING) {
                 $this->changed = true;
                 \fwrite($output, $diff[$i][0]);
             }
-            //} elseif ($diff[$i][1] === 3) { // custom comment inserted by PHPUnit/diff package
+            //} elseif ($diff[$i][1] === Differ::DIFF_LINE_END_WARNING) { // custom comment inserted by PHPUnit/diff package
                 //  skip
             //} else {
                 //  unknown/invalid
