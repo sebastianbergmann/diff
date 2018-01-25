@@ -23,11 +23,6 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
  */
 final class DifferTest extends TestCase
 {
-    const WARNING = 3;
-    const REMOVED = 2;
-    const ADDED   = 1;
-    const OLD     = 0;
-
     /**
      * @var Differ
      */
@@ -108,119 +103,119 @@ final class DifferTest extends TestCase
         return [
             [
                 [
-                    ['a', self::REMOVED],
-                    ['b', self::ADDED],
+                    ['a', Differ::REMOVED],
+                    ['b', Differ::ADDED],
                 ],
                 'a',
                 'b',
             ],
             [
                 [
-                    ['ba', self::REMOVED],
-                    ['bc', self::ADDED],
+                    ['ba', Differ::REMOVED],
+                    ['bc', Differ::ADDED],
                 ],
                 'ba',
                 'bc',
             ],
             [
                 [
-                    ['ab', self::REMOVED],
-                    ['cb', self::ADDED],
+                    ['ab', Differ::REMOVED],
+                    ['cb', Differ::ADDED],
                 ],
                 'ab',
                 'cb',
             ],
             [
                 [
-                    ['abc', self::REMOVED],
-                    ['adc', self::ADDED],
+                    ['abc', Differ::REMOVED],
+                    ['adc', Differ::ADDED],
                 ],
                 'abc',
                 'adc',
             ],
             [
                 [
-                    ['ab', self::REMOVED],
-                    ['abc', self::ADDED],
+                    ['ab', Differ::REMOVED],
+                    ['abc', Differ::ADDED],
                 ],
                 'ab',
                 'abc',
             ],
             [
                 [
-                    ['bc', self::REMOVED],
-                    ['abc', self::ADDED],
+                    ['bc', Differ::REMOVED],
+                    ['abc', Differ::ADDED],
                 ],
                 'bc',
                 'abc',
             ],
             [
                 [
-                    ['abc', self::REMOVED],
-                    ['abbc', self::ADDED],
+                    ['abc', Differ::REMOVED],
+                    ['abbc', Differ::ADDED],
                 ],
                 'abc',
                 'abbc',
             ],
             [
                 [
-                    ['abcdde', self::REMOVED],
-                    ['abcde', self::ADDED],
+                    ['abcdde', Differ::REMOVED],
+                    ['abcde', Differ::ADDED],
                 ],
                 'abcdde',
                 'abcde',
             ],
             'same start' => [
                 [
-                    [17, self::OLD],
-                    ['b', self::REMOVED],
-                    ['d', self::ADDED],
+                    [17, Differ::OLD],
+                    ['b', Differ::REMOVED],
+                    ['d', Differ::ADDED],
                 ],
                 [30 => 17, 'a' => 'b'],
                 [30 => 17, 'c' => 'd'],
             ],
             'same end' => [
                 [
-                    [1, self::REMOVED],
-                    [2, self::ADDED],
-                    ['b', self::OLD],
+                    [1, Differ::REMOVED],
+                    [2, Differ::ADDED],
+                    ['b', Differ::OLD],
                 ],
                 [1 => 1, 'a' => 'b'],
                 [1 => 2, 'a' => 'b'],
             ],
             'same start (2), same end (1)' => [
                 [
-                    [17, self::OLD],
-                    [2, self::OLD],
-                    [4, self::REMOVED],
-                    ['a', self::ADDED],
-                    [5, self::ADDED],
-                    ['x', self::OLD],
+                    [17, Differ::OLD],
+                    [2, Differ::OLD],
+                    [4, Differ::REMOVED],
+                    ['a', Differ::ADDED],
+                    [5, Differ::ADDED],
+                    ['x', Differ::OLD],
                 ],
                 [30 => 17, 1 => 2, 2 => 4, 'z' => 'x'],
                 [30 => 17, 1 => 2, 3 => 'a', 2 => 5, 'z' => 'x'],
             ],
             'same' => [
                 [
-                    ['x', self::OLD],
+                    ['x', Differ::OLD],
                 ],
                 ['z' => 'x'],
                 ['z' => 'x'],
             ],
             'diff' => [
                 [
-                    ['y', self::REMOVED],
-                    ['x', self::ADDED],
+                    ['y', Differ::REMOVED],
+                    ['x', Differ::ADDED],
                 ],
                 ['x' => 'y'],
                 ['z' => 'x'],
             ],
             'diff 2' => [
                 [
-                    ['y', self::REMOVED],
-                    ['b', self::REMOVED],
-                    ['x', self::ADDED],
-                    ['d', self::ADDED],
+                    ['y', Differ::REMOVED],
+                    ['b', Differ::REMOVED],
+                    ['x', Differ::ADDED],
+                    ['d', Differ::ADDED],
                 ],
                 ['x' => 'y', 'a' => 'b'],
                 ['z' => 'x', 'c' => 'd'],
@@ -229,15 +224,15 @@ final class DifferTest extends TestCase
                 [
                     [
                         "#Warning: Strings contain different line endings!\n",
-                        self::WARNING,
+                        Differ::DIFF_LINE_END_WARNING,
                     ],
                     [
                         "<?php\r\n",
-                        self::REMOVED,
+                        Differ::REMOVED,
                     ],
                     [
                         "<?php\n",
-                        self::ADDED,
+                        Differ::ADDED,
                     ],
                 ],
                 "<?php\r\n",
@@ -247,15 +242,15 @@ final class DifferTest extends TestCase
                 [
                     [
                         "#Warning: Strings contain different line endings!\n",
-                        self::WARNING,
+                        Differ::DIFF_LINE_END_WARNING,
                     ],
                     [
                         "<?php\r\n",
-                        self::REMOVED,
+                        Differ::REMOVED,
                     ],
                     [
                         "<?php\n",
-                        self::ADDED,
+                        Differ::ADDED,
                     ],
                 ],
                 ["<?php\r\n"],
