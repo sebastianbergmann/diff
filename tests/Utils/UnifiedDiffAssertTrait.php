@@ -17,7 +17,7 @@ trait UnifiedDiffAssertTrait
      *
      * @throws \UnexpectedValueException
      */
-    public function assertValidUnifiedDiffFormat(string $diff)
+    public function assertValidUnifiedDiffFormat(string $diff): void
     {
         if ('' === $diff) {
             $this->addToAssertionCount(1);
@@ -78,7 +78,7 @@ trait UnifiedDiffAssertTrait
                 $previousHunkFromEnd = $fromStart + $fromTillOffset;
                 $previousHunkTillEnd = $toStart + $toTillOffset;
 
-                list($fromStart, $fromTillOffset, $toStart, $toTillOffset) = $this->unifiedDiffAssertHunkHeader($line, \sprintf('Line %d.', $lineNumber));
+                [$fromStart, $fromTillOffset, $toStart, $toTillOffset] = $this->unifiedDiffAssertHunkHeader($line, \sprintf('Line %d.', $lineNumber));
 
                 // detect overlapping hunks
                 if ($fromStart < $previousHunkFromEnd) {
@@ -187,7 +187,7 @@ trait UnifiedDiffAssertTrait
         throw new \UnexpectedValueException(\sprintf('Expected line to start with \'@\', \'-\' or \'+\', got "%s". %s', $line, $message));
     }
 
-    private function unifiedDiffAssertStrLength(string $line, int $min, string $message)
+    private function unifiedDiffAssertStrLength(string $line, int $min, string $message): void
     {
         $length = \strlen($line);
         if ($length < $min) {
@@ -206,7 +206,7 @@ trait UnifiedDiffAssertTrait
      * @param string $start
      * @param string $message
      */
-    private function unifiedDiffAssertHeaderLine(string $line, string $start, string $message)
+    private function unifiedDiffAssertHeaderLine(string $line, string $start, string $message): void
     {
         if (0 !== \strpos($line, $start)) {
             throw new \UnexpectedValueException(\sprintf('Expected header line to start with "%s", got "%s". %s', $start . ' ', $line, $message));
@@ -230,7 +230,7 @@ trait UnifiedDiffAssertTrait
         }
     }
 
-    private function unifiedDiffAssertHeaderDate(string $date, string $message)
+    private function unifiedDiffAssertHeaderDate(string $date, string $message): void
     {
         // sample "2017-08-24 19:51:29.383985722 +0200"
         $match = \preg_match(

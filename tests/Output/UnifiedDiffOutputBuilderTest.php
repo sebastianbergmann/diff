@@ -30,7 +30,7 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
      *
      * @dataProvider headerProvider
      */
-    public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header)
+    public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header): void
     {
         $differ = new Differ(new UnifiedDiffOutputBuilder($header));
 
@@ -77,7 +77,7 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
      *
      * @dataProvider provideDiffWithLineNumbers
      */
-    public function testDiffWithLineNumbers($expected, $from, $to)
+    public function testDiffWithLineNumbers($expected, $from, $to): void
     {
         $differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New\n", true));
         $this->assertSame($expected, $differ->diff($from, $to));

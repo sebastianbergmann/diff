@@ -27,12 +27,12 @@ final class ParserTest extends TestCase
      */
     private $parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parser = new Parser;
     }
 
-    public function testParse()
+    public function testParse(): void
     {
         $content = FileUtils::getFileContent(__DIR__ . '/fixtures/patch.txt');
 
@@ -53,7 +53,7 @@ final class ParserTest extends TestCase
         $this->assertCount(4, $chunks[0]->getLines());
     }
 
-    public function testParseWithMultipleChunks()
+    public function testParseWithMultipleChunks(): void
     {
         $content = FileUtils::getFileContent(__DIR__ . '/fixtures/patch2.txt');
 
@@ -73,7 +73,7 @@ final class ParserTest extends TestCase
         $this->assertCount(4, $chunks[2]->getLines());
     }
 
-    public function testParseWithRemovedLines()
+    public function testParseWithRemovedLines(): void
     {
         $content = <<<A
 diff --git a/Test.txt b/Test.txt
@@ -116,7 +116,7 @@ A;
         $this->assertSame(Line::REMOVED, $line->getType());
     }
 
-    public function testParseDiffForMulitpleFiles()
+    public function testParseDiffForMulitpleFiles(): void
     {
         $content = <<<A
 diff --git a/Test.txt b/Test.txt
@@ -156,7 +156,7 @@ A;
      *
      * @dataProvider diffProvider
      */
-    public function testParser(string $diff, array $expected)
+    public function testParser(string $diff, array $expected): void
     {
         $result = $this->parser->parse($diff);
 

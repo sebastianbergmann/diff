@@ -24,10 +24,15 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 
     private $filePatch;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->filePatch = __DIR__ . '/../fixtures/out/patch.txt';
 
+        $this->cleanUpTempFiles();
+    }
+
+    protected function tearDown(): void
+    {
         $this->cleanUpTempFiles();
     }
 
@@ -37,7 +42,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
      *
      * @dataProvider provideFilePairsCases
      */
-    public function testValidPatches(string $fileFrom, string $fileTo)
+    public function testValidPatches(string $fileFrom, string $fileTo): void
     {
         $command = \sprintf(
             'diff -u %s %s > %s',
@@ -117,12 +122,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         return $cases;
     }
 
-    protected function tearDown()
-    {
-        $this->cleanUpTempFiles();
-    }
-
-    private function cleanUpTempFiles()
+    private function cleanUpTempFiles(): void
     {
         @\unlink($this->filePatch);
     }

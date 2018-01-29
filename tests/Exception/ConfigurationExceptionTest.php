@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ConfigurationExceptionTest extends TestCase
 {
-    public function testConstructWithDefaults()
+    public function testConstructWithDefaults(): void
     {
         $e = new ConfigurationException('test', 'A', 'B');
 
@@ -26,7 +26,7 @@ final class ConfigurationExceptionTest extends TestCase
         $this->assertSame('Option "test" must be A, got "string#B".', $e->getMessage());
     }
 
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $e = new ConfigurationException(
             'test',

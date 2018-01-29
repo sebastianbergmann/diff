@@ -32,7 +32,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private $filePatch;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dir       = \realpath(__DIR__ . '/../../fixtures/out/') . '/';
         $this->fileFrom  = $this->dir . 'from.txt';
@@ -41,18 +41,31 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->cleanUpTempFiles();
     }
 
+    protected function tearDown(): void
+    {
+        $this->cleanUpTempFiles();
+    }
+
     /**
      * @dataProvider provideDiffWithLineNumbers
+     *
+     * @param mixed $expected
+     * @param mixed $from
+     * @param mixed $to
      */
-    public function testDiffWithLineNumbersPath($expected, $from, $to)
+    public function testDiffWithLineNumbersPath($expected, $from, $to): void
     {
         $this->doIntegrationTestPatch($expected, $from, $to);
     }
 
     /**
      * @dataProvider provideDiffWithLineNumbers
+     *
+     * @param mixed $expected
+     * @param mixed $from
+     * @param mixed $to
      */
-    public function testDiffWithLineNumbersGitApply($expected, $from, $to)
+    public function testDiffWithLineNumbersGitApply($expected, $from, $to): void
     {
         $this->doIntegrationTestGitApply($expected, $from, $to);
     }
@@ -68,12 +81,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         );
     }
 
-    protected function tearDown()
-    {
-        $this->cleanUpTempFiles();
-    }
-
-    private function doIntegrationTestPatch(string $diff, string $from, string $to)
+    private function doIntegrationTestPatch(string $diff, string $from, string $to): void
     {
         $this->assertNotSame('', $diff);
         $this->assertValidUnifiedDiffFormat($diff);
@@ -101,7 +109,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         );
     }
 
-    private function doIntegrationTestGitApply(string $diff, string $from, string $to)
+    private function doIntegrationTestGitApply(string $diff, string $from, string $to): void
     {
         $this->assertNotSame('', $diff);
         $this->assertValidUnifiedDiffFormat($diff);
@@ -123,7 +131,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertProcessSuccessful($p);
     }
 
-    private function assertProcessSuccessful(Process $p)
+    private function assertProcessSuccessful(Process $p): void
     {
         $this->assertTrue(
             $p->isSuccessful(),
@@ -137,7 +145,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         );
     }
 
-    private function cleanUpTempFiles()
+    private function cleanUpTempFiles(): void
     {
         @\unlink($this->fileFrom . '.orig');
         @\unlink($this->fileFrom);

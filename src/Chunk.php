@@ -71,7 +71,7 @@ final class Chunk
         return $this->lines;
     }
 
-    public function setLines(array $lines)
+    public function setLines(array $lines): void
     {
         $this->lines = $lines;
     }

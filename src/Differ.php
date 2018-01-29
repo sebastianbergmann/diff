@@ -60,7 +60,7 @@ final class Differ
      *
      * @param array|string                            $from
      * @param array|string                            $to
-     * @param LongestCommonSubsequenceCalculator|null $lcs
+     * @param null|LongestCommonSubsequenceCalculator $lcs
      *
      * @return string
      */
@@ -73,22 +73,6 @@ final class Differ
         );
 
         return $this->outputBuilder->getDiff($diff);
-    }
-
-    /**
-     * Casts variable to string if it is not a string or array.
-     *
-     * @param mixed $input
-     *
-     * @return string|array
-     */
-    private function normalizeDiffInput($input)
-    {
-        if (!\is_array($input) && !\is_string($input)) {
-            return (string) $input;
-        }
-
-        return $input;
     }
 
     /**
@@ -122,7 +106,7 @@ final class Differ
             throw new InvalidArgumentException('"to" must be an array or string.');
         }
 
-        list($from, $to, $start, $end) = self::getArrayDiffParted($from, $to);
+        [$from, $to, $start, $end] = self::getArrayDiffParted($from, $to);
 
         if ($lcs === null) {
             $lcs = $this->selectLcsImplementation($from, $to);
@@ -173,6 +157,22 @@ final class Differ
     }
 
     /**
+     * Casts variable to string if it is not a string or array.
+     *
+     * @param mixed $input
+     *
+     * @return array|string
+     */
+    private function normalizeDiffInput($input)
+    {
+        if (!\is_array($input) && !\is_string($input)) {
+            return (string) $input;
+        }
+
+        return $input;
+    }
+
+    /**
      * Checks if input is string, if so it will split it line-by-line.
      *
      * @param string $input
@@ -211,7 +211,7 @@ final class Differ
      * @param array $from
      * @param array $to
      *
-     * @return int|float
+     * @return float|int
      */
     private function calculateEstimatedFootprint(array $from, array $to)
     {

@@ -77,7 +77,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         ;
     }
 
-    private function writeDiffHunks($output, array $diff)
+    private function writeDiffHunks($output, array $diff): void
     {
         // detect "No newline at end of file" and insert into `$diff` if needed
 
@@ -224,7 +224,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         int $toStart,
         int $toRange,
         $output
-    ) {
+    ): void {
         if ($this->addLineNumbers) {
             \fwrite($output, '@@ -' . $fromStart);
 

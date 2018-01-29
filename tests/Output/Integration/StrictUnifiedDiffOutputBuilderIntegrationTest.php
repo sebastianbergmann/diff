@@ -36,7 +36,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private $filePatch;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dir       = \realpath(__DIR__ . '/../../fixtures/out') . '/';
         $this->fileFrom  = $this->dir . 'from.txt';
@@ -47,6 +47,11 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
             throw new \RuntimeException('Integration test working directory not found.');
         }
 
+        $this->cleanUpTempFiles();
+    }
+
+    protected function tearDown(): void
+    {
         $this->cleanUpTempFiles();
     }
 
@@ -63,7 +68,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      *
      * @dataProvider provideFilePairs
      */
-    public function testIntegrationUsingPHPFileInVendorGitApply(string $fileFrom, string $fileTo)
+    public function testIntegrationUsingPHPFileInVendorGitApply(string $fileFrom, string $fileTo): void
     {
         $from = FileUtils::getFileContent($fileFrom);
         $to   = FileUtils::getFileContent($fileTo);
@@ -93,7 +98,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      *
      * @dataProvider provideFilePairs
      */
-    public function testIntegrationUsingPHPFileInVendorPatch(string $fileFrom, string $fileTo)
+    public function testIntegrationUsingPHPFileInVendorPatch(string $fileFrom, string $fileTo): void
     {
         $from = FileUtils::getFileContent($fileFrom);
         $to   = FileUtils::getFileContent($fileTo);
@@ -119,7 +124,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      * @dataProvider provideSample
      * @dataProvider provideBasicDiffGeneration
      */
-    public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to)
+    public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to): void
     {
         $this->doIntegrationTestGitApply($expected, $from, $to);
     }
@@ -133,7 +138,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      * @dataProvider provideSample
      * @dataProvider provideBasicDiffGeneration
      */
-    public function testIntegrationOfUnitTestCasesPatch(string $expected, string $from, string $to)
+    public function testIntegrationOfUnitTestCasesPatch(string $expected, string $from, string $to): void
     {
         $this->doIntegrationTestPatch($expected, $from, $to);
     }
@@ -184,7 +189,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      *
      * @dataProvider provideBasicDiffGeneration
      */
-    public function testIntegrationDiffOutputBuilderVersusDiffCommand(string $diff, string $from, string $to)
+    public function testIntegrationDiffOutputBuilderVersusDiffCommand(string $diff, string $from, string $to): void
     {
         $this->assertNotSame('', $diff);
         $this->assertValidUnifiedDiffFormat($diff);
@@ -211,7 +216,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertSame($diff, $output);
     }
 
-    private function doIntegrationTestGitApply(string $diff, string $from, string $to)
+    private function doIntegrationTestGitApply(string $diff, string $from, string $to): void
     {
         $this->assertNotSame('', $diff);
         $this->assertValidUnifiedDiffFormat($diff);
@@ -232,7 +237,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertProcessSuccessful($p);
     }
 
-    private function doIntegrationTestPatch(string $diff, string $from, string $to)
+    private function doIntegrationTestPatch(string $diff, string $from, string $to): void
     {
         $this->assertNotSame('', $diff);
         $this->assertValidUnifiedDiffFormat($diff);
@@ -260,12 +265,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         );
     }
 
-    protected function tearDown()
-    {
-        $this->cleanUpTempFiles();
-    }
-
-    private function assertProcessSuccessful(Process $p)
+    private function assertProcessSuccessful(Process $p): void
     {
         $this->assertTrue(
             $p->isSuccessful(),
@@ -279,7 +279,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         );
     }
 
-    private function cleanUpTempFiles()
+    private function cleanUpTempFiles(): void
     {
         @\unlink($this->fileFrom . '.orig');
         @\unlink($this->fileFrom . '.rej');

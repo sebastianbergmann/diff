@@ -32,7 +32,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
      */
     private $stress_sizes = [1, 2, 3, 100, 500, 1000, 2000];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->memoryLimit = \ini_get('memory_limit');
         \ini_set('memory_limit', '256M');
@@ -40,17 +40,12 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->implementation = $this->createImplementation();
     }
 
-    /**
-     * @return LongestCommonSubsequenceCalculator
-     */
-    abstract protected function createImplementation(): LongestCommonSubsequenceCalculator;
-
-    protected function tearDown()
+    protected function tearDown(): void
     {
         \ini_set('memory_limit', $this->memoryLimit);
     }
 
-    public function testBothEmpty()
+    public function testBothEmpty(): void
     {
         $from   = [];
         $to     = [];
@@ -59,7 +54,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->assertSame([], $common);
     }
 
-    public function testIsStrictComparison()
+    public function testIsStrictComparison(): void
     {
         $from = [
             false, 0, 0.0, '', null, [],
@@ -85,7 +80,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->assertSame($expected, $common);
     }
 
-    public function testEqualSequences()
+    public function testEqualSequences(): void
     {
         foreach ($this->stress_sizes as $size) {
             $range  = \range(1, $size);
@@ -97,7 +92,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         }
     }
 
-    public function testDistinctSequences()
+    public function testDistinctSequences(): void
     {
         $from   = ['A'];
         $to     = ['B'];
@@ -117,7 +112,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         }
     }
 
-    public function testCommonSubsequence()
+    public function testCommonSubsequence(): void
     {
         $from     = ['A',      'C',      'E', 'F', 'G'];
         $to       = ['A', 'B',      'D', 'E',           'H'];
@@ -141,7 +136,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         }
     }
 
-    public function testSingleElementSubsequenceAtStart()
+    public function testSingleElementSubsequenceAtStart(): void
     {
         foreach ($this->stress_sizes as $size) {
             $from   = \range(1, $size);
@@ -152,7 +147,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         }
     }
 
-    public function testSingleElementSubsequenceAtMiddle()
+    public function testSingleElementSubsequenceAtMiddle(): void
     {
         foreach ($this->stress_sizes as $size) {
             $from   = \range(1, $size);
@@ -163,7 +158,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         }
     }
 
-    public function testSingleElementSubsequenceAtEnd()
+    public function testSingleElementSubsequenceAtEnd(): void
     {
         foreach ($this->stress_sizes as $size) {
             $from   = \range(1, $size);
@@ -174,7 +169,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         }
     }
 
-    public function testReversedSequences()
+    public function testReversedSequences(): void
     {
         $from     = ['A', 'B'];
         $to       = ['B', 'A'];
@@ -191,11 +186,16 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         }
     }
 
-    public function testStrictTypeCalculate()
+    public function testStrictTypeCalculate(): void
     {
         $diff = $this->implementation->calculate(['5'], ['05']);
 
         $this->assertInternalType('array', $diff);
         $this->assertCount(0, $diff);
     }
+
+    /**
+     * @return LongestCommonSubsequenceCalculator
+     */
+    abstract protected function createImplementation(): LongestCommonSubsequenceCalculator;
 }

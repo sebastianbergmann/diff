@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class DiffTest extends TestCase
 {
-    public function testGettersAfterConstructionWithDefault()
+    public function testGettersAfterConstructionWithDefault(): void
     {
         $from = 'line1a';
         $to   = 'line2a';
@@ -30,7 +30,7 @@ final class DiffTest extends TestCase
         $this->assertSame([], $diff->getChunks(), 'Expect chunks to be default value "array()".');
     }
 
-    public function testGettersAfterConstructionWithChunks()
+    public function testGettersAfterConstructionWithChunks(): void
     {
         $from   = 'line1b';
         $to     = 'line2b';
@@ -43,7 +43,7 @@ final class DiffTest extends TestCase
         $this->assertSame($chunks, $diff->getChunks(), 'Expect chunks to be passed value.');
     }
 
-    public function testSetChunksAfterConstruction()
+    public function testSetChunksAfterConstruction(): void
     {
         $diff = new Diff('line1c', 'line2c');
         $this->assertSame([], $diff->getChunks(), 'Expect chunks to be default value "array()".');

@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class InvalidArgumentExceptionTest extends TestCase
 {
-    public function testInvalidArgumentException()
+    public function testInvalidArgumentException(): void
     {
         $previousException = new \LogicException();
         $message           = 'test';

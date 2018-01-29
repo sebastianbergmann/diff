@@ -17,7 +17,7 @@ final class ConfigurationException extends InvalidArgumentException
      * @param string          $expected
      * @param mixed           $value
      * @param int             $code
-     * @param \Exception|null $previous
+     * @param null|\Exception $previous
      */
     public function __construct(
         string $option,

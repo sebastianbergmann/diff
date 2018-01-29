@@ -129,7 +129,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         ;
     }
 
-    private function writeDiffHunks($output, array $diff)
+    private function writeDiffHunks($output, array $diff): void
     {
         // detect "No newline at end of file" and insert into `$diff` if needed
 
@@ -278,7 +278,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         int $toStart,
         int $toRange,
         $output
-    ) {
+    ): void {
         \fwrite($output, '@@ -' . $fromStart);
 
         if (!$this->collapseRanges || 1 !== $fromRange) {
