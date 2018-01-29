@@ -153,6 +153,7 @@ A;
     /**
      * @param string $diff
      * @param Diff[] $expected
+     *
      * @dataProvider diffProvider
      */
     public function testParser(string $diff, array $expected)
