@@ -55,8 +55,7 @@ final class UnifiedDiffOutputBuilderDataProvider
 -
  A
  1
-'
-                ,
+',
                 "\n\nA\n1",
                 "A\n1",
             ],

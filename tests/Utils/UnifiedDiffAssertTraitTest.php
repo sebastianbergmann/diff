@@ -101,7 +101,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  " . '
-');
+'
+        );
     }
 
     public function testInvalidStartHeader4(): void
@@ -116,7 +117,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-');
+'
+        );
     }
 
     public function testInvalidLine1(): void
@@ -131,7 +133,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -Z
 1
 +U
-');
+'
+        );
     }
 
     public function testInvalidLine2(): void
@@ -145,7 +148,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ -8 +8 @@
 
 
-');
+'
+        );
     }
 
     public function testHunkInvalidFormat(): void
@@ -159,7 +163,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ INVALID -1,1 +1,1 @@
 -Z
 +U
-');
+'
+        );
     }
 
     public function testHunkOverlapFrom(): void
@@ -176,7 +181,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ -7,1 +9,1 @@
 -Z
 +U
-');
+'
+        );
     }
 
     public function testHunkOverlapTo(): void
@@ -193,7 +199,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ -17,1 +7,1 @@
 -Z
 +U
-');
+'
+        );
     }
 
     public function testExpectHunk1(): void
@@ -208,7 +215,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -Z
 +U
 +O
-');
+'
+        );
     }
 
     public function testExpectHunk2(): void
@@ -223,7 +231,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
  ' . '
  ' . '
 @@ -38,12 +48,12 @@
-');
+'
+        );
     }
 
     public function testMisplacedLineAfterComments1(): void
@@ -240,7 +249,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 +U
 \ No newline at end of file
 +A
-');
+'
+        );
     }
 
     public function testMisplacedLineAfterComments2(): void
@@ -256,7 +266,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 \ No newline at end of file
 \ No newline at end of file
-');
+'
+        );
     }
 
     public function testMisplacedLineAfterComments3(): void
@@ -272,7 +283,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 \ No newline at end of file
 +A
-');
+'
+        );
     }
 
     public function testMisplacedComment(): void
@@ -282,7 +294,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 
         $this->assertValidUnifiedDiffFormat(
 '\ No newline at end of file
-');
+'
+        );
     }
 
     public function testUnexpectedDuplicateNoNewLineEOF(): void
@@ -299,7 +312,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
  ' . '
 \ No newline at end of file
-');
+'
+        );
     }
 
     public function testFromAfterClose(): void
@@ -315,7 +329,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 -A
 \ No newline at end of file
-');
+'
+        );
     }
 
     public function testSameAfterFromClose(): void
@@ -331,7 +346,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
  A
 \ No newline at end of file
-');
+'
+        );
     }
 
     public function testToAfterClose(): void
@@ -347,7 +363,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 +A
 \ No newline at end of file
-');
+'
+        );
     }
 
     public function testSameAfterToClose(): void
@@ -363,7 +380,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
  A
 \ No newline at end of file
-');
+'
+        );
     }
 
     public function testUnexpectedEOFFromMissingLines(): void
@@ -378,7 +396,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-');
+'
+        );
     }
 
     public function testUnexpectedEOFToMissingLines(): void
@@ -393,7 +412,8 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-');
+'
+        );
     }
 
     public function testUnexpectedEOFBothFromAndToMissingLines(): void
@@ -408,6 +428,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-');
+'
+        );
     }
 }
