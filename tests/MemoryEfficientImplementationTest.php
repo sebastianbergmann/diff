@@ -15,7 +15,7 @@ namespace SebastianBergmann\Diff;
  */
 final class MemoryEfficientImplementationTest extends LongestCommonSubsequenceTest
 {
-    protected function createImplementation()
+    protected function createImplementation(): LongestCommonSubsequenceCalculator
     {
         return new MemoryEfficientLongestCommonSubsequenceCalculator;
     }

@@ -27,6 +27,7 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
      * @param string $from
      * @param string $to
      * @param string $header
+     *
      * @dataProvider headerProvider
      */
     public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header)
@@ -73,6 +74,7 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
      * @param string $expected
      * @param string $from
      * @param string $to
+     *
      * @dataProvider provideDiffWithLineNumbers
      */
     public function testDiffWithLineNumbers($expected, $from, $to)

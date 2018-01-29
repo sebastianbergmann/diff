@@ -37,6 +37,7 @@ final class DifferTest extends TestCase
      * @param array        $expected
      * @param string|array $from
      * @param string|array $to
+     *
      * @dataProvider arrayProvider
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to)
@@ -48,6 +49,7 @@ final class DifferTest extends TestCase
      * @param string $expected
      * @param string $from
      * @param string $to
+     *
      * @dataProvider textProvider
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(string $expected, string $from, string $to)
@@ -59,6 +61,7 @@ final class DifferTest extends TestCase
      * @param array        $expected
      * @param string|array $from
      * @param string|array $to
+     *
      * @dataProvider arrayProvider
      */
     public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to)
@@ -70,6 +73,7 @@ final class DifferTest extends TestCase
      * @param string $expected
      * @param string $from
      * @param string $to
+     *
      * @dataProvider textProvider
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(string $expected, string $from, string $to)
@@ -344,6 +348,7 @@ EOF
     /**
      * @param array  $expected
      * @param string $input
+     *
      * @dataProvider provideSplitStringByLinesCases
      */
     public function testSplitStringByLines(array $expected, string $input)

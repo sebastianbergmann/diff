@@ -43,7 +43,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     /**
      * @return LongestCommonSubsequenceCalculator
      */
-    abstract protected function createImplementation();
+    abstract protected function createImplementation(): LongestCommonSubsequenceCalculator;
 
     protected function tearDown()
     {
