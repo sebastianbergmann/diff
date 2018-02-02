@@ -27,12 +27,13 @@ print $differ->diff('foo', 'bar');
 ```
 
 The code above yields the output below:
-
-    --- Original
-    +++ New
-    @@ @@
-    -foo
-    +bar
+```diff
+--- Original
++++ New
+@@ @@
+-foo
++bar
+```
 
 There are three output builders available in this package:
 
