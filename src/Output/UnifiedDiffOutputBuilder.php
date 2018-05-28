@@ -54,6 +54,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         if ('' !== $this->header) {
             \fwrite($buffer, $this->header);
+
             if ("\n" !== \substr($this->header, -1, 1)) {
                 \fwrite($buffer, "\n");
             }
@@ -85,6 +86,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         if (0 === $diff[$upperLimit - 1][1]) {
             $lc = \substr($diff[$upperLimit - 1][0], -1);
+
             if ("\n" !== $lc) {
                 \array_splice($diff, $upperLimit, 0, [["\n\\ No newline at end of file\n", Differ::NO_LINE_END_EOF_WARNING]]);
             }
@@ -92,10 +94,12 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             // search back for the last `+` and `-` line,
             // check if has trailing linebreak, else add under it warning under it
             $toFind = [1 => true, 2 => true];
+
             for ($i = $upperLimit - 1; $i >= 0; --$i) {
                 if (isset($toFind[$diff[$i][1]])) {
                     unset($toFind[$diff[$i][1]]);
                     $lc = \substr($diff[$i][0], -1);
+
                     if ("\n" !== $lc) {
                         \array_splice($diff, $i + 1, 0, [["\n\\ No newline at end of file\n", Differ::NO_LINE_END_EOF_WARNING]]);
                     }
@@ -233,6 +237,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             }
 
             \fwrite($output, ' +' . $toStart);
+
             if (!$this->collapseRanges || 1 !== $toRange) {
                 \fwrite($output, ',' . $toRange);
             }

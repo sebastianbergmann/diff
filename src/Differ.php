@@ -272,6 +272,7 @@ final class Differ
         }
 
         $lc = \substr($line, -1);
+
         if ("\r" === $lc) {
             return "\r";
         }

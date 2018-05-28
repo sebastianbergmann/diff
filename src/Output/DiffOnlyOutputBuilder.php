@@ -34,6 +34,7 @@ final class DiffOnlyOutputBuilder implements DiffOutputBuilderInterface
 
         if ('' !== $this->header) {
             \fwrite($buffer, $this->header);
+
             if ("\n" !== \substr($this->header, -1, 1)) {
                 \fwrite($buffer, "\n");
             }
@@ -53,6 +54,7 @@ final class DiffOnlyOutputBuilder implements DiffOutputBuilderInterface
             }
 
             $lc = \substr($diffEntry[0], -1);
+
             if ($lc !== "\n" && $lc !== "\r") {
                 \fwrite($buffer, "\n"); // \No newline at end of file
             }

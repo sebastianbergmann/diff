@@ -27,6 +27,7 @@ trait UnifiedDiffAssertTrait
 
         // test diff ends with a line break
         $last = \substr($diff, -1);
+
         if ("\n" !== $last && "\r" !== $last) {
             throw new \UnexpectedValueException(\sprintf('Expected diff to end with a line break, got "%s".', $last));
         }
@@ -130,6 +131,7 @@ trait UnifiedDiffAssertTrait
                 }
 
                 $previousType = $this->unifiedDiffAssertLinePrefix($lines[$lineNumber - 2], \sprintf('Preceding line of "\\ No newline at end of file" of unexpected format. Line %d.', $lineNumber));
+
                 if (isset($endOfLineTypes[$previousType])) {
                     throw new \UnexpectedValueException(\sprintf('Unexpected "\\ No newline at end of file", "%s" was already closed. Line %d.', $type, $lineNumber));
                 }
@@ -190,6 +192,7 @@ trait UnifiedDiffAssertTrait
     private function unifiedDiffAssertStrLength(string $line, int $min, string $message): void
     {
         $length = \strlen($line);
+
         if ($length < $min) {
             throw new \UnexpectedValueException(\sprintf('Expected string length of minimal %d, got %d. %s', $min, $length, $message));
         }
