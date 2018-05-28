@@ -14,17 +14,31 @@ return PhpCsFixer\Config::create()
         [
             'array_syntax' => ['syntax' => 'short'],
             'binary_operator_spaces' => [
-                'align_double_arrow' => true,
-                'align_equals' => true
+                'operators' => [
+                    '=' => 'align',
+                    '=>' => 'align',
+                ],
             ],
             'blank_line_after_namespace' => true,
             'blank_line_before_statement' => [
                 'statements' => [
                     'break',
                     'continue',
+                    'declare',
+                    'do',
+                    'for',
+                    'foreach',
+                    'if',
+                    'include',
+                    'include_once',
+                    'require',
+                    'require_once',
                     'return',
+                    'switch',
                     'throw',
                     'try',
+                    'while',
+                    'yield',
                 ],
             ],
             'braces' => true,
@@ -58,7 +72,7 @@ return PhpCsFixer\Config::create()
             'no_empty_comment' => true,
             'no_empty_phpdoc' => true,
             'no_empty_statement' => true,
-            'no_extra_consecutive_blank_lines' => true,
+            'no_extra_blank_lines' => true,
             'no_homoglyph_names' => true,
             'no_leading_import_slash' => true,
             'no_leading_namespace_whitespace' => true,
@@ -91,9 +105,13 @@ return PhpCsFixer\Config::create()
                     'constant_public',
                     'constant_protected',
                     'constant_private',
+                    'property_public_static',
+                    'property_protected_static',
+                    'property_private_static',
                     'property_public',
                     'property_protected',
                     'property_private',
+                    'method_public_static',
                     'construct',
                     'destruct',
                     'magic',
@@ -101,6 +119,8 @@ return PhpCsFixer\Config::create()
                     'method_public',
                     'method_protected',
                     'method_private',
+                    'method_protected_static',
+                    'method_private_static',
                 ],
             ],
             'ordered_imports' => true,
@@ -145,5 +165,4 @@ return PhpCsFixer\Config::create()
         ->files()
         ->in(__DIR__ . '/src')
         ->in(__DIR__ . '/tests')
-        ->name('*.php')
     );
