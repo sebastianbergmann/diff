@@ -18,7 +18,7 @@ exemptProjects: false
 exemptMilestones: false
 
 # Label to use when marking as stale
-staleLabel: stale
+staleLabel: wontfix
 
 # Comment to post when marking as stale. Set to `false` to disable
 markComment: >
