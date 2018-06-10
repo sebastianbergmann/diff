@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [3.0.1] - 2018-06-10
+
+### Fixed
+
+* Removed `"minimum-stability": "dev",` from `composer.json`
+
 ## [3.0.0] - 2018-02-01
 
 * The `StrictUnifiedDiffOutputBuilder` implementation of the `DiffOutputBuilderInterface` was added
@@ -34,6 +40,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
+[3.0.1]: https://github.com/sebastianbergmann/diff/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/sebastianbergmann/diff/compare/2.0...3.0.0
 [2.0.1]: https://github.com/sebastianbergmann/diff/compare/c341c98ce083db77f896a0aa64f5ee7652915970...2.0.1
 [2.0.0]: https://github.com/sebastianbergmann/diff/compare/1.4...c341c98ce083db77f896a0aa64f5ee7652915970
