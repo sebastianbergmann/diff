@@ -22,7 +22,7 @@ use Symfony\Component\Process\Process;
  * @uses SebastianBergmann\Diff\Differ
  * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  *
- * @requires OS Linux
+ * @requires OSFamily Linux
  */
 final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {

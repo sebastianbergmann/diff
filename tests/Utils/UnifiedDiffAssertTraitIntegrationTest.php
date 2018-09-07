@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
 
 /**
- * @requires OS Linux
+ * @requires OSFamily Linux
  *
  * @coversNothing
  */
