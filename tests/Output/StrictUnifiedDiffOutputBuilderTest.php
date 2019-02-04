@@ -19,6 +19,8 @@ use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
  * @covers SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
  * @uses SebastianBergmann\Diff\Differ
+ * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses SebastianBergmann\Diff\ConfigurationException
  */
 final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 {

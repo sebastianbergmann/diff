@@ -14,6 +14,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers SebastianBergmann\Diff\Chunk
+ *
+ * @uses SebastianBergmann\Diff\Line
  */
 final class ChunkTest extends TestCase
 {
