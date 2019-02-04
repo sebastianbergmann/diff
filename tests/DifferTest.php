@@ -426,24 +426,6 @@ EOF
         ];
     }
 
-    public function testConstructorNull(): void
-    {
-        $this->assertAttributeInstanceOf(
-            UnifiedDiffOutputBuilder::class,
-            'outputBuilder',
-            new Differ(null)
-        );
-    }
-
-    public function testConstructorString(): void
-    {
-        $this->assertAttributeInstanceOf(
-            UnifiedDiffOutputBuilder::class,
-            'outputBuilder',
-            new Differ("--- Original\n+++ New\n")
-        );
-    }
-
     public function testConstructorInvalidArgInt(): void
     {
         $this->expectException(InvalidArgumentException::class);

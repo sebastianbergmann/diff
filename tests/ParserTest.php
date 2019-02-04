@@ -38,12 +38,10 @@ final class ParserTest extends TestCase
 
         $diffs = $this->parser->parse($content);
 
-        $this->assertInternalType('array', $diffs);
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
         $chunks = $diffs[0]->getChunks();
-        $this->assertInternalType('array', $chunks);
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
 
         $this->assertCount(1, $chunks);
@@ -85,13 +83,11 @@ index abcdefg..abcdefh 100644
 -B
 END;
         $diffs = $this->parser->parse($content);
-        $this->assertInternalType('array', $diffs);
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
         $chunks = $diffs[0]->getChunks();
 
-        $this->assertInternalType('array', $chunks);
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(1, $chunks);
 
@@ -102,7 +98,6 @@ END;
         $this->assertSame(8, $chunk->getEndRange());
 
         $lines = $chunk->getLines();
-        $this->assertInternalType('array', $lines);
         $this->assertContainsOnlyInstancesOf(Line::class, $lines);
         $this->assertCount(2, $lines);
 
