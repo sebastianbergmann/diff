@@ -79,6 +79,12 @@ final class Chunk
      */
     public function setLines(array $lines): void
     {
+        foreach ($lines as $line) {
+            if (!$line instanceof Line) {
+                throw new InvalidArgumentException;
+            }
+        }
+
         $this->lines = $lines;
     }
 }
