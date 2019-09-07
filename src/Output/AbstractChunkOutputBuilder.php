@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
 {

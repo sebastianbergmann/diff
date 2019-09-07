@@ -8,17 +8,17 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\Diff\Differ;
+use Localheinz\Diff\Differ;
 
 /**
- * @covers SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
+ * @covers Localheinz\Diff\Output\UnifiedDiffOutputBuilder
  *
- * @uses SebastianBergmann\Diff\Differ
- * @uses SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
- * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses Localheinz\Diff\Differ
+ * @uses Localheinz\Diff\Output\AbstractChunkOutputBuilder
+ * @uses Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff;
+namespace Localheinz\Diff;
 
 use PHPUnit\Framework\TestCase;
 

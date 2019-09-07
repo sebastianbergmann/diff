@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
-use SebastianBergmann\Diff\Differ;
+use Localheinz\Diff\Differ;
 
 /**
  * Builds a diff string representation in unified diff format in chunks.

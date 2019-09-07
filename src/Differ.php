@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff;
+namespace Localheinz\Diff;
 
-use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
+use Localheinz\Diff\Output\DiffOutputBuilderInterface;
+use Localheinz\Diff\Output\UnifiedDiffOutputBuilder;
 
 /**
  * Diff implementation.

@@ -1,6 +1,6 @@
 {
-    "name": "sebastian/diff",
-    "description": "Diff implementation",
+    "name": "localheinz/diff",
+    "description": "Fork of sebastian/diff for use with localheinz/composer-normalize",
     "keywords": ["diff", "udiff", "unidiff", "unified diff"],
     "homepage": "https://github.com/sebastianbergmann/diff",
     "license": "BSD-3-Clause",

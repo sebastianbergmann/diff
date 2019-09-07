@@ -8,20 +8,20 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Utils\FileUtils;
-use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
+use Localheinz\Diff\Differ;
+use Localheinz\Diff\Utils\FileUtils;
+use Localheinz\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
 
 /**
- * @covers SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
+ * @covers Localheinz\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
- * @uses SebastianBergmann\Diff\Differ
- * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- * @uses SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ * @uses Localheinz\Diff\Differ
+ * @uses Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses Localheinz\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
  *
  * @requires OS Linux
  */
