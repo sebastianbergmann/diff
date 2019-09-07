@@ -1,23 +1,26 @@
 language: php
 
+env:
+  global:
+    - secure: "Qh1la5ftgwh6pGgNZaAxnCdIIj8sANQifZYtHubaOeadSj1IjNndfgVtYBr2sx+ID/CO5DcLsVvpZJgyDIO8+jGCCXAxWiaXcMoEEc38CJpW+aQfhoZ15gkAHrmWh1u9T8fcrCizjtq7OzUS7Huc8D7g1uGFieP5PR//ywFOH3Gn9J2tzJwxIJoq0hqIBcW/BmbNVbHr9WFyU1L6L/lTLVgt9xadypo0Y3B36vkOPuq5TsqoJ+rbmLWRn2KGK2/PXzuNEfSRV2HGaYtyyYtLKYr3F+Dem7ckF6Zyjh6QqfHECxZkywdBRx/8SztZJAa0cUwIMSllBkYon4aLfSWvyRQJWEbZhCUFEacJIF8mZnhi/rXNakbJOySqiQWBL2PFJ0K51nWbHfYKNS71Z5chXav6dkQSxXKCDzARXmx3L8rpIJ2tXuWmcnR0Zn11EDzaPp65IpL1W3zlAxEKCmfW1XKiU8n0D72/8fqTXgrbbJ62VieclSW0rqJLXj040+r6zHACNJ1DN6UAuvanSnQ/CeewtFLlYxzt1QfROb5gKRTFsg4Dk3Lg1gEn6ZLPsrmvILxzLJV0C9UjRowlJ72EFE1TiRsXyMxW80I2CrPOtOrEswV5yHhZlZsT3SpBqtixr/o2dNtoogzbzarGL/vH9tmKH115LamzenpU0ZYCXnU="
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 php:
   - 7.1
   - 7.2
   - 7.3
-  - 7.4snapshot
 
 before_install:
-  - composer self-update
-  - composer clear-cache
+  - phpenv config-rm xdebug.ini
 
 install:
-  - travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable
+  - composer update --no-ansi --no-interaction --no-progress --no-suggest --optimize-autoloader --prefer-stable
 
 script:
-  - ./vendor/bin/phpunit --coverage-clover=coverage.xml
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - ./vendor/bin/phpunit
 
 notifications:
   email: false

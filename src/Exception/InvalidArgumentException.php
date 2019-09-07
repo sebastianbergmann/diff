@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff;
+namespace Localheinz\Diff;
 
 class InvalidArgumentException extends \InvalidArgumentException implements Exception
 {

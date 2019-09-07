@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\Utils;
+namespace Localheinz\Diff\Utils;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
