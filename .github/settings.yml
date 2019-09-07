@@ -1,0 +1,37 @@
+# https://github.com/probot/settings
+
+branches:
+  - name: master
+    protection:
+      enforce_admins: false
+      required_pull_request_reviews:
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true
+        required_approving_review_count: 1
+      required_status_checks:
+        contexts:
+          - "Travis CI - Branch"
+          - "Travis CI - Pull Request"
+        strict: false
+      restrictions: null
+
+labels:
+  - name: bug
+    color: ee0701
+
+  - name: enhancement
+    color: 0e8a16
+
+repository:
+  allow_merge_commit: true
+  allow_rebase_merge: false
+  allow_squash_merge: false
+  default_branch: master
+  description: "::fork_and_knife:Fork of sebastian/diff for use with localheinz/composer-normalize."
+  has_downloads: true
+  has_issues: false
+  has_pages: false
+  has_projects: false
+  has_wiki: false
+  name: diff
+  private: false

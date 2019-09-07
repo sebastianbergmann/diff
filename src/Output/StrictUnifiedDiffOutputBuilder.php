@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
-use SebastianBergmann\Diff\ConfigurationException;
-use SebastianBergmann\Diff\Differ;
+use Localheinz\Diff\ConfigurationException;
+use Localheinz\Diff\Differ;
 
 /**
  * Strict Unified diff output builder.
