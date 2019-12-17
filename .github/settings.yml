@@ -27,7 +27,7 @@ repository:
   allow_rebase_merge: false
   allow_squash_merge: false
   default_branch: master
-  description: ":fork_and_knife: Fork of sebastian/diff for use with localheinz/composer-normalize."
+  description: ":fork_and_knife: Fork of sebastian/diff for use with ergebnis/composer-normalize."
   has_downloads: true
   has_issues: false
   has_pages: false
