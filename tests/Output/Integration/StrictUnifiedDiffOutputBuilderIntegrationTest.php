@@ -203,7 +203,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
             null,
             [
                 'from' => $this->fileFrom,
-                'to' => $this->fileTo,
+                'to'   => $this->fileTo,
             ]
         );
 
@@ -238,7 +238,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $p->run(
             null,
             [
-                'dir' => $this->dir,
+                'dir'   => $this->dir,
                 'patch' => $this->filePatch,
             ]
         );
@@ -260,7 +260,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $p->run(
             null,
             [
-                'from' => $this->fileFrom,
+                'from'  => $this->fileFrom,
                 'patch' => $this->filePatch,
             ]
         );

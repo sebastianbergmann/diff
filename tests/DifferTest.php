@@ -11,7 +11,6 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 /**
  * @covers SebastianBergmann\Diff\Differ

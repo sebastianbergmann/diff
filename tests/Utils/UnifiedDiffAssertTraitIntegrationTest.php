@@ -48,8 +48,8 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         $p->run(
             null,
             [
-                'from' => \realpath($fileFrom),
-                'to' => \realpath($fileTo),
+                'from'  => \realpath($fileFrom),
+                'to'    => \realpath($fileTo),
                 'patch' => $this->filePatch,
             ]
         );
