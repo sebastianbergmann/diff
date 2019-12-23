@@ -275,7 +275,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 
         $diff = $differ->diff("A\nB\n", "A\nX\n");
         $this->assertSame(
-'--- input.txt
+            '--- input.txt
 +++ output.txt
 @@ -1,2 +1,2 @@
  A

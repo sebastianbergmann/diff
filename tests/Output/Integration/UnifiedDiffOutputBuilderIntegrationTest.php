@@ -95,7 +95,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $p->run(
             null,
             [
-                'from' => $this->fileFrom,
+                'from'  => $this->fileFrom,
                 'patch' => $this->filePatch,
             ]
         );
@@ -123,7 +123,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $p->run(
             null,
             [
-                'dir' => $this->dir,
+                'dir'   => $this->dir,
                 'patch' => $this->filePatch,
             ]
         );

@@ -95,7 +95,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Date of header line does not match expected pattern, got "[invalid date]". Line 1.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-"--- Original\t[invalid date]
+            "--- Original\t[invalid date]
 +++ New
 @@ -1,2 +1,2 @@
 -A
@@ -111,7 +111,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote("Expected header line to start with \"+++  \", got \"+++INVALID\n\". Line 2.", '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++INVALID
 @@ -1,2 +1,2 @@
 -A
@@ -127,7 +127,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote("Expected line to start with '@', '-' or '+', got \"1\n\". Line 5.", '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8 +8 @@
 -Z
@@ -143,7 +143,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Expected string length of minimal 2, got 1. Line 4.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8 +8 @@
 
@@ -158,7 +158,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote("Hunk header line does not match expected pattern, got \"@@ INVALID -1,1 +1,1 @@\n\". Line 3.", '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ INVALID -1,1 +1,1 @@
 -Z
@@ -173,7 +173,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected new hunk; "from" (\'-\') start overlaps previous hunk. Line 6.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8,1 +8,1 @@
 -Z
@@ -191,7 +191,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected new hunk; "to" (\'+\') start overlaps previous hunk. Line 6.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8,1 +8,1 @@
 -Z
@@ -209,7 +209,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Expected hunk start (\'@\'), got "+". Line 6.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8 +8 @@
 -Z
@@ -225,7 +225,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected hunk start (\'@\'). Line 6.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8,12 +8,12 @@
  ' . '
@@ -241,7 +241,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected line as 2 "No newline" markers have found, ". Line 8.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8 +8 @@
 -Z
@@ -259,7 +259,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected line as 2 "No newline" markers have found, ". Line 7.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8 +8 @@
 +U
@@ -276,7 +276,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected line as 2 "No newline" markers have found, ". Line 7.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8 +8 @@
 +U
@@ -293,7 +293,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected "\ No newline at end of file", it must be preceded by \'+\' or \'-\' line. Line 1.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'\ No newline at end of file
+            '\ No newline at end of file
 '
         );
     }
@@ -304,7 +304,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected "\\ No newline at end of file", "\\" was already closed. Line 8.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8,12 +8,12 @@
  ' . '
@@ -322,7 +322,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Not expected from (\'-\'), already closed by "\ No newline at end of file". Line 6.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8,12 +8,12 @@
 -A
@@ -390,7 +390,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected EOF, number of lines in hunk "from" (\'-\')) mismatched. Line 7.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8,19 +7,2 @@
 -A
@@ -406,7 +406,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected EOF, number of lines in hunk "to" (\'+\')) mismatched. Line 7.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -8,2 +7,3 @@
 -A
@@ -422,7 +422,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
         $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote('Unexpected EOF, number of lines in hunk "from" (\'-\')) and "to" (\'+\') mismatched. Line 7.', '#')));
 
         $this->assertValidUnifiedDiffFormat(
-'--- Original
+            '--- Original
 +++ New
 @@ -1,12 +1,14 @@
 -A
