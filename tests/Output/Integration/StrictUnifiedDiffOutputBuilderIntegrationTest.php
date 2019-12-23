@@ -198,8 +198,15 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertNotFalse(\file_put_contents($this->fileFrom, $from));
         $this->assertNotFalse(\file_put_contents($this->fileTo, $to));
 
-        $p = new Process(\sprintf('diff -u %s %s', \escapeshellarg($this->fileFrom), \escapeshellarg($this->fileTo)));
-        $p->run();
+        $p = Process::fromShellCommandline('diff -u $from $to');
+        $p->run(
+            null,
+            [
+                'from' => $this->fileFrom,
+                'to' => $this->fileTo,
+            ]
+        );
+
         $this->assertSame(1, $p->getExitCode()); // note: Process assumes exit code 0 for `isSuccessful`, however `diff` uses the exit code `1` for success with diff
 
         $output = $p->getOutput();
@@ -227,13 +234,14 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertNotFalse(\file_put_contents($this->fileFrom, $from));
         $this->assertNotFalse(\file_put_contents($this->filePatch, $diff));
 
-        $p = new Process(\sprintf(
-            'git --git-dir %s apply --check -v --unsafe-paths --ignore-whitespace %s',
-            \escapeshellarg($this->dir),
-            \escapeshellarg($this->filePatch)
-        ));
-
-        $p->run();
+        $p = Process::fromShellCommandline('git --git-dir $dir apply --check -v --unsafe-paths --ignore-whitespace $patch');
+        $p->run(
+            null,
+            [
+                'dir' => $this->dir,
+                'patch' => $this->filePatch,
+            ]
+        );
 
         $this->assertProcessSuccessful($p);
     }
@@ -248,21 +256,21 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertNotFalse(\file_put_contents($this->fileFrom, $from));
         $this->assertNotFalse(\file_put_contents($this->filePatch, $diff));
 
-        $command = \sprintf(
-            'patch -u --verbose --posix %s < %s',
-            \escapeshellarg($this->fileFrom),
-            \escapeshellarg($this->filePatch)
+        $p = Process::fromShellCommandline('patch -u --verbose --posix $from < $patch');
+        $p->run(
+            null,
+            [
+                'from' => $this->fileFrom,
+                'patch' => $this->filePatch,
+            ]
         );
-
-        $p = new Process($command);
-        $p->run();
 
         $this->assertProcessSuccessful($p);
 
         $this->assertStringEqualsFile(
             $this->fileFrom,
             $to,
-            \sprintf('Patch command "%s".', $command)
+            \sprintf('Patch command "%s".', $p->getCommandLine())
         );
     }
 

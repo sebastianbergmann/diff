@@ -91,21 +91,21 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertNotFalse(\file_put_contents($this->fileFrom, $from));
         $this->assertNotFalse(\file_put_contents($this->filePatch, $diff));
 
-        $command = \sprintf(
-            'patch -u --verbose --posix  %s < %s', // --posix
-            \escapeshellarg($this->fileFrom),
-            \escapeshellarg($this->filePatch)
+        $p = Process::fromShellCommandline('patch -u --verbose --posix $from < $patch'); // --posix
+        $p->run(
+            null,
+            [
+                'from' => $this->fileFrom,
+                'patch' => $this->filePatch,
+            ]
         );
-
-        $p = new Process($command);
-        $p->run();
 
         $this->assertProcessSuccessful($p);
 
         $this->assertStringEqualsFile(
             $this->fileFrom,
             $to,
-            \sprintf('Patch command "%s".', $command)
+            \sprintf('Patch command "%s".', $p->getCommandLine())
         );
     }
 
@@ -119,14 +119,14 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertNotFalse(\file_put_contents($this->fileFrom, $from));
         $this->assertNotFalse(\file_put_contents($this->filePatch, $diff));
 
-        $command = \sprintf(
-            'git --git-dir %s apply --check -v --unsafe-paths --ignore-whitespace %s',
-            \escapeshellarg($this->dir),
-            \escapeshellarg($this->filePatch)
+        $p = Process::fromShellCommandline('git --git-dir $dir apply --check -v --unsafe-paths --ignore-whitespace $patch');
+        $p->run(
+            null,
+            [
+                'dir' => $this->dir,
+                'patch' => $this->filePatch,
+            ]
         );
-
-        $p = new Process($command);
-        $p->run();
 
         $this->assertProcessSuccessful($p);
     }

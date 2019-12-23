@@ -44,15 +44,15 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
      */
     public function testValidPatches(string $fileFrom, string $fileTo): void
     {
-        $command = \sprintf(
-            'diff -u %s %s > %s',
-            \escapeshellarg(\realpath($fileFrom)),
-            \escapeshellarg(\realpath($fileTo)),
-            \escapeshellarg($this->filePatch)
+        $p = Process::fromShellCommandline('diff -u $from $to > $patch');
+        $p->run(
+            null,
+            [
+                'from' => \realpath($fileFrom),
+                'to' => \realpath($fileTo),
+                'patch' => $this->filePatch,
+            ]
         );
-
-        $p = new Process($command);
-        $p->run();
 
         $exitCode = $p->getExitCode();
 
@@ -68,7 +68,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
             $exitCode,
             \sprintf(
                 "Command exec. was not successful:\n\"%s\"\nOutput:\n\"%s\"\nStdErr:\n\"%s\"\nExit code %d.\n",
-                $command,
+                $p->getCommandLine(),
                 $p->getOutput(),
                 $p->getErrorOutput(),
                 $p->getExitCode()
