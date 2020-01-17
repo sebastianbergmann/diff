@@ -14,6 +14,11 @@
             "email": "mail@kore-nordmann.de"
         }
     ],
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
     "require": {
         "php": "^7.1"
     },
