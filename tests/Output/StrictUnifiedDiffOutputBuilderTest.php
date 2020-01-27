@@ -314,7 +314,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     public function testInvalidConfiguration(array $options, string $message): void
     {
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessageRegExp(\sprintf('#^%s$#', \preg_quote($message, '#')));
+        $this->expectExceptionMessageMatches(\sprintf('#^%s$#', \preg_quote($message, '#')));
 
         new StrictUnifiedDiffOutputBuilder($options);
     }

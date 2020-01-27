@@ -331,7 +331,7 @@ EOF
     public function testDiffToArrayInvalidFromType(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^"from" must be an array or string\.$#');
+        $this->expectExceptionMessageMatches('#^"from" must be an array or string\.$#');
 
         $this->differ->diffToArray(null, '');
     }
@@ -339,7 +339,7 @@ EOF
     public function testDiffInvalidToType(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('#^"to" must be an array or string\.$#');
+        $this->expectExceptionMessageMatches('#^"to" must be an array or string\.$#');
 
         $this->differ->diffToArray('', new \stdClass);
     }
@@ -428,7 +428,7 @@ EOF
     public function testConstructorInvalidArgInt(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got integer "1"\.$/');
+        $this->expectExceptionMessageMatches('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got integer "1"\.$/');
 
         new Differ(1);
     }
@@ -436,7 +436,7 @@ EOF
     public function testConstructorInvalidArgObject(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageRegExp('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got instance of "SplFileInfo"\.$/');
+        $this->expectExceptionMessageMatches('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got instance of "SplFileInfo"\.$/');
 
         new Differ(new \SplFileInfo(__FILE__));
     }
