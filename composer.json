@@ -15,7 +15,6 @@
         }
     ],
     "prefer-stable": true,
-    "minimum-stability": "dev",
     "config": {
         "platform": {
             "php": "7.3.0"
