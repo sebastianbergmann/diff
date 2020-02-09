@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
@@ -23,11 +22,6 @@ use SebastianBergmann\Diff\Differ;
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     * @param string $header
-     *
      * @dataProvider headerProvider
      */
     public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header): void

@@ -7,14 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Utils;
 
 trait UnifiedDiffAssertTrait
 {
     /**
-     * @param string $diff
-     *
      * @throws \UnexpectedValueException
      */
     public function assertValidUnifiedDiffFormat(string $diff): void
@@ -32,7 +29,7 @@ trait UnifiedDiffAssertTrait
             throw new \UnexpectedValueException(\sprintf('Expected diff to end with a line break, got "%s".', $last));
         }
 
-        $lines            = \preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $lines            = \preg_split('/(.*\R)/', $diff, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $lineCount        = \count($lines);
         $lineNumber       = $diffLineFromNumber       = $diffLineToNumber       = 1;
         $fromStart        = $fromTillOffset        = $toStart        = $toTillOffset        = -1;
@@ -145,8 +142,7 @@ trait UnifiedDiffAssertTrait
 
             $expectHunkHeader =
                 $diffLineFromNumber === ($fromStart + $fromTillOffset)
-                && $diffLineToNumber === ($toStart + $toTillOffset)
-            ;
+                && $diffLineToNumber === ($toStart + $toTillOffset);
         }
 
         if (
@@ -168,9 +164,6 @@ trait UnifiedDiffAssertTrait
     }
 
     /**
-     * @param string $line
-     * @param string $message
-     *
      * @return string '+', '-', '@', ' ' or '\'
      */
     private function unifiedDiffAssertLinePrefix(string $line, string $message): string
@@ -204,10 +197,6 @@ trait UnifiedDiffAssertTrait
      * Samples:
      * - "+++ from1.txt\t2017-08-24 19:51:29.383985722 +0200"
      * - "+++ from1.txt"
-     *
-     * @param string $line
-     * @param string $start
-     * @param string $message
      */
     private function unifiedDiffAssertHeaderLine(string $line, string $start, string $message): void
     {
@@ -250,9 +239,6 @@ trait UnifiedDiffAssertTrait
     }
 
     /**
-     * @param string $line
-     * @param string $message
-     *
      * @return int[]
      */
     private function unifiedDiffAssertHunkHeader(string $line, string $message): array

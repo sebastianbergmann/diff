@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Output;
 
 use SebastianBergmann\Diff\ConfigurationException;
@@ -29,6 +28,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         'toFile'              => null,
         'toFileDate'          => null,
     ];
+
     /**
      * @var bool
      */
@@ -124,8 +124,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         return "\n" !== $last && "\r" !== $last
             ? $diff . "\n"
-            : $diff
-        ;
+            : $diff;
     }
 
     private function writeDiffHunks($output, array $diff): void
@@ -184,8 +183,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                 if ($sameCount === $cutOff) {
                     $contextStartOffset = ($hunkCapture - $this->contextLines) < 0
                         ? $hunkCapture
-                        : $this->contextLines
-                    ;
+                        : $this->contextLines;
 
                     // note: $contextEndOffset = $this->contextLines;
                     //
@@ -249,8 +247,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         $contextStartOffset = $hunkCapture - $this->contextLines < 0
             ? $hunkCapture
-            : $this->contextLines
-        ;
+            : $this->contextLines;
 
         // prevent trying to write out more common lines than there are in the diff _and_
         // do not write more than configured through the context lines

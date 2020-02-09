@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
@@ -23,11 +22,6 @@ use SebastianBergmann\Diff\Differ;
 final class AbstractChunkOutputBuilderTest extends TestCase
 {
     /**
-     * @param array  $expected
-     * @param string $from
-     * @param string $to
-     * @param int    $lineThreshold
-     *
      * @dataProvider provideGetCommonChunks
      */
     public function testGetCommonChunks(array $expected, string $from, string $to, int $lineThreshold = 5): void

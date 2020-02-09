@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
@@ -48,10 +47,6 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     /**
      * @dataProvider provideDiffWithLineNumbers
-     *
-     * @param mixed $expected
-     * @param mixed $from
-     * @param mixed $to
      */
     public function testDiffWithLineNumbersPath($expected, $from, $to): void
     {
@@ -60,10 +55,6 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     /**
      * @dataProvider provideDiffWithLineNumbers
-     *
-     * @param mixed $expected
-     * @param mixed $from
-     * @param mixed $to
      */
     public function testDiffWithLineNumbersGitApply($expected, $from, $to): void
     {
@@ -77,7 +68,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
             static function ($key) {
                 return !\is_string($key) || false === \strpos($key, 'non_patch_compat');
             },
-            ARRAY_FILTER_USE_KEY
+            \ARRAY_FILTER_USE_KEY
         );
     }
 
@@ -154,7 +145,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private static function setDiffFileHeader(string $diff, string $file): string
     {
-        $diffLines    = \preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $diffLines    = \preg_split('/(.*\R)/', $diff, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $diffLines[0] = \preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1);
         $diffLines[1] = \preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1);
 

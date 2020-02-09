@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
@@ -64,9 +63,6 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      * - test applying the diff using `git apply`
      * - test applying the diff using `patch`
      *
-     * @param string $fileFrom
-     * @param string $fileTo
-     *
      * @dataProvider provideFilePairs
      */
     public function testIntegrationUsingPHPFileInVendorGitApply(string $fileFrom, string $fileTo): void
@@ -94,9 +90,6 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
      * - test applying the diff using `git apply`
      * - test applying the diff using `patch`
      *
-     * @param string $fileFrom
-     * @param string $fileTo
-     *
      * @dataProvider provideFilePairs
      */
     public function testIntegrationUsingPHPFileInVendorPatch(string $fileFrom, string $fileTo): void
@@ -117,10 +110,6 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     *
      * @dataProvider provideOutputBuildingCases
      * @dataProvider provideSample
      * @dataProvider provideBasicDiffGeneration
@@ -131,10 +120,6 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     *
      * @dataProvider provideOutputBuildingCases
      * @dataProvider provideSample
      * @dataProvider provideBasicDiffGeneration
@@ -184,10 +169,6 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     /**
      * Compare diff create by builder and against one create by `diff` command.
      *
-     * @param string $diff
-     * @param string $from
-     * @param string $to
-     *
      * @dataProvider provideBasicDiffGeneration
      */
     public function testIntegrationDiffOutputBuilderVersusDiffCommand(string $diff, string $from, string $to): void
@@ -211,12 +192,12 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
         $output = $p->getOutput();
 
-        $diffLines    = \preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $diffLines    = \preg_split('/(.*\R)/', $diff, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $diffLines[0] = \preg_replace('#^\-\-\- .*#', '--- /' . $this->fileFrom, $diffLines[0], 1);
         $diffLines[1] = \preg_replace('#^\+\+\+ .*#', '+++ /' . $this->fileFrom, $diffLines[1], 1);
         $diff         = \implode('', $diffLines);
 
-        $outputLines    = \preg_split('/(.*\R)/', $output, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $outputLines    = \preg_split('/(.*\R)/', $output, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $outputLines[0] = \preg_replace('#^\-\-\- .*#', '--- /' . $this->fileFrom, $outputLines[0], 1);
         $outputLines[1] = \preg_replace('#^\+\+\+ .*#', '+++ /' . $this->fileFrom, $outputLines[1], 1);
         $output         = \implode('', $outputLines);
@@ -299,7 +280,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private static function setDiffFileHeader(string $diff, string $file): string
     {
-        $diffLines    = \preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $diffLines    = \preg_split('/(.*\R)/', $diff, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
         $diffLines[0] = \preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1);
         $diffLines[1] = \preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1);
 

@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Utils;
 
 use PHPUnit\Framework\TestCase;
@@ -20,8 +19,6 @@ final class UnifiedDiffAssertTraitTest extends TestCase
     use UnifiedDiffAssertTrait;
 
     /**
-     * @param string $diff
-     *
      * @dataProvider provideValidCases
      */
     public function testValidCases(string $diff): void
@@ -33,7 +30,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
     {
         return [
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -8 +8 @@
 -Z
@@ -41,7 +38,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 ',
             ],
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -8 +8 @@
 -Z
