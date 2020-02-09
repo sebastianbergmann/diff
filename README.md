@@ -1,16 +1,23 @@
 # sebastian/diff
 
+[![CI Status](https://github.com/sebastianbergmann/diff/workflows/CI/badge.svg)](https://github.com/sebastianbergmann/diff/actions)
+[![Type Coverage](https://shepherd.dev/github/sebastianbergmann/diff/coverage.svg)](https://shepherd.dev/github/sebastianbergmann/diff)
+
 Diff implementation for PHP, factored out of PHPUnit into a stand-alone component.
 
 ## Installation
 
 You can add this library as a local, per-project dependency to your project using [Composer](https://getcomposer.org/):
 
-    composer require sebastian/diff
+```
+composer require sebastian/diff
+```
 
 If you only need this library during development, for instance to run your project's test suite, then you should add it as a development-time dependency:
 
-    composer require --dev sebastian/diff
+```
+composer require --dev sebastian/diff
+```
 
 ### Usage
 
@@ -37,7 +44,7 @@ The code above yields the output below:
 
 There are three output builders available in this package:
 
-#### UnifiedDiffOutputBuilder 
+#### UnifiedDiffOutputBuilder
 
 This is default builder, which generates the output close to udiff and is used by PHPUnit.
 
@@ -101,7 +108,7 @@ print $differ->diff('foo', 'bar');
 
 #### DiffOutputBuilderInterface
 
-You can pass any output builder to the `Differ` class as longs as it implements the `DiffOutputBuilderInterface`. 
+You can pass any output builder to the `Differ` class as longs as it implements the `DiffOutputBuilderInterface`.
 
 #### Parsing diff
 
