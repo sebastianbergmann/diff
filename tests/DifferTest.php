@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
@@ -33,7 +32,6 @@ final class DifferTest extends TestCase
     }
 
     /**
-     * @param array        $expected
      * @param array|string $from
      * @param array|string $to
      *
@@ -45,10 +43,6 @@ final class DifferTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     *
      * @dataProvider textProvider
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(string $expected, string $from, string $to): void
@@ -57,7 +51,6 @@ final class DifferTest extends TestCase
     }
 
     /**
-     * @param array        $expected
      * @param array|string $from
      * @param array|string $to
      *
@@ -69,10 +62,6 @@ final class DifferTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     *
      * @dataProvider textProvider
      */
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(string $expected, string $from, string $to): void
@@ -295,7 +284,7 @@ final class DifferTest extends TestCase
  k
 
 EOF
-            ,
+                ,
                 "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk\n",
                 "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk\n",
             ],
@@ -311,7 +300,7 @@ EOF
  3
 
 EOF
-            ,
+                ,
                 "A\n1\n2\n3\n4\n5\n6\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
                 "B\n1\n2\n3\n4\n5\n6\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
             ],
@@ -345,9 +334,6 @@ EOF
     }
 
     /**
-     * @param array  $expected
-     * @param string $input
-     *
      * @dataProvider provideSplitStringByLinesCases
      */
     public function testSplitStringByLines(array $expected, string $input): void

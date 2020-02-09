@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff\Output;
 
 final class StrictUnifiedDiffOutputBuilderDataProvider
@@ -16,7 +15,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
     {
         return [
             [
-'--- input.txt
+                '--- input.txt
 +++ output.txt
 @@ -1,3 +1,4 @@
 +b
@@ -39,7 +38,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 ],
             ],
             [
-'--- ' . __FILE__ . "\t2017-10-02 17:38:11.586413675 +0100
+                '--- ' . __FILE__ . "\t2017-10-02 17:38:11.586413675 +0100
 +++ output1.txt\t2017-10-03 12:09:43.086719482 +0100
 @@ -1,1 +1,1 @@
 -B
@@ -56,7 +55,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 ],
             ],
             [
-'--- input.txt
+                '--- input.txt
 +++ output.txt
 @@ -1 +1 @@
 -B
@@ -77,7 +76,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
     {
         return [
             [
-'--- input.txt
+                '--- input.txt
 +++ output.txt
 @@ -1,6 +1,6 @@
  1
@@ -102,7 +101,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
     {
         return [
             [
-"--- input.txt
+                "--- input.txt
 +++ output.txt
 @@ -1,2 +1 @@
 -A
@@ -113,7 +112,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 "A\rB\n",
             ],
             [
-"--- input.txt
+                "--- input.txt
 +++ output.txt
 @@ -1 +1 @@
 -
@@ -124,7 +123,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 "\r",
             ],
             [
-"--- input.txt
+                "--- input.txt
 +++ output.txt
 @@ -1 +1 @@
 -\r
@@ -135,7 +134,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 "\n",
             ],
             [
-'--- input.txt
+                '--- input.txt
 +++ output.txt
 @@ -1,3 +1,3 @@
  X
@@ -147,7 +146,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 "X\nA\nB\n",
             ],
             [
-'--- input.txt
+                '--- input.txt
 +++ output.txt
 @@ -1,3 +1,3 @@
  X
@@ -160,7 +159,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 "X\nA\nB\n",
             ],
             [
-'--- input.txt
+                '--- input.txt
 +++ output.txt
 @@ -1,3 +1,3 @@
  A
@@ -173,7 +172,7 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
                 "A\nA\nB",
             ],
             [
-'--- input.txt
+                '--- input.txt
 +++ output.txt
 @@ -1 +1 @@
 -A

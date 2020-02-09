@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff;
 
 use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
@@ -19,9 +18,13 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 final class Differ
 {
     public const OLD                     = 0;
+
     public const ADDED                   = 1;
+
     public const REMOVED                 = 2;
+
     public const DIFF_LINE_END_WARNING   = 3;
+
     public const NO_LINE_END_EOF_WARNING = 4;
 
     /**
@@ -58,11 +61,8 @@ final class Differ
     /**
      * Returns the diff between two arrays or strings as string.
      *
-     * @param array|string                            $from
-     * @param array|string                            $to
-     * @param null|LongestCommonSubsequenceCalculator $lcs
-     *
-     * @return string
+     * @param array|string $from
+     * @param array|string $to
      */
     public function diff($from, $to, LongestCommonSubsequenceCalculator $lcs = null): string
     {
@@ -89,8 +89,6 @@ final class Differ
      * @param array|string                       $from
      * @param array|string                       $to
      * @param LongestCommonSubsequenceCalculator $lcs
-     *
-     * @return array
      */
     public function diffToArray($from, $to, LongestCommonSubsequenceCalculator $lcs = null): array
     {
@@ -159,8 +157,6 @@ final class Differ
     /**
      * Casts variable to string if it is not a string or array.
      *
-     * @param mixed $input
-     *
      * @return array|string
      */
     private function normalizeDiffInput($input)
@@ -174,22 +170,12 @@ final class Differ
 
     /**
      * Checks if input is string, if so it will split it line-by-line.
-     *
-     * @param string $input
-     *
-     * @return array
      */
     private function splitStringByLines(string $input): array
     {
-        return \preg_split('/(.*\R)/', $input, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        return \preg_split('/(.*\R)/', $input, -1, \PREG_SPLIT_DELIM_CAPTURE | \PREG_SPLIT_NO_EMPTY);
     }
 
-    /**
-     * @param array $from
-     * @param array $to
-     *
-     * @return LongestCommonSubsequenceCalculator
-     */
     private function selectLcsImplementation(array $from, array $to): LongestCommonSubsequenceCalculator
     {
         // We do not want to use the time-efficient implementation if its memory
@@ -208,24 +194,17 @@ final class Differ
     /**
      * Calculates the estimated memory footprint for the DP-based method.
      *
-     * @param array $from
-     * @param array $to
-     *
      * @return float|int
      */
     private function calculateEstimatedFootprint(array $from, array $to)
     {
-        $itemSize = PHP_INT_SIZE === 4 ? 76 : 144;
+        $itemSize = \PHP_INT_SIZE === 4 ? 76 : 144;
 
         return $itemSize * \min(\count($from), \count($to)) ** 2;
     }
 
     /**
      * Returns true if line ends don't match in a diff.
-     *
-     * @param array $diff
-     *
-     * @return bool
      */
     private function detectUnmatchedLineEndings(array $diff): bool
     {

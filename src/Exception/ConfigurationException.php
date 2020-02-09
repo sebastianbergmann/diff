@@ -7,18 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff;
 
 final class ConfigurationException extends InvalidArgumentException
 {
-    /**
-     * @param string          $option
-     * @param string          $expected
-     * @param mixed           $value
-     * @param int             $code
-     * @param null|\Exception $previous
-     */
     public function __construct(
         string $option,
         string $expected,

@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff;
 
 /**
@@ -16,8 +15,6 @@ namespace SebastianBergmann\Diff;
 final class Parser
 {
     /**
-     * @param string $string
-     *
      * @return Diff[]
      */
     public function parse(string $string): array

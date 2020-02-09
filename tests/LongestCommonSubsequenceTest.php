@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
@@ -194,8 +193,5 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->assertCount(0, $diff);
     }
 
-    /**
-     * @return LongestCommonSubsequenceCalculator
-     */
     abstract protected function createImplementation(): LongestCommonSubsequenceCalculator;
 }
