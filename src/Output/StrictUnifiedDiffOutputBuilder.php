@@ -310,7 +310,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
     private function assertString(array $options, string $option): void
     {
-        if (!is_string($options[$option])) {
+        if (!\is_string($options[$option])) {
             throw new ConfigurationException($option, 'a string', $options[$option]);
         }
     }
