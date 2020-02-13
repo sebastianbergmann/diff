@@ -115,7 +115,9 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         $hunkCapture = false;
         $sameCount   = $toRange   = $fromRange = 0;
         $toStart     = $fromStart = 1;
+        $i           = 0;
 
+        /** @var int $i */
         foreach ($diff as $i => $entry) {
             if (0 === $entry[1]) { // same
                 if (false === $hunkCapture) {

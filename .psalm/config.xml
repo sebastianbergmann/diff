@@ -2,7 +2,6 @@
 <psalm
     totallyTyped="false"
     cacheDirectory=".psalm/cache"
-    errorBaseline=".psalm/baseline.xml"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
