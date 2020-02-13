@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.8.3@389af1bfc739bfdff3f9e3dc7bd6499aee51a831">
+  <file src="src/Output/StrictUnifiedDiffOutputBuilder.php">
+    <InvalidOperand occurrences="9">
+      <code>$hunkCapture</code>
+      <code>$hunkCapture</code>
+      <code>$i</code>
+      <code>$contextStartOffset</code>
+      <code>$contextStartOffset</code>
+      <code>$contextStartOffset</code>
+      <code>$contextStartOffset</code>
+      <code>$hunkCapture</code>
+      <code>$hunkCapture</code>
+    </InvalidOperand>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$i</code>
+    </PossiblyUndefinedVariable>
+    <TypeDoesNotContainType occurrences="2">
+      <code>\is_string($options[$option])</code>
+      <code>null !== $options[$option] &amp;&amp; !\is_string($options[$option])</code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Output/UnifiedDiffOutputBuilder.php">
+    <InvalidOperand occurrences="9">
+      <code>$hunkCapture</code>
+      <code>$hunkCapture</code>
+      <code>$i</code>
+      <code>$contextStartOffset</code>
+      <code>$contextStartOffset</code>
+      <code>$contextStartOffset</code>
+      <code>$contextStartOffset</code>
+      <code>$hunkCapture</code>
+      <code>$hunkCapture</code>
+    </InvalidOperand>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$i</code>
+    </PossiblyUndefinedVariable>
+  </file>
+  <file src="src/Parser.php">
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$diffLines</code>
+    </PossiblyUndefinedVariable>
+  </file>
+</files>
