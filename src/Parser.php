@@ -65,6 +65,7 @@ final class Parser
     {
         $chunks = [];
         $chunk  = null;
+        $diffLines = [];
 
         foreach ($lines as $line) {
             if (\preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match)) {

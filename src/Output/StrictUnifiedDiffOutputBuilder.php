@@ -70,17 +70,10 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             throw new ConfigurationException('commonLineThreshold', 'an int > 0', $options['commonLineThreshold']);
         }
 
-        foreach (['fromFile', 'toFile'] as $option) {
-            if (!\is_string($options[$option])) {
-                throw new ConfigurationException($option, 'a string', $options[$option]);
-            }
-        }
-
-        foreach (['fromFileDate', 'toFileDate'] as $option) {
-            if (null !== $options[$option] && !\is_string($options[$option])) {
-                throw new ConfigurationException($option, 'a string or <null>', $options[$option]);
-            }
-        }
+        $this->assertString($options, 'fromFile');
+        $this->assertString($options, 'toFile');
+        $this->assertStringOrNull($options, 'fromFileDate');
+        $this->assertStringOrNull($options, 'toFileDate');
 
         $this->header = \sprintf(
             "--- %s%s\n+++ %s%s\n",
@@ -166,7 +159,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         $hunkCapture = false;
         $sameCount   = $toRange = $fromRange = 0;
         $toStart     = $fromStart = 1;
+        $i           = 0;
 
+        /** @var int $i */
         foreach ($diff as $i => $entry) {
             if (0 === $entry[1]) { // same
                 if (false === $hunkCapture) {
@@ -310,6 +305,20 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             //} else {
                 //  unknown/invalid
             //}
+        }
+    }
+
+    private function assertString(array $options, string $option): void
+    {
+        if (!is_string($options[$option])) {
+            throw new ConfigurationException($option, 'a string', $options[$option]);
+        }
+    }
+
+    private function assertStringOrNull(array $options, string $option): void
+    {
+        if (null !== $options[$option] && !\is_string($options[$option])) {
+            throw new ConfigurationException($option, 'a string or <null>', $options[$option]);
         }
     }
 }
