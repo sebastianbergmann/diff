@@ -67,11 +67,11 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         \fclose($buffer);
 
-        // If the last char is not a linebreak: add it.
+        // If the diff is non-empty and last char is not a linebreak: add it.
         // This might happen when both the `from` and `to` do not have a trailing linebreak
         $last = \substr($diff, -1);
 
-        return "\n" !== $last && "\r" !== $last
+        return 0 !== \strlen($diff) && "\n" !== $last && "\r" !== $last
             ? $diff . "\n"
             : $diff;
     }
