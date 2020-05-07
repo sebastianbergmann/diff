@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
@@ -15,9 +16,9 @@ use SebastianBergmann\Diff\Differ;
 /**
  * @covers SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
  *
- * @uses SebastianBergmann\Diff\Differ
- * @uses SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
- * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses   SebastianBergmann\Diff\Differ
+ * @uses   SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
+ * @uses   SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {
@@ -82,27 +83,27 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
         return UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers();
     }
 
-	/**
-	 * @param string $from
-	 * @param string $to
-	 *
-	 * @dataProvider provideStringsThatAreTheSame
-	 */
+    /**
+     * @param string $from
+     * @param string $to
+     *
+     * @dataProvider provideStringsThatAreTheSame
+     */
     public function testEmptyDiffProducesEmptyOutput(string $from, string $to): void
-	{
-		$differ = new Differ(new UnifiedDiffOutputBuilder('', false));
-		$output = $differ->diff($from, $to);
-		$this->assertEmpty($output);
-	}
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder('', false));
+        $output = $differ->diff($from, $to);
+        $this->assertEmpty($output);
+    }
 
-	public function provideStringsThatAreTheSame(): array
-	{
-		return [
-			['', ''],
-			['a', 'a'],
-			['these strings are the same', 'these strings are the same'],
-			["\n", "\n"],
-			["multi-line strings\nare the same", "multi-line strings\nare the same"]
-		];
-	}
+    public function provideStringsThatAreTheSame(): array
+    {
+        return [
+            ['', ''],
+            ['a', 'a'],
+            ['these strings are the same', 'these strings are the same'],
+            ["\n", "\n"],
+            ["multi-line strings\nare the same", "multi-line strings\nare the same"]
+        ];
+    }
 }
