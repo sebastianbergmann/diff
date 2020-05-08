@@ -12,7 +12,7 @@ namespace SebastianBergmann\Diff;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers SebastianBergmann\Diff\InvalidArgumentException
+ * @covers \SebastianBergmann\Diff\InvalidArgumentException
  */
 final class InvalidArgumentExceptionTest extends TestCase
 {

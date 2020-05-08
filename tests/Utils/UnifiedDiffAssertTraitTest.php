@@ -12,7 +12,7 @@ namespace SebastianBergmann\Diff\Utils;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait
+ * @covers \SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait
  */
 final class UnifiedDiffAssertTraitTest extends TestCase
 {

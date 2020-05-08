@@ -16,11 +16,11 @@ use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
 
 /**
- * @covers SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
+ * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
- * @uses SebastianBergmann\Diff\Differ
- * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- * @uses SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ * @uses \SebastianBergmann\Diff\Differ
+ * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
  *
  * @requires OS Linux
  */

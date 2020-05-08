@@ -12,9 +12,6 @@ namespace SebastianBergmann\Diff;
 use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
-/**
- * Diff implementation.
- */
 final class Differ
 {
     public const OLD                     = 0;

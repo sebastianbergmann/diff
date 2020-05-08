@@ -14,10 +14,10 @@ use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
 
 /**
- * @covers SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
+ * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
  *
- * @uses SebastianBergmann\Diff\Differ
- * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \SebastianBergmann\Diff\Differ
+ * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  *
  * @requires OS Linux
  */

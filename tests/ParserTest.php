@@ -13,11 +13,11 @@ use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Utils\FileUtils;
 
 /**
- * @covers SebastianBergmann\Diff\Parser
+ * @covers \SebastianBergmann\Diff\Parser
  *
- * @uses SebastianBergmann\Diff\Chunk
- * @uses SebastianBergmann\Diff\Diff
- * @uses SebastianBergmann\Diff\Line
+ * @uses \SebastianBergmann\Diff\Chunk
+ * @uses \SebastianBergmann\Diff\Diff
+ * @uses \SebastianBergmann\Diff\Line
  */
 final class ParserTest extends TestCase
 {
@@ -145,7 +145,7 @@ END;
     }
 
     /**
-     * @param Diff[] $expected
+     * @psalm-param list<Diff> $expected
      *
      * @dataProvider diffProvider
      */

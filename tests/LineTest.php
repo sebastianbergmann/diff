@@ -12,7 +12,7 @@ namespace SebastianBergmann\Diff;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers SebastianBergmann\Diff\Line
+ * @covers \SebastianBergmann\Diff\Line
  */
 final class LineTest extends TestCase
 {

@@ -12,9 +12,9 @@ namespace SebastianBergmann\Diff;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers SebastianBergmann\Diff\Chunk
+ * @covers \SebastianBergmann\Diff\Chunk
  *
- * @uses SebastianBergmann\Diff\Line
+ * @uses \SebastianBergmann\Diff\Line
  */
 final class ChunkTest extends TestCase
 {

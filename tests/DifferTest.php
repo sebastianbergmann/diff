@@ -12,12 +12,12 @@ namespace SebastianBergmann\Diff;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers SebastianBergmann\Diff\Differ
- * @covers SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
+ * @covers \SebastianBergmann\Diff\Differ
+ * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
  *
- * @uses SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
- * @uses SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- * @uses SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
+ * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
  */
 final class DifferTest extends TestCase
 {
