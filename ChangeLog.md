@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.0.1] - 2020-05-08
+
+### Fixed
+
+* [#99](https://github.com/sebastianbergmann/diff/pull/99): Regression in unified diff output of identical strings
+
 ## [4.0.0] - 2020-02-07
 
 ### Removed
@@ -52,6 +58,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
+[4.0.1]: https://github.com/sebastianbergmann/diff/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/sebastianbergmann/diff/compare/3.0.2...4.0.0
 [3.0.2]: https://github.com/sebastianbergmann/diff/compare/3.0.1...3.0.2
 [3.0.1]: https://github.com/sebastianbergmann/diff/compare/3.0.0...3.0.1
