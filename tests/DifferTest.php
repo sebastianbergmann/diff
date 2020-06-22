@@ -10,6 +10,9 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionObject;
+use SplFileInfo;
+use stdClass;
 
 /**
  * @covers \SebastianBergmann\Diff\Differ
@@ -330,7 +333,7 @@ EOF
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('#^"to" must be an array or string\.$#');
 
-        $this->differ->diffToArray('', new \stdClass);
+        $this->differ->diffToArray('', new stdClass);
     }
 
     /**
@@ -338,7 +341,7 @@ EOF
      */
     public function testSplitStringByLines(array $expected, string $input): void
     {
-        $reflection = new \ReflectionObject($this->differ);
+        $reflection = new ReflectionObject($this->differ);
         $method     = $reflection->getMethod('splitStringByLines');
         $method->setAccessible(true);
 
@@ -424,6 +427,6 @@ EOF
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got instance of "SplFileInfo"\.$/');
 
-        new Differ(new \SplFileInfo(__FILE__));
+        new Differ(new SplFileInfo(__FILE__));
     }
 }

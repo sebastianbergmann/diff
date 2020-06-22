@@ -9,10 +9,16 @@
  */
 namespace SebastianBergmann\Diff\Output;
 
+use function array_merge;
+use function preg_quote;
+use function sprintf;
+use function substr;
+use function time;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\ConfigurationException;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
+use SplFileInfo;
 
 /**
  * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
@@ -95,7 +101,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
      */
     public function testConfiguredDiffGeneration(string $expected, string $from, string $to, array $config = []): void
     {
-        $diff = $this->getDiffer(\array_merge([
+        $diff = $this->getDiffer(array_merge([
             'fromFile' => 'input.txt',
             'toFile'   => 'output.txt',
         ], $config))->diff($from, $to);
@@ -291,14 +297,14 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     public function testInvalidConfiguration(array $options, string $message): void
     {
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessageMatches(\sprintf('#^%s$#', \preg_quote($message, '#')));
+        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($message, '#')));
 
         new StrictUnifiedDiffOutputBuilder($options);
     }
 
     public function provideInvalidConfiguration(): array
     {
-        $time = \time();
+        $time = time();
 
         return [
             [
@@ -318,7 +324,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
                 'Option "commonLineThreshold" must be an int > 0, got "integer#0".',
             ],
             [
-                ['fromFile' => new \SplFileInfo(__FILE__)],
+                ['fromFile' => new SplFileInfo(__FILE__)],
                 'Option "fromFile" must be a string, got "SplFileInfo".',
             ],
             [
@@ -522,25 +528,25 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
             'M no linebreak EOF .1' => [
                 "--- input.txt\n+++ output.txt\n@@ -1,14 +1,14 @@\n A\n B\n C\n D\n E\n F\n-X\n+Y\n G\n H\n I\n J\n K\n L\n-M\n+M\n\\ No newline at end of file\n",
                 $from,
-                \substr($to, 0, -1),
+                substr($to, 0, -1),
                 7,
             ],
             'M no linebreak EOF .2' => [
                 "--- input.txt\n+++ output.txt\n@@ -1,14 +1,14 @@\n A\n B\n C\n D\n E\n F\n-X\n+Y\n G\n H\n I\n J\n K\n L\n-M\n\\ No newline at end of file\n+M\n",
-                \substr($from, 0, -1),
+                substr($from, 0, -1),
                 $to,
                 7,
             ],
             'M no linebreak EOF .3' => [
                 "--- input.txt\n+++ output.txt\n@@ -1,14 +1,14 @@\n A\n B\n C\n D\n E\n F\n-X\n+Y\n G\n H\n I\n J\n K\n L\n M\n",
-                \substr($from, 0, -1),
-                \substr($to, 0, -1),
+                substr($from, 0, -1),
+                substr($to, 0, -1),
                 7,
             ],
             'M no linebreak EOF .4' => [
                 "--- input.txt\n+++ output.txt\n@@ -1,14 +1,14 @@\n A\n B\n C\n D\n E\n F\n-X\n+Y\n G\n H\n I\n J\n K\n L\n M\n\\ No newline at end of file\n",
-                \substr($from, 0, -1),
-                \substr($to, 0, -1),
+                substr($from, 0, -1),
+                substr($to, 0, -1),
                 10000,
                 10000,
             ],

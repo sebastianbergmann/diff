@@ -9,7 +9,9 @@
  */
 namespace SebastianBergmann\Diff;
 
+use BadMethodCallException;
 use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 
 /**
  * @covers \SebastianBergmann\Diff\ConfigurationException
@@ -30,9 +32,9 @@ final class ConfigurationExceptionTest extends TestCase
         $e = new ConfigurationException(
             'test',
             'integer',
-            new \SplFileInfo(__FILE__),
+            new SplFileInfo(__FILE__),
             789,
-            new \BadMethodCallException(__METHOD__)
+            new BadMethodCallException(__METHOD__)
         );
 
         $this->assertSame('Option "test" must be integer, got "SplFileInfo".', $e->getMessage());

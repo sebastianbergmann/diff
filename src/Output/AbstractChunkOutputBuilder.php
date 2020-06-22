@@ -9,6 +9,8 @@
  */
 namespace SebastianBergmann\Diff\Output;
 
+use function count;
+
 abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
 {
     /**
@@ -17,7 +19,7 @@ abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
      */
     protected function getCommonChunks(array $diff, int $lineThreshold = 5): array
     {
-        $diffSize     = \count($diff);
+        $diffSize     = count($diff);
         $capturing    = false;
         $chunkStart   = 0;
         $chunkSize    = 0;
