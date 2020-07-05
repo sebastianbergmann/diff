@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
@@ -19,22 +19,22 @@ use function preg_split;
 use function realpath;
 use function sprintf;
 use function unlink;
+use Localheinz\Diff\Differ;
+use Localheinz\Diff\Utils\FileUtils;
+use Localheinz\Diff\Utils\UnifiedDiffAssertTrait;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Utils\FileUtils;
-use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use SplFileInfo;
 use Symfony\Component\Process\Process;
 
 /**
- * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
+ * @covers \Localheinz\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ * @uses \Localheinz\Diff\Differ
+ * @uses \Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \Localheinz\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
  *
  * @requires OS Linux
  */

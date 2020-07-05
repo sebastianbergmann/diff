@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff;
+namespace Localheinz\Diff;
 
 use const PHP_INT_SIZE;
 use const PREG_SPLIT_DELIM_CAPTURE;
@@ -30,8 +30,8 @@ use function prev;
 use function reset;
 use function sprintf;
 use function substr;
-use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
+use Localheinz\Diff\Output\DiffOutputBuilderInterface;
+use Localheinz\Diff\Output\UnifiedDiffOutputBuilder;
 
 final class Differ
 {

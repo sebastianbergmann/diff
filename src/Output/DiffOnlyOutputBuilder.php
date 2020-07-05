@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 use function fclose;
 use function fopen;
 use function fwrite;
 use function stream_get_contents;
 use function substr;
-use SebastianBergmann\Diff\Differ;
+use Localheinz\Diff\Differ;
 
 /**
  * Builds a diff string representation in a loose unified diff format

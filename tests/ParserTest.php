@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff;
+namespace Localheinz\Diff;
 
 use function unserialize;
+use Localheinz\Diff\Utils\FileUtils;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\Diff\Utils\FileUtils;
 
 /**
- * @covers \SebastianBergmann\Diff\Parser
+ * @covers \Localheinz\Diff\Parser
  *
- * @uses \SebastianBergmann\Diff\Chunk
- * @uses \SebastianBergmann\Diff\Diff
- * @uses \SebastianBergmann\Diff\Line
+ * @uses \Localheinz\Diff\Chunk
+ * @uses \Localheinz\Diff\Diff
+ * @uses \Localheinz\Diff\Line
  */
 final class ParserTest extends TestCase
 {

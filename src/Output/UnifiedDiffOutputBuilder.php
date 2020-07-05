@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 use function array_splice;
 use function count;
@@ -19,7 +19,7 @@ use function min;
 use function stream_get_contents;
 use function strlen;
 use function substr;
-use SebastianBergmann\Diff\Differ;
+use Localheinz\Diff\Differ;
 
 /**
  * Builds a diff string representation in unified diff format in chunks.

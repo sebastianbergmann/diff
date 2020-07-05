@@ -7,17 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
+use Localheinz\Diff\Differ;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\Diff\Differ;
 
 /**
- * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
+ * @covers \Localheinz\Diff\Output\UnifiedDiffOutputBuilder
  *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \Localheinz\Diff\Differ
+ * @uses \Localheinz\Diff\Output\AbstractChunkOutputBuilder
+ * @uses \Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {

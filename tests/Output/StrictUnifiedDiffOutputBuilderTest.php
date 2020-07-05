@@ -7,25 +7,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 use function array_merge;
 use function preg_quote;
 use function sprintf;
 use function substr;
 use function time;
+use Localheinz\Diff\ConfigurationException;
+use Localheinz\Diff\Differ;
+use Localheinz\Diff\Utils\UnifiedDiffAssertTrait;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\Diff\ConfigurationException;
-use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use SplFileInfo;
 
 /**
- * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
+ * @covers \Localheinz\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\ConfigurationException
+ * @uses \Localheinz\Diff\Differ
+ * @uses \Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \Localheinz\Diff\ConfigurationException
  */
 final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 {

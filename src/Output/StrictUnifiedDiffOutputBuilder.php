@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff\Output;
+namespace Localheinz\Diff\Output;
 
 use function array_merge;
 use function array_splice;
@@ -23,8 +23,8 @@ use function min;
 use function sprintf;
 use function stream_get_contents;
 use function substr;
-use SebastianBergmann\Diff\ConfigurationException;
-use SebastianBergmann\Diff\Differ;
+use Localheinz\Diff\ConfigurationException;
+use Localheinz\Diff\Differ;
 
 /**
  * Strict Unified diff output builder.

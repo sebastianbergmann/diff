@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff;
+namespace Localheinz\Diff;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
@@ -15,12 +15,12 @@ use SplFileInfo;
 use stdClass;
 
 /**
- * @covers \SebastianBergmann\Diff\Differ
- * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
+ * @covers \Localheinz\Diff\Differ
+ * @covers \Localheinz\Diff\Output\UnifiedDiffOutputBuilder
  *
- * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
+ * @uses \Localheinz\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ * @uses \Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \Localheinz\Diff\Output\AbstractChunkOutputBuilder
  */
 final class DifferTest extends TestCase
 {

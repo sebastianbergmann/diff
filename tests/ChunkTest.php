@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace SebastianBergmann\Diff;
+namespace Localheinz\Diff;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \SebastianBergmann\Diff\Chunk
+ * @covers \Localheinz\Diff\Chunk
  *
- * @uses \SebastianBergmann\Diff\Line
+ * @uses \Localheinz\Diff\Line
  */
 final class ChunkTest extends TestCase
 {
