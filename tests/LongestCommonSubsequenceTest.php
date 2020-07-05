@@ -7,9 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace SebastianBergmann\Diff;
 
-namespace Localheinz\Diff;
-
+use function array_reverse;
+use function array_slice;
+use function ini_get;
+use function ini_set;
+use function range;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,15 +38,15 @@ abstract class LongestCommonSubsequenceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->memoryLimit = \ini_get('memory_limit');
-        \ini_set('memory_limit', '-1');
+        $this->memoryLimit = ini_get('memory_limit');
+        ini_set('memory_limit', '-1');
 
         $this->implementation = $this->createImplementation();
     }
 
     protected function tearDown(): void
     {
-        \ini_set('memory_limit', $this->memoryLimit);
+        ini_set('memory_limit', $this->memoryLimit);
     }
 
     public function testBothEmpty(): void
@@ -83,7 +87,7 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     public function testEqualSequences(): void
     {
         foreach ($this->stress_sizes as $size) {
-            $range  = \range(1, $size);
+            $range  = range(1, $size);
             $from   = $range;
             $to     = $range;
             $common = $this->implementation->calculate($from, $to);
@@ -105,8 +109,8 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->assertSame([], $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from   = \range(1, $size);
-            $to     = \range($size + 1, $size * 2);
+            $from   = range(1, $size);
+            $to     = range($size + 1, $size * 2);
             $common = $this->implementation->calculate($from, $to);
             $this->assertSame([], $common);
         }
@@ -127,9 +131,9 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->assertSame($expected, $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from     = $size < 2 ? [1] : \range(1, $size + 1, 2);
-            $to       = $size < 3 ? [1] : \range(1, $size + 1, 3);
-            $expected = $size < 6 ? [1] : \range(1, $size + 1, 6);
+            $from     = $size < 2 ? [1] : range(1, $size + 1, 2);
+            $to       = $size < 3 ? [1] : range(1, $size + 1, 3);
+            $expected = $size < 6 ? [1] : range(1, $size + 1, 6);
             $common   = $this->implementation->calculate($from, $to);
 
             $this->assertSame($expected, $common);
@@ -139,8 +143,8 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     public function testSingleElementSubsequenceAtStart(): void
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = \range(1, $size);
-            $to     = \array_slice($from, 0, 1);
+            $from   = range(1, $size);
+            $to     = array_slice($from, 0, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertSame($to, $common);
@@ -150,8 +154,8 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     public function testSingleElementSubsequenceAtMiddle(): void
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = \range(1, $size);
-            $to     = \array_slice($from, (int) ($size / 2), 1);
+            $from   = range(1, $size);
+            $to     = array_slice($from, (int) ($size / 2), 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertSame($to, $common);
@@ -161,8 +165,8 @@ abstract class LongestCommonSubsequenceTest extends TestCase
     public function testSingleElementSubsequenceAtEnd(): void
     {
         foreach ($this->stress_sizes as $size) {
-            $from   = \range(1, $size);
-            $to     = \array_slice($from, $size - 1, 1);
+            $from   = range(1, $size);
+            $to     = array_slice($from, $size - 1, 1);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertSame($to, $common);
@@ -178,8 +182,8 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->assertSame($expected, $common);
 
         foreach ($this->stress_sizes as $size) {
-            $from   = \range(1, $size);
-            $to     = \array_reverse($from);
+            $from   = range(1, $size);
+            $to     = array_reverse($from);
             $common = $this->implementation->calculate($from, $to);
 
             $this->assertSame([1], $common);
@@ -194,8 +198,5 @@ abstract class LongestCommonSubsequenceTest extends TestCase
         $this->assertCount(0, $diff);
     }
 
-    /**
-     * @return LongestCommonSubsequenceCalculator
-     */
     abstract protected function createImplementation(): LongestCommonSubsequenceCalculator;
 }

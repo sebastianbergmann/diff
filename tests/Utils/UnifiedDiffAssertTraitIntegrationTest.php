@@ -7,10 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace SebastianBergmann\Diff\Utils;
 
-namespace Localheinz\Diff\Utils;
-
+use function file_exists;
+use function realpath;
+use function sprintf;
+use function strlen;
+use function substr;
+use function unlink;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
 use Symfony\Component\Process\Process;
 
 /**
@@ -37,22 +45,19 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
     }
 
     /**
-     * @param string $fileFrom
-     * @param string $fileTo
-     *
      * @dataProvider provideFilePairsCases
      */
     public function testValidPatches(string $fileFrom, string $fileTo): void
     {
-        $command = \sprintf(
-            'diff -u %s %s > %s',
-            \escapeshellarg(\realpath($fileFrom)),
-            \escapeshellarg(\realpath($fileTo)),
-            \escapeshellarg($this->filePatch)
+        $p = Process::fromShellCommandline('diff -u $from $to > $patch');
+        $p->run(
+            null,
+            [
+                'from'  => realpath($fileFrom),
+                'to'    => realpath($fileTo),
+                'patch' => $this->filePatch,
+            ]
         );
-
-        $p = new Process($command);
-        $p->run();
 
         $exitCode = $p->getExitCode();
 
@@ -66,9 +71,9 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         $this->assertSame(
             1, // means `diff` found a diff between the files we gave it
             $exitCode,
-            \sprintf(
+            sprintf(
                 "Command exec. was not successful:\n\"%s\"\nOutput:\n\"%s\"\nStdErr:\n\"%s\"\nExit code %d.\n",
-                $command,
+                $p->getCommandLine(),
                 $p->getOutput(),
                 $p->getErrorOutput(),
                 $p->getExitCode()
@@ -86,36 +91,36 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         $cases = [];
 
         // created cases based on dedicated fixtures
-        $dir       = \realpath(__DIR__ . '/../fixtures/UnifiedDiffAssertTraitIntegrationTest');
-        $dirLength = \strlen($dir);
+        $dir       = realpath(__DIR__ . '/../fixtures/UnifiedDiffAssertTraitIntegrationTest');
+        $dirLength = strlen($dir);
 
         for ($i = 1;; ++$i) {
-            $fromFile = \sprintf('%s/%d_a.txt', $dir, $i);
-            $toFile   = \sprintf('%s/%d_b.txt', $dir, $i);
+            $fromFile = sprintf('%s/%d_a.txt', $dir, $i);
+            $toFile   = sprintf('%s/%d_b.txt', $dir, $i);
 
-            if (!\file_exists($fromFile)) {
+            if (!file_exists($fromFile)) {
                 break;
             }
 
             $this->assertFileExists($toFile);
-            $cases[\sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", \substr(\realpath($fromFile), $dirLength), \substr(\realpath($toFile), $dirLength))] = [$fromFile, $toFile];
+            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
         }
 
         // create cases based on PHP files within the vendor directory for integration testing
-        $dir       = \realpath(__DIR__ . '/../../vendor');
-        $dirLength = \strlen($dir);
+        $dir       = realpath(__DIR__ . '/../../vendor');
+        $dirLength = strlen($dir);
 
-        $fileIterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS));
+        $fileIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS));
         $fromFile     = __FILE__;
 
-        /** @var \SplFileInfo $file */
+        /** @var SplFileInfo $file */
         foreach ($fileIterator as $file) {
             if ('php' !== $file->getExtension()) {
                 continue;
             }
 
             $toFile                                                                                                                                   = $file->getPathname();
-            $cases[\sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", \substr(\realpath($fromFile), $dirLength), \substr(\realpath($toFile), $dirLength))] = [$fromFile, $toFile];
+            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))]      = [$fromFile, $toFile];
             $fromFile                                                                                                                                 = $toFile;
         }
 
@@ -124,6 +129,6 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 
     private function cleanUpTempFiles(): void
     {
-        @\unlink($this->filePatch);
+        @unlink($this->filePatch);
     }
 }

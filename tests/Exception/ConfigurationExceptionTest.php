@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace SebastianBergmann\Diff;
 
-namespace Localheinz\Diff;
-
+use BadMethodCallException;
 use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 
 /**
- * @covers Localheinz\Diff\ConfigurationException
+ * @covers \SebastianBergmann\Diff\ConfigurationException
  */
 final class ConfigurationExceptionTest extends TestCase
 {
@@ -31,9 +32,9 @@ final class ConfigurationExceptionTest extends TestCase
         $e = new ConfigurationException(
             'test',
             'integer',
-            new \SplFileInfo(__FILE__),
+            new SplFileInfo(__FILE__),
             789,
-            new \BadMethodCallException(__METHOD__)
+            new BadMethodCallException(__METHOD__)
         );
 
         $this->assertSame('Option "test" must be integer, got "SplFileInfo".', $e->getMessage());

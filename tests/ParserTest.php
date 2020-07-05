@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace SebastianBergmann\Diff;
 
-namespace Localheinz\Diff;
-
+use function unserialize;
 use PHPUnit\Framework\TestCase;
-use Localheinz\Diff\Utils\FileUtils;
+use SebastianBergmann\Diff\Utils\FileUtils;
 
 /**
- * @covers Localheinz\Diff\Parser
+ * @covers \SebastianBergmann\Diff\Parser
  *
- * @uses Localheinz\Diff\Chunk
- * @uses Localheinz\Diff\Diff
- * @uses Localheinz\Diff\Line
+ * @uses \SebastianBergmann\Diff\Chunk
+ * @uses \SebastianBergmann\Diff\Diff
+ * @uses \SebastianBergmann\Diff\Line
  */
 final class ParserTest extends TestCase
 {
@@ -146,8 +146,7 @@ END;
     }
 
     /**
-     * @param string $diff
-     * @param Diff[] $expected
+     * @psalm-param list<Diff> $expected
      *
      * @dataProvider diffProvider
      */
@@ -163,7 +162,7 @@ END;
         return [
             [
                 "--- old.txt	2014-11-04 08:51:02.661868729 +0300\n+++ new.txt	2014-11-04 08:51:02.665868730 +0300\n@@ -1,3 +1,4 @@\n+2222111\n 1111111\n 1111111\n 1111111\n@@ -5,10 +6,8 @@\n 1111111\n 1111111\n 1111111\n +1121211\n 1111111\n -1111111\n -1111111\n -2222222\n 2222222\n 2222222\n 2222222\n@@ -17,5 +16,6 @@\n 2222222\n 2222222\n 2222222\n +2122212\n 2222222\n 2222222\n",
-                \unserialize(FileUtils::getFileContent(__DIR__ . '/fixtures/serialized_diff.bin')),
+                unserialize(FileUtils::getFileContent(__DIR__ . '/fixtures/serialized_diff.bin')),
             ],
         ];
     }

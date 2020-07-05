@@ -7,13 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Localheinz\Diff;
+namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers Localheinz\Diff\Line
+ * @covers \SebastianBergmann\Diff\Line
  */
 final class LineTest extends TestCase
 {

@@ -7,27 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Localheinz\Diff\Output;
+namespace SebastianBergmann\Diff\Output;
 
 use PHPUnit\Framework\TestCase;
-use Localheinz\Diff\Differ;
+use SebastianBergmann\Diff\Differ;
 
 /**
- * @covers Localheinz\Diff\Output\UnifiedDiffOutputBuilder
+ * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
  *
- * @uses Localheinz\Diff\Differ
- * @uses Localheinz\Diff\Output\AbstractChunkOutputBuilder
- * @uses Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @uses \SebastianBergmann\Diff\Differ
+ * @uses \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
+ * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     * @param string $header
-     *
      * @dataProvider headerProvider
      */
     public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header): void
@@ -71,13 +65,9 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
     }
 
     /**
-     * @param string $expected
-     * @param string $from
-     * @param string $to
-     *
      * @dataProvider provideDiffWithLineNumbers
      */
-    public function testDiffWithLineNumbers($expected, $from, $to): void
+    public function testDiffWithLineNumbers(string $expected, string $from, string $to): void
     {
         $differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New\n", true));
         $this->assertSame($expected, $differ->diff($from, $to));
@@ -86,5 +76,28 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
     public function provideDiffWithLineNumbers(): array
     {
         return UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers();
+    }
+
+    /**
+     * @dataProvider provideStringsThatAreTheSame
+     */
+    public function testEmptyDiffProducesEmptyOutput(string $from, string $to): void
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder('', false));
+
+        $output = $differ->diff($from, $to);
+
+        $this->assertEmpty($output);
+    }
+
+    public function provideStringsThatAreTheSame(): array
+    {
+        return [
+            ['', ''],
+            ['a', 'a'],
+            ['these strings are the same', 'these strings are the same'],
+            ["\n", "\n"],
+            ["multi-line strings\nare the same", "multi-line strings\nare the same"],
+        ];
     }
 }

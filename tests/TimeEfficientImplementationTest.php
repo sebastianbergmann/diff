@@ -7,11 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Localheinz\Diff;
+namespace SebastianBergmann\Diff;
 
 /**
- * @covers Localheinz\Diff\TimeEfficientLongestCommonSubsequenceCalculator
+ * @covers \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
 final class TimeEfficientImplementationTest extends LongestCommonSubsequenceTest
 {

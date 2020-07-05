@@ -7,8 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Localheinz\Diff\Output;
+namespace SebastianBergmann\Diff\Output;
 
 final class UnifiedDiffOutputBuilderDataProvider
 {
@@ -16,7 +15,7 @@ final class UnifiedDiffOutputBuilderDataProvider
     {
         return [
             'diff line 1 non_patch_compat' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -1 +1 @@
 -AA
@@ -26,7 +25,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 'BA',
             ],
             'diff line +1 non_patch_compat' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -1 +1,2 @@
 -AZ
@@ -37,7 +36,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\nB",
             ],
             'diff line -1 non_patch_compat' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,2 +1 @@
 -
@@ -48,7 +47,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 'B',
             ],
             'II non_patch_compat' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,4 +1,2 @@
 -
@@ -60,7 +59,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "A\n1",
             ],
             'diff last line II - no trailing linebreak non_patch_compat' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -5,4 +5,4 @@
  ' . '
@@ -82,15 +81,15 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "<?php\r\n",
                 "<?php\n",
             ],
-        'same non_patch_compat' => [
-'--- Original
+            'same non_patch_compat' => [
+                '--- Original
 +++ New
 ',
                 "AT\n",
                 "AT\n",
             ],
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,4 +1,4 @@
 -b
@@ -103,7 +102,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "a\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
             ],
             'diff line @1' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,2 +1,2 @@
  ' . '
@@ -114,7 +113,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\nB\n",
             ],
             'same multiple lines' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,4 +1,4 @@
  ' . '
@@ -127,7 +126,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\n\nB\nC213",
             ],
             'diff last line I' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -5,4 +5,4 @@
  ' . '
@@ -140,7 +139,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "A\n\n\n\n\n\n\nB\n",
             ],
             'diff line middle' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -5,7 +5,7 @@
  ' . '
@@ -156,7 +155,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "A\n\n\n\n\n\n\nZ\n\n\n\n\n\n\nAY",
             ],
             'diff last line III' => [
-'--- Original
+                '--- Original
 +++ New
 @@ -12,4 +12,4 @@
  ' . '
@@ -169,7 +168,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "A\n\n\n\n\n\n\nA\n\n\n\n\n\n\nB\n",
             ],
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,8 +1,8 @@
  A
@@ -187,7 +186,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "A\nB1\nD\nE\nEE\nF\nG1\nH",
             ],
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,4 +1,5 @@
  Z
@@ -203,7 +202,7 @@ final class UnifiedDiffOutputBuilderDataProvider
 +x
  j
 ',
-'Z
+                'Z
 a
 b
 c
@@ -215,7 +214,7 @@ h
 i
 j
 ',
-'Z
+                'Z
 
 a
 b
@@ -230,7 +229,7 @@ j
 ',
             ],
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -1,7 +1,5 @@
 -
@@ -247,7 +246,7 @@ j
                 "b\nA\nY\n\nA\n",
             ],
             [
-<<<EOF
+                <<<EOF
 --- Original
 +++ New
 @@ -1,7 +1,5 @@
@@ -273,7 +272,7 @@ EOF
                 "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk\n",
             ],
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -8,7 +8,7 @@
  ' . '
@@ -289,7 +288,7 @@ EOF
                 "E\n\n\n\n\nB\n\n\n\n\nC\n\n\n\n\n\n\n\n\nD1",
             ],
             [
-'--- Original
+                '--- Original
 +++ New
 @@ -5,7 +5,7 @@
  ' . '
@@ -347,7 +346,7 @@ EOF
                 "\n\n\n\n\n\n\nU\n\n\n\n\n\n\nV\n\n\n\n\n\n\nW\n\n\n\n\n\n\nX\n\n\n\n\n\n\nY\n\n\n\n\n\n\nZ\n",
             ],
             [
-<<<EOF
+                <<<EOF
 --- Original
 +++ New
 @@ -1,5 +1,5 @@
@@ -371,7 +370,7 @@ EOF
                 "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk\n",
             ],
             [
-<<<EOF
+                <<<EOF
 --- Original
 +++ New
 @@ -1,4 +1,4 @@

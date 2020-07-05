@@ -1,6 +1,6 @@
 {
-    "name": "localheinz/diff",
-    "description": "Fork of sebastian/diff for use with ergebnis/composer-normalize",
+    "name": "sebastian/diff",
+    "description": "Diff implementation",
     "keywords": ["diff", "udiff", "unidiff", "unified diff"],
     "homepage": "https://github.com/sebastianbergmann/diff",
     "license": "BSD-3-Clause",
@@ -14,12 +14,20 @@
             "email": "mail@kore-nordmann.de"
         }
     ],
+    "prefer-stable": true,
+    "config": {
+        "platform": {
+            "php": "7.3.0"
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
     "require": {
-        "php": "^7.1"
+        "php": "^7.3 || ^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5 || ^8.0",
-        "symfony/process": "^2 || ^3.3 || ^4"
+        "phpunit/phpunit": "^9.0",
+        "symfony/process": "^4.2 || ^5"
     },
     "autoload": {
         "classmap": [
@@ -30,5 +38,10 @@
         "classmap": [
             "tests/"
         ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "4.0-dev"
+        }
     }
 }

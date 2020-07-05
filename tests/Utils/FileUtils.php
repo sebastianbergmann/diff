@@ -7,19 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace SebastianBergmann\Diff\Utils;
 
-namespace Localheinz\Diff\Utils;
+use function error_get_last;
+use function file_get_contents;
+use function sprintf;
+use RuntimeException;
 
 final class FileUtils
 {
     public static function getFileContent(string $file): string
     {
-        $content = @\file_get_contents($file);
+        $content = @file_get_contents($file);
 
         if (false === $content) {
-            $error = \error_get_last();
+            $error = error_get_last();
 
-            throw new \RuntimeException(\sprintf(
+            throw new RuntimeException(sprintf(
                 'Failed to read content of file "%s".%s',
                 $file,
                 $error ? ' ' . $error['message'] : ''
