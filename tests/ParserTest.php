@@ -71,6 +71,49 @@ final class ParserTest extends TestCase
         $this->assertCount(4, $chunks[2]->getLines());
     }
 
+    public function testParseWithSpacesInFileNames(): void
+    {
+        $content =
+<<<PATCH
+diff --git a/Foo Bar.txt b/Foo Bar.txt
+index abcdefg..abcdefh 100644
+--- a/Foo Bar.txt
++++ b/Foo Bar.txt
+@@ -20,4 +20,5 @@ class Foo
+     const ONE = 1;
+     const TWO = 2;
++    const THREE = 3;
+     const FOUR = 4;
+
+PATCH;
+
+        $diffs = $this->parser->parse($content);
+
+        $this->assertEquals('a/Foo Bar.txt', $diffs[0]->getFrom());
+        $this->assertEquals('b/Foo Bar.txt', $diffs[0]->getTo());
+    }
+
+    public function testParseWithSpacesInFileNamesAndTimesamp(): void
+    {
+        $content =
+            <<<PATCH
+diff --git a/Foo Bar.txt b/Foo Bar.txt
+index abcdefg..abcdefh 100644
+--- "a/Foo Bar.txt"  2020-10-02 13:31:52.938811371 +0200
++++ "b/Foo Bar.txt"  2020-10-02 13:31:50.022792064 +0200
+@@ -20,4 +20,5 @@ class Foo
+     const ONE = 1;
+     const TWO = 2;
++    const THREE = 3;
+     const FOUR = 4;
+PATCH;
+
+        $diffs = $this->parser->parse($content);
+
+        $this->assertEquals('a/Foo Bar.txt', $diffs[0]->getFrom());
+        $this->assertEquals('b/Foo Bar.txt', $diffs[0]->getTo());
+    }
+
     public function testParseWithRemovedLines(): void
     {
         $content = <<<END
