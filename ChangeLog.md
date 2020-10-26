@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.0.4] - 2020-10-26
+
+### Fixed
+
+* `SebastianBergmann\Diff\Exception` now correctly extends `\Throwable`
+
 ## [4.0.3] - 2020-09-28
 
 ### Changed
@@ -70,6 +76,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
+[4.0.4]: https://github.com/sebastianbergmann/diff/compare/4.0.3...4.0.4
 [4.0.3]: https://github.com/sebastianbergmann/diff/compare/4.0.2...4.0.3
 [4.0.2]: https://github.com/sebastianbergmann/diff/compare/4.0.1...4.0.2
 [4.0.1]: https://github.com/sebastianbergmann/diff/compare/4.0.0...4.0.1
