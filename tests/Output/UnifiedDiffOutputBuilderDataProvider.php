@@ -246,7 +246,7 @@ j
                 "b\nA\nY\n\nA\n",
             ],
             [
-                <<<EOF
+                <<<'EOF'
 --- Original
 +++ New
 @@ -1,7 +1,5 @@
@@ -346,7 +346,7 @@ EOF
                 "\n\n\n\n\n\n\nU\n\n\n\n\n\n\nV\n\n\n\n\n\n\nW\n\n\n\n\n\n\nX\n\n\n\n\n\n\nY\n\n\n\n\n\n\nZ\n",
             ],
             [
-                <<<EOF
+                <<<'EOF'
 --- Original
 +++ New
 @@ -1,5 +1,5 @@
@@ -370,7 +370,7 @@ EOF
                 "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk\n",
             ],
             [
-                <<<EOF
+                <<<'EOF'
 --- Original
 +++ New
 @@ -1,4 +1,4 @@

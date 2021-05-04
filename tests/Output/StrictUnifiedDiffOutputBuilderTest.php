@@ -23,9 +23,9 @@ use SplFileInfo;
 /**
  * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
+ * @uses \SebastianBergmann\Diff\ConfigurationException
  * @uses \SebastianBergmann\Diff\Differ
  * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\ConfigurationException
  */
 final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 {
@@ -54,7 +54,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function assertValidDiffFormat(string $diff): void
     {
@@ -62,7 +62,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function provideOutputBuildingCases(): array
     {
@@ -70,7 +70,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritDoc
      */
     public function provideSample(): array
     {

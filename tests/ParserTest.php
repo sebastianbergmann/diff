@@ -73,8 +73,7 @@ final class ParserTest extends TestCase
 
     public function testParseWithSpacesInFileNames(): void
     {
-        $content =
-<<<PATCH
+        $content = <<<'PATCH'
 diff --git a/Foo Bar.txt b/Foo Bar.txt
 index abcdefg..abcdefh 100644
 --- a/Foo Bar.txt
@@ -95,8 +94,7 @@ PATCH;
 
     public function testParseWithSpacesInFileNamesAndTimesamp(): void
     {
-        $content =
-            <<<PATCH
+        $content = <<<'PATCH'
 diff --git a/Foo Bar.txt b/Foo Bar.txt
 index abcdefg..abcdefh 100644
 --- "a/Foo Bar.txt"  2020-10-02 13:31:52.938811371 +0200
@@ -116,7 +114,7 @@ PATCH;
 
     public function testParseWithRemovedLines(): void
     {
-        $content = <<<END
+        $content = <<<'END'
 diff --git a/Test.txt b/Test.txt
 index abcdefg..abcdefh 100644
 --- a/Test.txt
@@ -156,7 +154,7 @@ END;
 
     public function testParseDiffForMulitpleFiles(): void
     {
-        $content = <<<END
+        $content = <<<'END'
 diff --git a/Test.txt b/Test.txt
 index abcdefg..abcdefh 100644
 --- a/Test.txt

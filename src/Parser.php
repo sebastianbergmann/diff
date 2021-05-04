@@ -36,7 +36,7 @@ final class Parser
         $diff      = null;
         $collected = [];
 
-        for ($i = 0; $i < $lineCount; ++$i) {
+        for ($i = 0; $i < $lineCount; $i++) {
             if (preg_match('#^---\h+"?(?P<file>[^\\v\\t"]+)#', $lines[$i], $fromMatch) &&
                 preg_match('#^\\+\\+\\+\\h+"?(?P<file>[^\\v\\t"]+)#', $lines[$i + 1], $toMatch)) {
                 if ($diff !== null) {
@@ -48,7 +48,7 @@ final class Parser
 
                 $diff = new Diff($fromMatch['file'], $toMatch['file']);
 
-                ++$i;
+                $i++;
             } else {
                 if (preg_match('/^(?:diff --git |index [\da-f\.]+|[+-]{3} [ab])/', $lines[$i])) {
                     continue;

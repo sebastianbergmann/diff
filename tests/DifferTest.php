@@ -19,8 +19,8 @@ use stdClass;
  * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
  *
  * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  * @uses \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
+ * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
 final class DifferTest extends TestCase
 {
@@ -268,7 +268,7 @@ final class DifferTest extends TestCase
                 "A1\nB",
             ],
             [
-                <<<EOF
+                <<<'EOF'
 --- Original
 +++ New
 @@ @@
@@ -292,7 +292,7 @@ EOF
                 "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk\n",
             ],
             [
-                <<<EOF
+                <<<'EOF'
 --- Original
 +++ New
 @@ @@

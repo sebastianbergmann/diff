@@ -103,7 +103,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             // check if has trailing linebreak, else add under it warning under it
             $toFind = [1 => true, 2 => true];
 
-            for ($i = $upperLimit - 1; $i >= 0; --$i) {
+            for ($i = $upperLimit - 1; $i >= 0; $i--) {
                 if (isset($toFind[$diff[$i][1]])) {
                     unset($toFind[$diff[$i][1]]);
                     $lc = substr($diff[$i][0], -1);
@@ -123,23 +123,23 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         $cutOff      = max($this->commonLineThreshold, $this->contextLines);
         $hunkCapture = false;
-        $sameCount   = $toRange   = $fromRange = 0;
-        $toStart     = $fromStart = 1;
+        $sameCount   = $toRange   = $fromRange   = 0;
+        $toStart     = $fromStart     = 1;
         $i           = 0;
 
         /** @var int $i */
         foreach ($diff as $i => $entry) {
             if (0 === $entry[1]) { // same
                 if (false === $hunkCapture) {
-                    ++$fromStart;
-                    ++$toStart;
+                    $fromStart++;
+                    $toStart++;
 
                     continue;
                 }
 
-                ++$sameCount;
-                ++$toRange;
-                ++$fromRange;
+                $sameCount++;
+                $toRange++;
+                $fromRange++;
 
                 if ($sameCount === $cutOff) {
                     $contextStartOffset = ($hunkCapture - $this->contextLines) < 0
@@ -172,7 +172,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
                     $toStart += $toRange;
 
                     $hunkCapture = false;
-                    $sameCount   = $toRange = $fromRange = 0;
+                    $sameCount   = $toRange   = $fromRange   = 0;
                 }
 
                 continue;
@@ -189,11 +189,11 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             }
 
             if (Differ::ADDED === $entry[1]) {
-                ++$toRange;
+                $toRange++;
             }
 
             if (Differ::REMOVED === $entry[1]) {
-                ++$fromRange;
+                $fromRange++;
             }
         }
 
@@ -255,7 +255,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             fwrite($output, "@@ @@\n");
         }
 
-        for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
+        for ($i = $diffStartIndex; $i < $diffEndIndex; $i++) {
             if ($diff[$i][1] === Differ::ADDED) {
                 fwrite($output, '+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::REMOVED) {

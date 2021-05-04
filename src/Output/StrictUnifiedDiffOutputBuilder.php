@@ -151,7 +151,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             // check if has trailing linebreak, else add under it warning under it
             $toFind = [1 => true, 2 => true];
 
-            for ($i = $upperLimit - 1; $i >= 0; --$i) {
+            for ($i = $upperLimit - 1; $i >= 0; $i--) {
                 if (isset($toFind[$diff[$i][1]])) {
                     unset($toFind[$diff[$i][1]]);
                     $lc = substr($diff[$i][0], -1);
@@ -171,23 +171,23 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         $cutOff      = max($this->commonLineThreshold, $this->contextLines);
         $hunkCapture = false;
-        $sameCount   = $toRange = $fromRange = 0;
-        $toStart     = $fromStart = 1;
+        $sameCount   = $toRange   = $fromRange   = 0;
+        $toStart     = $fromStart     = 1;
         $i           = 0;
 
         /** @var int $i */
         foreach ($diff as $i => $entry) {
             if (0 === $entry[1]) { // same
                 if (false === $hunkCapture) {
-                    ++$fromStart;
-                    ++$toStart;
+                    $fromStart++;
+                    $toStart++;
 
                     continue;
                 }
 
-                ++$sameCount;
-                ++$toRange;
-                ++$fromRange;
+                $sameCount++;
+                $toRange++;
+                $fromRange++;
 
                 if ($sameCount === $cutOff) {
                     $contextStartOffset = ($hunkCapture - $this->contextLines) < 0
@@ -220,7 +220,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                     $toStart += $toRange;
 
                     $hunkCapture = false;
-                    $sameCount   = $toRange = $fromRange = 0;
+                    $sameCount   = $toRange   = $fromRange   = 0;
                 }
 
                 continue;
@@ -239,11 +239,11 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             }
 
             if (Differ::ADDED === $entry[1]) { // added
-                ++$toRange;
+                $toRange++;
             }
 
             if (Differ::REMOVED === $entry[1]) { // removed
-                ++$fromRange;
+                $fromRange++;
             }
         }
 
@@ -301,7 +301,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         fwrite($output, " @@\n");
 
-        for ($i = $diffStartIndex; $i < $diffEndIndex; ++$i) {
+        for ($i = $diffStartIndex; $i < $diffEndIndex; $i++) {
             if ($diff[$i][1] === Differ::ADDED) {
                 $this->changed = true;
                 fwrite($output, '+' . $diff[$i][0]);

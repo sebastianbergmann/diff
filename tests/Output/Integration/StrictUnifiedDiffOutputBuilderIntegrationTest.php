@@ -33,8 +33,8 @@ use Symfony\Component\Process\Process;
  * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
  *
  * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
+ * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  *
  * @requires OS Linux
  */
@@ -124,9 +124,9 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     }
 
     /**
+     * @dataProvider provideBasicDiffGeneration
      * @dataProvider provideOutputBuildingCases
      * @dataProvider provideSample
-     * @dataProvider provideBasicDiffGeneration
      */
     public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to): void
     {
@@ -134,9 +134,9 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     }
 
     /**
+     * @dataProvider provideBasicDiffGeneration
      * @dataProvider provideOutputBuildingCases
      * @dataProvider provideSample
-     * @dataProvider provideBasicDiffGeneration
      */
     public function testIntegrationOfUnitTestCasesPatch(string $expected, string $from, string $to): void
     {
@@ -172,9 +172,9 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
                 continue;
             }
 
-            $toFile                                                                                         = $file->getPathname();
-            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", realpath($fromFile), realpath($toFile))]    = [$fromFile, $toFile];
-            $fromFile                                                                                       = $toFile;
+            $toFile                                                                                      = $file->getPathname();
+            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", realpath($fromFile), realpath($toFile))] = [$fromFile, $toFile];
+            $fromFile                                                                                    = $toFile;
         }
 
         return $cases;

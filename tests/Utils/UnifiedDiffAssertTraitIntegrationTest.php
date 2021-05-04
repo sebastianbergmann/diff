@@ -94,7 +94,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         $dir       = realpath(__DIR__ . '/../fixtures/UnifiedDiffAssertTraitIntegrationTest');
         $dirLength = strlen($dir);
 
-        for ($i = 1;; ++$i) {
+        for ($i = 1; ; $i++) {
             $fromFile = sprintf('%s/%d_a.txt', $dir, $i);
             $toFile   = sprintf('%s/%d_b.txt', $dir, $i);
 
@@ -119,9 +119,9 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
                 continue;
             }
 
-            $toFile                                                                                                                                   = $file->getPathname();
-            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))]      = [$fromFile, $toFile];
-            $fromFile                                                                                                                                 = $toFile;
+            $toFile                                                                                                                              = $file->getPathname();
+            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
+            $fromFile                                                                                                                            = $toFile;
         }
 
         return $cases;

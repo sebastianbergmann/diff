@@ -46,7 +46,7 @@ final class AbstractChunkOutputBuilderTest extends TestCase
 
     public function provideGetCommonChunks(): array
     {
-        return[
+        return [
             'same (with default threshold)' => [
                 [],
                 'A',

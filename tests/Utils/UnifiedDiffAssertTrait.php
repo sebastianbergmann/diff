@@ -68,7 +68,7 @@ trait UnifiedDiffAssertTrait
         $diffClosed     = false;
 
         // assert format of lines, get all hunks, test the line numbers
-        for (; $lineNumber <= $lineCount; ++$lineNumber) {
+        for (; $lineNumber <= $lineCount; $lineNumber++) {
             if ($diffClosed) {
                 throw new UnexpectedValueException(sprintf('Unexpected line as 2 "No newline" markers have found, ". Line %d.', $lineNumber));
             }
@@ -116,13 +116,13 @@ trait UnifiedDiffAssertTrait
                     throw new UnexpectedValueException(sprintf('Not expected from (\'-\'), already closed by "\\ No newline at end of file". Line %d.', $lineNumber));
                 }
 
-                ++$diffLineFromNumber;
+                $diffLineFromNumber++;
             } elseif ('+' === $type) {
                 if (isset($endOfLineTypes['+'])) {
                     throw new UnexpectedValueException(sprintf('Not expected to (\'+\'), already closed by "\\ No newline at end of file". Line %d.', $lineNumber));
                 }
 
-                ++$diffLineToNumber;
+                $diffLineToNumber++;
             } elseif (' ' === $type) {
                 if (isset($endOfLineTypes['-'])) {
                     throw new UnexpectedValueException(sprintf('Not expected same (\' \'), \'-\' already closed by "\\ No newline at end of file". Line %d.', $lineNumber));
@@ -132,8 +132,8 @@ trait UnifiedDiffAssertTrait
                     throw new UnexpectedValueException(sprintf('Not expected same (\' \'), \'+\' already closed by "\\ No newline at end of file". Line %d.', $lineNumber));
                 }
 
-                ++$diffLineFromNumber;
-                ++$diffLineToNumber;
+                $diffLineFromNumber++;
+                $diffLineToNumber++;
             } elseif ('\\' === $type) {
                 if (!isset($lines[$lineNumber - 2])) {
                     throw new UnexpectedValueException(sprintf('Unexpected "\\ No newline at end of file", it must be preceded by \'+\' or \'-\' line. Line %d.', $lineNumber));
@@ -152,14 +152,13 @@ trait UnifiedDiffAssertTrait
                 throw new RuntimeException(sprintf('Unexpected line type "%s" Line %d.', $type, $lineNumber));
             }
 
-            $expectHunkHeader =
-                $diffLineFromNumber === ($fromStart + $fromTillOffset)
-                && $diffLineToNumber === ($toStart + $toTillOffset);
+            $expectHunkHeader = $diffLineFromNumber === ($fromStart + $fromTillOffset) &&
+                $diffLineToNumber === ($toStart + $toTillOffset);
         }
 
         if (
-            $diffLineFromNumber !== ($fromStart + $fromTillOffset)
-            && $diffLineToNumber !== ($toStart + $toTillOffset)
+            $diffLineFromNumber !== ($fromStart + $fromTillOffset) &&
+            $diffLineToNumber !== ($toStart + $toTillOffset)
         ) {
             throw new UnexpectedValueException(sprintf('Unexpected EOF, number of lines in hunk "from" (\'-\')) and "to" (\'+\') mismatched. Line %d.', $lineNumber));
         }
