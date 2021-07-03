@@ -12,7 +12,7 @@ namespace SebastianBergmann\Diff;
 /**
  * @covers \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
  */
-final class TimeEfficientImplementationTest extends LongestCommonSubsequenceTest
+final class TimeEfficientImplementationTest extends LongestCommonSubsequenceTestCase
 {
     protected function createImplementation(): LongestCommonSubsequenceCalculator
     {

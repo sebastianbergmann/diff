@@ -16,10 +16,7 @@ use function ini_set;
 use function range;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversNothing
- */
-abstract class LongestCommonSubsequenceTest extends TestCase
+abstract class LongestCommonSubsequenceTestCase extends TestCase
 {
     /**
      * @var LongestCommonSubsequenceCalculator
