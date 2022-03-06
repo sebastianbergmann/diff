@@ -18,7 +18,6 @@ use function array_values;
 use function count;
 use function current;
 use function end;
-use function is_array;
 use function is_string;
 use function key;
 use function min;
