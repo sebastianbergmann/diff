@@ -50,11 +50,7 @@ final class Differ
 
     public function diff(array|string $from, array|string $to, LongestCommonSubsequenceCalculator $lcs = null): string
     {
-        $diff = $this->diffToArray(
-            $this->normalizeDiffInput($from),
-            $this->normalizeDiffInput($to),
-            $lcs
-        );
+        $diff = $this->diffToArray($from, $to, $lcs);
 
         return $this->outputBuilder->getDiff($diff);
     }
@@ -117,15 +113,6 @@ final class Differ
         }
 
         return $diff;
-    }
-
-    private function normalizeDiffInput(array|string $input)
-    {
-        if (!is_array($input) && !is_string($input)) {
-            return (string) $input;
-        }
-
-        return $input;
     }
 
     private function splitStringByLines(string $input): array
