@@ -17,15 +17,9 @@ final class Line
 
     public const UNCHANGED = 3;
 
-    /**
-     * @var int
-     */
-    private $type;
+    private int $type;
 
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
     public function __construct(int $type = self::UNCHANGED, string $content = '')
     {

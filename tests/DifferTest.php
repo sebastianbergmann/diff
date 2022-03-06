@@ -11,8 +11,7 @@ namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
-use SplFileInfo;
-use stdClass;
+use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 /**
  * @covers \SebastianBergmann\Diff\Differ
@@ -24,14 +23,11 @@ use stdClass;
  */
 final class DifferTest extends TestCase
 {
-    /**
-     * @var Differ
-     */
-    private $differ;
+    private Differ $differ;
 
     protected function setUp(): void
     {
-        $this->differ = new Differ;
+        $this->differ = new Differ(new UnifiedDiffOutputBuilder);
     }
 
     /**
@@ -70,14 +66,6 @@ final class DifferTest extends TestCase
     public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(string $expected, string $from, string $to): void
     {
         $this->assertSame($expected, $this->differ->diff($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
-    }
-
-    public function testTypesOtherThanArrayAndStringCanBePassed(): void
-    {
-        $this->assertSame(
-            "--- Original\n+++ New\n@@ @@\n-1\n+2\n",
-            $this->differ->diff(1, 2)
-        );
     }
 
     public function testArrayDiffs(): void
@@ -320,22 +308,6 @@ EOF
         ];
     }
 
-    public function testDiffToArrayInvalidFromType(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('#^"from" must be an array or string\.$#');
-
-        $this->differ->diffToArray(null, '');
-    }
-
-    public function testDiffInvalidToType(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('#^"to" must be an array or string\.$#');
-
-        $this->differ->diffToArray('', new stdClass);
-    }
-
     /**
      * @dataProvider provideSplitStringByLinesCases
      */
@@ -412,21 +384,5 @@ EOF
                 "\nA\r\nB\n\nC",
             ],
         ];
-    }
-
-    public function testConstructorInvalidArgInt(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got integer "1"\.$/');
-
-        new Differ(1);
-    }
-
-    public function testConstructorInvalidArgObject(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/^Expected builder to be an instance of DiffOutputBuilderInterface, <null> or a string, got instance of "SplFileInfo"\.$/');
-
-        new Differ(new SplFileInfo(__FILE__));
     }
 }

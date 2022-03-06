@@ -18,10 +18,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class ChunkTest extends TestCase
 {
-    /**
-     * @var Chunk
-     */
-    private $chunk;
+    private Chunk $chunk;
 
     protected function setUp(): void
     {

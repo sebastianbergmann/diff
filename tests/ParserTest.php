@@ -22,10 +22,7 @@ use SebastianBergmann\Diff\Utils\FileUtils;
  */
 final class ParserTest extends TestCase
 {
-    /**
-     * @var Parser
-     */
-    private $parser;
+    private Parser $parser;
 
     protected function setUp(): void
     {

@@ -33,7 +33,7 @@ use SebastianBergmann\Diff\Differ;
  */
 final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 {
-    private static $default = [
+    private static array $default = [
         'collapseRanges'      => true, // ranges of length one are rendered with the trailing `,1`
         'commonLineThreshold' => 6,    // number of same lines before ending a new hunk and creating a new one (if needed)
         'contextLines'        => 3,    // like `diff:  -u, -U NUM, --unified[=NUM]`, for patch/git apply compatibility best to keep at least @ 3
@@ -43,30 +43,21 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         'toFileDate'          => null,
     ];
 
-    /**
-     * @var bool
-     */
-    private $changed;
+    private bool $changed;
+
+    private bool $collapseRanges;
 
     /**
-     * @var bool
+     * @psalm-var positive-int
      */
-    private $collapseRanges;
+    private int $commonLineThreshold;
+
+    private string $header;
 
     /**
-     * @var int >= 0
+     * @psalm-var positive-int
      */
-    private $commonLineThreshold;
-
-    /**
-     * @var string
-     */
-    private $header;
-
-    /**
-     * @var int >= 0
-     */
-    private $contextLines;
+    private int $contextLines;
 
     public function __construct(array $options = [])
     {

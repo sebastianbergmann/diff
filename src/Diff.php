@@ -11,23 +11,17 @@ namespace SebastianBergmann\Diff;
 
 final class Diff
 {
-    /**
-     * @var string
-     */
-    private $from;
+    private string $from;
+
+    private string $to;
 
     /**
-     * @var string
+     * @psalm-var list<Chunk>
      */
-    private $to;
+    private array $chunks;
 
     /**
-     * @var Chunk[]
-     */
-    private $chunks;
-
-    /**
-     * @param Chunk[] $chunks
+     * @psalm-param list<Chunk> $chunks
      */
     public function __construct(string $from, string $to, array $chunks = [])
     {
@@ -47,7 +41,7 @@ final class Diff
     }
 
     /**
-     * @return Chunk[]
+     * @psalm-return list<Chunk>
      */
     public function getChunks(): array
     {
@@ -55,7 +49,7 @@ final class Diff
     }
 
     /**
-     * @param Chunk[] $chunks
+     * @psalm-param list<Chunk> $chunks
      */
     public function setChunks(array $chunks): void
     {

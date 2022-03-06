@@ -30,7 +30,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
 
-    private $filePatch;
+    private string $filePatch;
 
     protected function setUp(): void
     {

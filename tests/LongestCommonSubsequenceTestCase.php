@@ -11,39 +11,23 @@ namespace SebastianBergmann\Diff;
 
 use function array_reverse;
 use function array_slice;
-use function ini_get;
-use function ini_set;
 use function range;
 use PHPUnit\Framework\TestCase;
 
 abstract class LongestCommonSubsequenceTestCase extends TestCase
 {
-    /**
-     * @var LongestCommonSubsequenceCalculator
-     */
-    private $implementation;
+    private LongestCommonSubsequenceCalculator $implementation;
 
     /**
-     * @var string
+     * @psalm-var list<int>
      */
-    private $memoryLimit;
-
-    /**
-     * @var int[]
-     */
-    private $stress_sizes = [1, 2, 3, 100, 500, 1000, 2000];
+    private array $stressSizes = [1, 2, 3, 100, 500, 1000, 2000];
 
     protected function setUp(): void
     {
-        $this->memoryLimit = ini_get('memory_limit');
-        ini_set('memory_limit', '-1');
+        $this->iniSet('memory_limit', '-1');
 
         $this->implementation = $this->createImplementation();
-    }
-
-    protected function tearDown(): void
-    {
-        ini_set('memory_limit', $this->memoryLimit);
     }
 
     public function testBothEmpty(): void
@@ -83,7 +67,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
 
     public function testEqualSequences(): void
     {
-        foreach ($this->stress_sizes as $size) {
+        foreach ($this->stressSizes as $size) {
             $range  = range(1, $size);
             $from   = $range;
             $to     = $range;
@@ -105,7 +89,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
         $common = $this->implementation->calculate($from, $to);
         $this->assertSame([], $common);
 
-        foreach ($this->stress_sizes as $size) {
+        foreach ($this->stressSizes as $size) {
             $from   = range(1, $size);
             $to     = range($size + 1, $size * 2);
             $common = $this->implementation->calculate($from, $to);
@@ -127,7 +111,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
         $common   = $this->implementation->calculate($from, $to);
         $this->assertSame($expected, $common);
 
-        foreach ($this->stress_sizes as $size) {
+        foreach ($this->stressSizes as $size) {
             $from     = $size < 2 ? [1] : range(1, $size + 1, 2);
             $to       = $size < 3 ? [1] : range(1, $size + 1, 3);
             $expected = $size < 6 ? [1] : range(1, $size + 1, 6);
@@ -139,7 +123,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
 
     public function testSingleElementSubsequenceAtStart(): void
     {
-        foreach ($this->stress_sizes as $size) {
+        foreach ($this->stressSizes as $size) {
             $from   = range(1, $size);
             $to     = array_slice($from, 0, 1);
             $common = $this->implementation->calculate($from, $to);
@@ -150,7 +134,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
 
     public function testSingleElementSubsequenceAtMiddle(): void
     {
-        foreach ($this->stress_sizes as $size) {
+        foreach ($this->stressSizes as $size) {
             $from   = range(1, $size);
             $to     = array_slice($from, (int) ($size / 2), 1);
             $common = $this->implementation->calculate($from, $to);
@@ -161,7 +145,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
 
     public function testSingleElementSubsequenceAtEnd(): void
     {
-        foreach ($this->stress_sizes as $size) {
+        foreach ($this->stressSizes as $size) {
             $from   = range(1, $size);
             $to     = array_slice($from, $size - 1, 1);
             $common = $this->implementation->calculate($from, $to);
@@ -178,7 +162,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
         $common   = $this->implementation->calculate($from, $to);
         $this->assertSame($expected, $common);
 
-        foreach ($this->stress_sizes as $size) {
+        foreach ($this->stressSizes as $size) {
             $from   = range(1, $size);
             $to     = array_reverse($from);
             $common = $this->implementation->calculate($from, $to);

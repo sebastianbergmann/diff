@@ -42,13 +42,13 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
 
-    private $dir;
+    private string $dir;
 
-    private $fileFrom;
+    private string $fileFrom;
 
-    private $fileTo;
+    private string $fileTo;
 
-    private $filePatch;
+    private string $filePatch;
 
     protected function setUp(): void
     {

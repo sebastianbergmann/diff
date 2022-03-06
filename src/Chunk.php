@@ -11,30 +11,15 @@ namespace SebastianBergmann\Diff;
 
 final class Chunk
 {
-    /**
-     * @var int
-     */
-    private $start;
+    private int $start;
 
-    /**
-     * @var int
-     */
-    private $startRange;
+    private int $startRange;
 
-    /**
-     * @var int
-     */
-    private $end;
+    private int $end;
 
-    /**
-     * @var int
-     */
-    private $endRange;
+    private int $endRange;
 
-    /**
-     * @var Line[]
-     */
-    private $lines;
+    private array $lines;
 
     public function __construct(int $start = 0, int $startRange = 1, int $end = 0, int $endRange = 1, array $lines = [])
     {
@@ -66,7 +51,7 @@ final class Chunk
     }
 
     /**
-     * @return Line[]
+     * @psalm-return list<Line>
      */
     public function getLines(): array
     {
@@ -74,7 +59,7 @@ final class Chunk
     }
 
     /**
-     * @param Line[] $lines
+     * @psalm-param list<Line> $lines
      */
     public function setLines(array $lines): void
     {

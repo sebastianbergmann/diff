@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class LineTest extends TestCase
 {
-    /**
-     * @var Line
-     */
-    private $line;
+    private Line $line;
 
     protected function setUp(): void
     {
