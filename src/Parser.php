@@ -99,9 +99,7 @@ final class Parser
 
                 $diffLines[] = new Line($type, $match['line']);
 
-                if (null !== $chunk) {
-                    $chunk->setLines($diffLines);
-                }
+                $chunk?->setLines($diffLines);
             }
         }
 
