@@ -26,7 +26,6 @@ use function prev;
 use function reset;
 use function substr;
 use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 final class Differ
 {
@@ -40,7 +39,7 @@ final class Differ
 
     public const NO_LINE_END_EOF_WARNING = 4;
 
-    private DiffOutputBuilderInterface|UnifiedDiffOutputBuilder $outputBuilder;
+    private DiffOutputBuilderInterface $outputBuilder;
 
     public function __construct(DiffOutputBuilderInterface $outputBuilder)
     {
