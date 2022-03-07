@@ -34,7 +34,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     /**
      * @psalm-var positive-int
      */
-    private $contextLines = 3;
+    private int $contextLines = 3;
 
     private string $header;
 
