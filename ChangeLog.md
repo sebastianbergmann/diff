@@ -4,6 +4,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.0.0] - 2021-MM-DD
 
+### Changed
+
+* Passing a `DiffOutputBuilderInterface` instance to `Differ::__construct()` is no longer optional
+
 ### Removed
 
 * Removed support for PHP 7
