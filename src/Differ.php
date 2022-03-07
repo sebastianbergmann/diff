@@ -163,7 +163,7 @@ final class Differ
             return false;
         }
 
-        // two way compare
+        // two-way compare
         foreach ($newLineBreaks as $break => $set) {
             if (!isset($oldLineBreaks[$break])) {
                 return true;

@@ -52,7 +52,7 @@ final class DiffOnlyOutputBuilder implements DiffOutputBuilderInterface
 
                 continue; // Warnings should not be tested for line break, it will always be there
             } else { /* Not changed (old) 0 */
-                continue; // we didn't write the non changs line, so do not add a line break either
+                continue; // we didn't write the not-changed line, so do not add a line break either
             }
 
             $lc = substr($diffEntry[0], -1);

@@ -89,7 +89,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             }
         } else {
             // search back for the last `+` and `-` line,
-            // check if has trailing linebreak, else add under it warning under it
+            // check if it has trailing linebreak, else add a warning under it
             $toFind = [1 => true, 2 => true];
 
             for ($i = $upperLimit - 1; $i >= 0; $i--) {
@@ -190,7 +190,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             return;
         }
 
-        // we end here when cutoff (commonLineThreshold) was not reached, but we where capturing a hunk,
+        // we end here when cutoff (commonLineThreshold) was not reached, but we were capturing a hunk,
         // do not render hunk till end automatically because the number of context lines might be less than the commonLineThreshold
 
         $contextStartOffset = $hunkCapture - $this->contextLines < 0
