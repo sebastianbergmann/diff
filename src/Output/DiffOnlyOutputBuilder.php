@@ -12,6 +12,7 @@ namespace SebastianBergmann\Diff\Output;
 use function fclose;
 use function fopen;
 use function fwrite;
+use function str_ends_with;
 use function stream_get_contents;
 use function substr;
 use SebastianBergmann\Diff\Differ;
@@ -36,7 +37,7 @@ final class DiffOnlyOutputBuilder implements DiffOutputBuilderInterface
         if ('' !== $this->header) {
             fwrite($buffer, $this->header);
 
-            if ("\n" !== substr($this->header, -1, 1)) {
+            if (!str_ends_with($this->header, "\n")) {
                 fwrite($buffer, "\n");
             }
         }

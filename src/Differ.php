@@ -24,6 +24,7 @@ use function min;
 use function preg_split;
 use function prev;
 use function reset;
+use function str_ends_with;
 use function substr;
 use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
 
@@ -194,7 +195,7 @@ final class Differ
             return '';
         }
 
-        if ("\r\n" === substr($line, -2)) {
+        if (str_ends_with($line, "\r\n")) {
             return "\r\n";
         }
 

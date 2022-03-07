@@ -16,6 +16,7 @@ use function fopen;
 use function fwrite;
 use function max;
 use function min;
+use function str_ends_with;
 use function stream_get_contents;
 use function strlen;
 use function substr;
@@ -52,7 +53,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         if ('' !== $this->header) {
             fwrite($buffer, $this->header);
 
-            if ("\n" !== substr($this->header, -1, 1)) {
+            if (!str_ends_with($this->header, "\n")) {
                 fwrite($buffer, "\n");
             }
         }
