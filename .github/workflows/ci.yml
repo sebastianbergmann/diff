@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -32,7 +32,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -61,7 +61,7 @@ jobs:
 
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v2"
+        uses: "actions/checkout@v3"
 
       - name: "Install PHP with extensions"
         uses: "shivammathur/setup-php@v2"
@@ -71,7 +71,7 @@ jobs:
           ini-values: memory_limit=-1
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v1"
+        uses: "actions/cache@v2"
         with:
           path: "~/.composer/cache"
           key: "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}"
