@@ -306,9 +306,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                 fwrite($output, $diff[$i][0]);
             }
             //} elseif ($diff[$i][1] === Differ::DIFF_LINE_END_WARNING) { // custom comment inserted by PHPUnit/diff package
-            //  skip
+                //  skip
             //} else {
-            //  unknown/invalid
+                //  unknown/invalid
             //}
         }
     }
