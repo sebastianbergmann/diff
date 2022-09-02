@@ -43,8 +43,8 @@ trait UnifiedDiffAssertTrait
 
         $lines            = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $lineCount        = count($lines);
-        $lineNumber       = $diffLineFromNumber       = $diffLineToNumber       = 1;
-        $fromStart        = $fromTillOffset        = $toStart        = $toTillOffset        = -1;
+        $lineNumber       = $diffLineFromNumber = $diffLineToNumber = 1;
+        $fromStart        = $fromTillOffset = $toStart = $toTillOffset = -1;
         $expectHunkHeader = true;
 
         // check for header

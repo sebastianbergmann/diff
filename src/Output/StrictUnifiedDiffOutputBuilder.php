@@ -162,8 +162,8 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         $cutOff      = max($this->commonLineThreshold, $this->contextLines);
         $hunkCapture = false;
-        $sameCount   = $toRange   = $fromRange   = 0;
-        $toStart     = $fromStart     = 1;
+        $sameCount   = $toRange = $fromRange = 0;
+        $toStart     = $fromStart = 1;
         $i           = 0;
 
         /** @var int $i */
@@ -211,7 +211,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                     $toStart += $toRange;
 
                     $hunkCapture = false;
-                    $sameCount   = $toRange   = $fromRange   = 0;
+                    $sameCount   = $toRange = $fromRange = 0;
                 }
 
                 continue;

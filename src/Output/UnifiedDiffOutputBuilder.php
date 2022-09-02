@@ -112,8 +112,8 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         $cutOff      = max($this->commonLineThreshold, $this->contextLines);
         $hunkCapture = false;
-        $sameCount   = $toRange   = $fromRange   = 0;
-        $toStart     = $fromStart     = 1;
+        $sameCount   = $toRange = $fromRange = 0;
+        $toStart     = $fromStart = 1;
         $i           = 0;
 
         /** @var int $i */
@@ -161,7 +161,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
                     $toStart += $toRange;
 
                     $hunkCapture = false;
-                    $sameCount   = $toRange   = $fromRange   = 0;
+                    $sameCount   = $toRange = $fromRange = 0;
                 }
 
                 continue;
