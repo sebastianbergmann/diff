@@ -78,9 +78,9 @@ $builder = new StrictUnifiedDiffOutputBuilder([
     'collapseRanges'      => true, // ranges of length one are rendered with the trailing `,1`
     'commonLineThreshold' => 6,    // number of same lines before ending a new hunk and creating a new one (if needed)
     'contextLines'        => 3,    // like `diff:  -u, -U NUM, --unified[=NUM]`, for patch/git apply compatibility best to keep at least @ 3
-    'fromFile'            => null,
+    'fromFile'            => '',
     'fromFileDate'        => null,
-    'toFile'              => null,
+    'toFile'              => '',
     'toFileDate'          => null,
 ]);
 
