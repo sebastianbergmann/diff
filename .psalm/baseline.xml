@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="dev-master@">
+  <file src="src/Chunk.php">
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$this-&gt;lines</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>list&lt;Line&gt;</code>
+    </MoreSpecificReturnType>
+  </file>
   <file src="src/Differ.php">
     <MissingParamType occurrences="1">
       <code>$line</code>
