@@ -31,12 +31,9 @@ final class DifferTest extends TestCase
     }
 
     /**
-     * @param array|string $from
-     * @param array|string $to
-     *
      * @dataProvider arrayProvider
      */
-    public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, $from, $to): void
+    public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, array|string $from, array|string $to): void
     {
         $this->assertSame($expected, $this->differ->diffToArray($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
     }
@@ -50,12 +47,9 @@ final class DifferTest extends TestCase
     }
 
     /**
-     * @param array|string $from
-     * @param array|string $to
-     *
      * @dataProvider arrayProvider
      */
-    public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, $from, $to): void
+    public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, array|string $from, array|string $to): void
     {
         $this->assertSame($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
     }
