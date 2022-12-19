@@ -15,6 +15,8 @@ use function sprintf;
 use function strlen;
 use function substr;
 use function unlink;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -32,6 +34,51 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 
     private string $filePatch;
 
+    /**
+     * @return array<string, array<string, string>>
+     */
+    public static function provideFilePairsCases(): array
+    {
+        $cases = [];
+
+        // created cases based on dedicated fixtures
+        $dir       = realpath(__DIR__ . '/../fixtures/UnifiedDiffAssertTraitIntegrationTest');
+        $dirLength = strlen($dir);
+
+        for ($i = 1; ; $i++) {
+            $fromFile = sprintf('%s/%d_a.txt', $dir, $i);
+            $toFile   = sprintf('%s/%d_b.txt', $dir, $i);
+
+            if (!file_exists($fromFile)) {
+                break;
+            }
+
+            Assert::assertFileExists($toFile);
+
+            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
+        }
+
+        // create cases based on PHP files within the vendor directory for integration testing
+        $dir       = realpath(__DIR__ . '/../../vendor');
+        $dirLength = strlen($dir);
+
+        $fileIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS));
+        $fromFile     = __FILE__;
+
+        /** @var SplFileInfo $file */
+        foreach ($fileIterator as $file) {
+            if ('php' !== $file->getExtension()) {
+                continue;
+            }
+
+            $toFile                                                                                                                              = $file->getPathname();
+            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
+            $fromFile                                                                                                                            = $toFile;
+        }
+
+        return $cases;
+    }
+
     protected function setUp(): void
     {
         $this->filePatch = __DIR__ . '/../fixtures/out/patch.txt';
@@ -44,9 +91,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         $this->cleanUpTempFiles();
     }
 
-    /**
-     * @dataProvider provideFilePairsCases
-     */
+    #[DataProvider('provideFilePairsCases')]
     public function testValidPatches(string $fileFrom, string $fileTo): void
     {
         $p = Process::fromShellCommandline('diff -u $from $to > $patch');
@@ -81,50 +126,6 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         );
 
         $this->assertValidUnifiedDiffFormat(FileUtils::getFileContent($this->filePatch));
-    }
-
-    /**
-     * @return array<string, array<string, string>>
-     */
-    public function provideFilePairsCases(): array
-    {
-        $cases = [];
-
-        // created cases based on dedicated fixtures
-        $dir       = realpath(__DIR__ . '/../fixtures/UnifiedDiffAssertTraitIntegrationTest');
-        $dirLength = strlen($dir);
-
-        for ($i = 1; ; $i++) {
-            $fromFile = sprintf('%s/%d_a.txt', $dir, $i);
-            $toFile   = sprintf('%s/%d_b.txt', $dir, $i);
-
-            if (!file_exists($fromFile)) {
-                break;
-            }
-
-            $this->assertFileExists($toFile);
-            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
-        }
-
-        // create cases based on PHP files within the vendor directory for integration testing
-        $dir       = realpath(__DIR__ . '/../../vendor');
-        $dirLength = strlen($dir);
-
-        $fileIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS));
-        $fromFile     = __FILE__;
-
-        /** @var SplFileInfo $file */
-        foreach ($fileIterator as $file) {
-            if ('php' !== $file->getExtension()) {
-                continue;
-            }
-
-            $toFile                                                                                                                              = $file->getPathname();
-            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
-            $fromFile                                                                                                                            = $toFile;
-        }
-
-        return $cases;
     }
 
     private function cleanUpTempFiles(): void

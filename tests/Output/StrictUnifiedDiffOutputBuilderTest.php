@@ -14,6 +14,7 @@ use function preg_quote;
 use function sprintf;
 use function substr;
 use function time;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\ConfigurationException;
 use SebastianBergmann\Diff\Differ;
@@ -32,39 +33,9 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     use UnifiedDiffAssertTrait;
 
     /**
-     * @dataProvider provideOutputBuildingCases
-     */
-    public function testOutputBuilding(string $expected, string $from, string $to, array $options): void
-    {
-        $diff = $this->getDiffer($options)->diff($from, $to);
-
-        $this->assertValidDiffFormat($diff);
-        $this->assertSame($expected, $diff);
-    }
-
-    /**
-     * @dataProvider provideSample
-     */
-    public function testSample(string $expected, string $from, string $to, array $options): void
-    {
-        $diff = $this->getDiffer($options)->diff($from, $to);
-
-        $this->assertValidDiffFormat($diff);
-        $this->assertSame($expected, $diff);
-    }
-
-    /**
      * @inheritDoc
      */
-    public function assertValidDiffFormat(string $diff): void
-    {
-        $this->assertValidUnifiedDiffFormat($diff);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function provideOutputBuildingCases(): array
+    public static function provideOutputBuildingCases(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideOutputBuildingCases();
     }
@@ -72,45 +43,17 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     /**
      * @inheritDoc
      */
-    public function provideSample(): array
+    public static function provideSample(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideSample();
     }
 
-    /**
-     * @dataProvider provideBasicDiffGeneration
-     */
-    public function testBasicDiffGeneration(string $expected, string $from, string $to): void
-    {
-        $diff = $this->getDiffer([
-            'fromFile' => 'input.txt',
-            'toFile'   => 'output.txt',
-        ])->diff($from, $to);
-
-        $this->assertValidDiffFormat($diff);
-        $this->assertSame($expected, $diff);
-    }
-
-    public function provideBasicDiffGeneration(): array
+    public static function provideBasicDiffGeneration(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideBasicDiffGeneration();
     }
 
-    /**
-     * @dataProvider provideConfiguredDiffGeneration
-     */
-    public function testConfiguredDiffGeneration(string $expected, string $from, string $to, array $config = []): void
-    {
-        $diff = $this->getDiffer(array_merge([
-            'fromFile' => 'input.txt',
-            'toFile'   => 'output.txt',
-        ], $config))->diff($from, $to);
-
-        $this->assertValidDiffFormat($diff);
-        $this->assertSame($expected, $diff);
-    }
-
-    public function provideConfiguredDiffGeneration(): array
+    public static function provideConfiguredDiffGeneration(): array
     {
         return [
             [
@@ -252,57 +195,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
-    public function testReUseBuilder(): void
-    {
-        $differ = $this->getDiffer([
-            'fromFile' => 'input.txt',
-            'toFile'   => 'output.txt',
-        ]);
-
-        $diff = $differ->diff("A\nB\n", "A\nX\n");
-        $this->assertSame(
-            '--- input.txt
-+++ output.txt
-@@ -1,2 +1,2 @@
- A
--B
-+X
-',
-            $diff
-        );
-
-        $diff = $differ->diff("A\n", "A\n");
-        $this->assertSame(
-            '',
-            $diff
-        );
-    }
-
-    public function testEmptyDiff(): void
-    {
-        $builder = new StrictUnifiedDiffOutputBuilder([
-            'fromFile' => 'input.txt',
-            'toFile'   => 'output.txt',
-        ]);
-
-        $this->assertSame(
-            '',
-            $builder->getDiff([])
-        );
-    }
-
-    /**
-     * @dataProvider provideInvalidConfiguration
-     */
-    public function testInvalidConfiguration(array $options, string $message): void
-    {
-        $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($message, '#')));
-
-        new StrictUnifiedDiffOutputBuilder($options);
-    }
-
-    public function provideInvalidConfiguration(): array
+    public static function provideInvalidConfiguration(): array
     {
         $time = time();
 
@@ -353,23 +246,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideCommonLineThresholdCases
-     */
-    public function testCommonLineThreshold(string $expected, string $from, string $to, int $threshold): void
-    {
-        $diff = $this->getDiffer([
-            'fromFile'            => 'input.txt',
-            'toFile'              => 'output.txt',
-            'commonLineThreshold' => $threshold,
-            'contextLines'        => 0,
-        ])->diff($from, $to);
-
-        $this->assertValidDiffFormat($diff);
-        $this->assertSame($expected, $diff);
-    }
-
-    public function provideCommonLineThresholdCases(): array
+    public static function provideCommonLineThresholdCases(): array
     {
         return [
             [
@@ -406,23 +283,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideContextLineConfigurationCases
-     */
-    public function testContextLineConfiguration(string $expected, string $from, string $to, int $contextLines, int $commonLineThreshold = 6): void
-    {
-        $diff = $this->getDiffer([
-            'fromFile'            => 'input.txt',
-            'toFile'              => 'output.txt',
-            'contextLines'        => $contextLines,
-            'commonLineThreshold' => $commonLineThreshold,
-        ])->diff($from, $to);
-
-        $this->assertValidDiffFormat($diff);
-        $this->assertSame($expected, $diff);
-    }
-
-    public function provideContextLineConfigurationCases(): array
+    public static function provideContextLineConfigurationCases(): array
     {
         $from = "A\nB\nC\nD\nE\nF\nX\nG\nH\nI\nJ\nK\nL\nM\n";
         $to   = "A\nB\nC\nD\nE\nF\nY\nG\nH\nI\nJ\nK\nL\nM\n";
@@ -642,6 +503,132 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
                 99999,
             ],
         ];
+    }
+
+    #[DataProvider('provideOutputBuildingCases')]
+    public function testOutputBuilding(string $expected, string $from, string $to, array $options): void
+    {
+        $diff = $this->getDiffer($options)->diff($from, $to);
+
+        $this->assertValidDiffFormat($diff);
+        $this->assertSame($expected, $diff);
+    }
+
+    #[DataProvider('provideSample')]
+    public function testSample(string $expected, string $from, string $to, array $options): void
+    {
+        $diff = $this->getDiffer($options)->diff($from, $to);
+
+        $this->assertValidDiffFormat($diff);
+        $this->assertSame($expected, $diff);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function assertValidDiffFormat(string $diff): void
+    {
+        $this->assertValidUnifiedDiffFormat($diff);
+    }
+
+    #[DataProvider('provideBasicDiffGeneration')]
+    public function testBasicDiffGeneration(string $expected, string $from, string $to): void
+    {
+        $diff = $this->getDiffer([
+            'fromFile' => 'input.txt',
+            'toFile'   => 'output.txt',
+        ])->diff($from, $to);
+
+        $this->assertValidDiffFormat($diff);
+        $this->assertSame($expected, $diff);
+    }
+
+    #[DataProvider('provideConfiguredDiffGeneration')]
+    public function testConfiguredDiffGeneration(string $expected, string $from, string $to, array $config = []): void
+    {
+        $diff = $this->getDiffer(array_merge([
+            'fromFile' => 'input.txt',
+            'toFile'   => 'output.txt',
+        ], $config))->diff($from, $to);
+
+        $this->assertValidDiffFormat($diff);
+        $this->assertSame($expected, $diff);
+    }
+
+    public function testReUseBuilder(): void
+    {
+        $differ = $this->getDiffer([
+            'fromFile' => 'input.txt',
+            'toFile'   => 'output.txt',
+        ]);
+
+        $diff = $differ->diff("A\nB\n", "A\nX\n");
+        $this->assertSame(
+            '--- input.txt
++++ output.txt
+@@ -1,2 +1,2 @@
+ A
+-B
++X
+',
+            $diff
+        );
+
+        $diff = $differ->diff("A\n", "A\n");
+        $this->assertSame(
+            '',
+            $diff
+        );
+    }
+
+    public function testEmptyDiff(): void
+    {
+        $builder = new StrictUnifiedDiffOutputBuilder([
+            'fromFile' => 'input.txt',
+            'toFile'   => 'output.txt',
+        ]);
+
+        $this->assertSame(
+            '',
+            $builder->getDiff([])
+        );
+    }
+
+    #[DataProvider('provideInvalidConfiguration')]
+    public function testInvalidConfiguration(array $options, string $message): void
+    {
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($message, '#')));
+
+        new StrictUnifiedDiffOutputBuilder($options);
+    }
+
+    #[DataProvider('provideCommonLineThresholdCases')]
+    public function testCommonLineThreshold(string $expected, string $from, string $to, int $threshold): void
+    {
+        $diff = $this->getDiffer([
+            'fromFile'            => 'input.txt',
+            'toFile'              => 'output.txt',
+            'commonLineThreshold' => $threshold,
+            'contextLines'        => 0,
+        ])->diff($from, $to);
+
+        $this->assertValidDiffFormat($diff);
+        $this->assertSame($expected, $diff);
+    }
+
+    #[DataProvider('provideContextLineConfigurationCases')]
+    public function testContextLineConfiguration(string $expected, string $from, string $to, int $contextLines, int $commonLineThreshold = 6): void
+    {
+        $diff = $this->getDiffer([
+            'fromFile'            => 'input.txt',
+            'toFile'              => 'output.txt',
+            'contextLines'        => $contextLines,
+            'commonLineThreshold' => $commonLineThreshold,
+        ])->diff($from, $to);
+
+        $this->assertValidDiffFormat($diff);
+        $this->assertSame($expected, $diff);
     }
 
     /**

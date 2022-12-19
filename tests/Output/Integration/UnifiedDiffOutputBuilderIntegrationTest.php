@@ -22,6 +22,7 @@ use function realpath;
 use function sprintf;
 use function strpos;
 use function unlink;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
@@ -44,6 +45,17 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private string $filePatch;
 
+    public static function provideDiffWithLineNumbers(): array
+    {
+        return array_filter(
+            UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers(),
+            static function ($key) {
+                return !is_string($key) || false === strpos($key, 'non_patch_compat');
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
     protected function setUp(): void
     {
         $this->dir       = realpath(__DIR__ . '/../../fixtures/out/') . '/';
@@ -58,31 +70,16 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->cleanUpTempFiles();
     }
 
-    /**
-     * @dataProvider provideDiffWithLineNumbers
-     */
+    #[DataProvider('provideDiffWithLineNumbers')]
     public function testDiffWithLineNumbersPath($expected, $from, $to): void
     {
         $this->doIntegrationTestPatch($expected, $from, $to);
     }
 
-    /**
-     * @dataProvider provideDiffWithLineNumbers
-     */
+    #[DataProvider('provideDiffWithLineNumbers')]
     public function testDiffWithLineNumbersGitApply($expected, $from, $to): void
     {
         $this->doIntegrationTestGitApply($expected, $from, $to);
-    }
-
-    public function provideDiffWithLineNumbers()
-    {
-        return array_filter(
-            UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers(),
-            static function ($key) {
-                return !is_string($key) || false === strpos($key, 'non_patch_compat');
-            },
-            ARRAY_FILTER_USE_KEY
-        );
     }
 
     private function doIntegrationTestPatch(string $diff, string $from, string $to): void

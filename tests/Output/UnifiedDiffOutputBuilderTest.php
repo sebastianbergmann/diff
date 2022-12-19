@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\Diff\Output;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
 
@@ -21,20 +22,7 @@ use SebastianBergmann\Diff\Differ;
  */
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {
-    /**
-     * @dataProvider headerProvider
-     */
-    public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header): void
-    {
-        $differ = new Differ(new UnifiedDiffOutputBuilder($header));
-
-        $this->assertSame(
-            $expected,
-            $differ->diff($from, $to)
-        );
-    }
-
-    public function headerProvider(): array
+    public static function headerProvider(): array
     {
         return [
             [
@@ -64,33 +52,12 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideDiffWithLineNumbers
-     */
-    public function testDiffWithLineNumbers(string $expected, string $from, string $to): void
-    {
-        $differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New\n", true));
-        $this->assertSame($expected, $differ->diff($from, $to));
-    }
-
-    public function provideDiffWithLineNumbers(): array
+    public static function provideDiffWithLineNumbers(): array
     {
         return UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers();
     }
 
-    /**
-     * @dataProvider provideStringsThatAreTheSame
-     */
-    public function testEmptyDiffProducesEmptyOutput(string $from, string $to): void
-    {
-        $differ = new Differ(new UnifiedDiffOutputBuilder('', false));
-
-        $output = $differ->diff($from, $to);
-
-        $this->assertEmpty($output);
-    }
-
-    public function provideStringsThatAreTheSame(): array
+    public static function provideStringsThatAreTheSame(): array
     {
         return [
             ['', ''],
@@ -99,5 +66,34 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
             ["\n", "\n"],
             ["multi-line strings\nare the same", "multi-line strings\nare the same"],
         ];
+    }
+
+    #[DataProvider('headerProvider')]
+    public function testCustomHeaderCanBeUsed(string $expected, string $from, string $to, string $header): void
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder($header));
+
+        $this->assertSame(
+            $expected,
+            $differ->diff($from, $to)
+        );
+    }
+
+    #[DataProvider('provideDiffWithLineNumbers')]
+    public function testDiffWithLineNumbers(string $expected, string $from, string $to): void
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New\n", true));
+
+        $this->assertSame($expected, $differ->diff($from, $to));
+    }
+
+    #[DataProvider('provideStringsThatAreTheSame')]
+    public function testEmptyDiffProducesEmptyOutput(string $from, string $to): void
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder('', false));
+
+        $output = $differ->diff($from, $to);
+
+        $this->assertEmpty($output);
     }
 }

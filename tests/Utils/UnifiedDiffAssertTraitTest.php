@@ -11,6 +11,7 @@ namespace SebastianBergmann\Diff\Utils;
 
 use function preg_quote;
 use function sprintf;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
@@ -21,15 +22,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
 
-    /**
-     * @dataProvider provideValidCases
-     */
-    public function testValidCases(string $diff): void
-    {
-        $this->assertValidUnifiedDiffFormat($diff);
-    }
-
-    public function provideValidCases(): array
+    public static function provideValidCases(): array
     {
         return [
             [
@@ -55,6 +48,12 @@ final class UnifiedDiffAssertTraitTest extends TestCase
                 '',
             ],
         ];
+    }
+
+    #[DataProvider('provideValidCases')]
+    public function testValidCases(string $diff): void
+    {
+        $this->assertValidUnifiedDiffFormat($diff);
     }
 
     public function testNoLinebreakEnd(): void

@@ -19,6 +19,7 @@ use function preg_split;
 use function realpath;
 use function sprintf;
 use function unlink;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -50,115 +51,22 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private string $filePatch;
 
-    protected function setUp(): void
-    {
-        $this->dir       = realpath(__DIR__ . '/../../fixtures/out') . '/';
-        $this->fileFrom  = $this->dir . 'from.txt';
-        $this->fileTo    = $this->dir . 'to.txt';
-        $this->filePatch = $this->dir . 'diff.patch';
-
-        if (!is_dir($this->dir)) {
-            throw new RuntimeException('Integration test working directory not found.');
-        }
-
-        $this->cleanUpTempFiles();
-    }
-
-    protected function tearDown(): void
-    {
-        $this->cleanUpTempFiles();
-    }
-
-    /**
-     * Integration test.
-     *
-     * - get a file pair
-     * - create a `diff` between the files
-     * - test applying the diff using `git apply`
-     * - test applying the diff using `patch`
-     *
-     * @dataProvider provideFilePairs
-     */
-    public function testIntegrationUsingPHPFileInVendorGitApply(string $fileFrom, string $fileTo): void
-    {
-        $from = FileUtils::getFileContent($fileFrom);
-        $to   = FileUtils::getFileContent($fileTo);
-
-        $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
-
-        if ('' === $diff && $from === $to) {
-            // odd case: test after executing as it is more efficient than to read the files and check the contents every time
-            $this->addToAssertionCount(1);
-
-            return;
-        }
-
-        $this->doIntegrationTestGitApply($diff, $from, $to);
-    }
-
-    /**
-     * Integration test.
-     *
-     * - get a file pair
-     * - create a `diff` between the files
-     * - test applying the diff using `git apply`
-     * - test applying the diff using `patch`
-     *
-     * @dataProvider provideFilePairs
-     */
-    public function testIntegrationUsingPHPFileInVendorPatch(string $fileFrom, string $fileTo): void
-    {
-        $from = FileUtils::getFileContent($fileFrom);
-        $to   = FileUtils::getFileContent($fileTo);
-
-        $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
-
-        if ('' === $diff && $from === $to) {
-            // odd case: test after executing as it is more efficient than to read the files and check the contents every time
-            $this->addToAssertionCount(1);
-
-            return;
-        }
-
-        $this->doIntegrationTestPatch($diff, $from, $to);
-    }
-
-    /**
-     * @dataProvider provideBasicDiffGeneration
-     * @dataProvider provideOutputBuildingCases
-     * @dataProvider provideSample
-     */
-    public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to): void
-    {
-        $this->doIntegrationTestGitApply($expected, $from, $to);
-    }
-
-    /**
-     * @dataProvider provideBasicDiffGeneration
-     * @dataProvider provideOutputBuildingCases
-     * @dataProvider provideSample
-     */
-    public function testIntegrationOfUnitTestCasesPatch(string $expected, string $from, string $to): void
-    {
-        $this->doIntegrationTestPatch($expected, $from, $to);
-    }
-
-    public function provideOutputBuildingCases(): array
+    public static function provideOutputBuildingCases(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideOutputBuildingCases();
     }
 
-    public function provideSample(): array
+    public static function provideSample(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideSample();
     }
 
-    public function provideBasicDiffGeneration(): array
+    public static function provideBasicDiffGeneration(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideBasicDiffGeneration();
     }
 
-    public function provideFilePairs(): array
+    public static function provideFilePairs(): array
     {
         $cases     = [];
         $fromFile  = __FILE__;
@@ -180,11 +88,78 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         return $cases;
     }
 
-    /**
-     * Compare diff create by builder and against one create by `diff` command.
-     *
-     * @dataProvider provideBasicDiffGeneration
-     */
+    protected function setUp(): void
+    {
+        $this->dir       = realpath(__DIR__ . '/../../fixtures/out') . '/';
+        $this->fileFrom  = $this->dir . 'from.txt';
+        $this->fileTo    = $this->dir . 'to.txt';
+        $this->filePatch = $this->dir . 'diff.patch';
+
+        if (!is_dir($this->dir)) {
+            throw new RuntimeException('Integration test working directory not found.');
+        }
+
+        $this->cleanUpTempFiles();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->cleanUpTempFiles();
+    }
+
+    #[DataProvider('provideFilePairs')]
+    public function testIntegrationUsingPHPFileInVendorGitApply(string $fileFrom, string $fileTo): void
+    {
+        $from = FileUtils::getFileContent($fileFrom);
+        $to   = FileUtils::getFileContent($fileTo);
+
+        $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
+
+        if ('' === $diff && $from === $to) {
+            // odd case: test after executing as it is more efficient than to read the files and check the contents every time
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        $this->doIntegrationTestGitApply($diff, $from, $to);
+    }
+
+    #[DataProvider('provideFilePairs')]
+    public function testIntegrationUsingPHPFileInVendorPatch(string $fileFrom, string $fileTo): void
+    {
+        $from = FileUtils::getFileContent($fileFrom);
+        $to   = FileUtils::getFileContent($fileTo);
+
+        $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
+
+        if ('' === $diff && $from === $to) {
+            // odd case: test after executing as it is more efficient than to read the files and check the contents every time
+            $this->addToAssertionCount(1);
+
+            return;
+        }
+
+        $this->doIntegrationTestPatch($diff, $from, $to);
+    }
+
+    #[DataProvider('provideBasicDiffGeneration')]
+    #[DataProvider('provideOutputBuildingCases')]
+    #[DataProvider('provideSample')]
+    public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to): void
+    {
+        $this->doIntegrationTestGitApply($expected, $from, $to);
+    }
+
+    #[DataProvider('provideBasicDiffGeneration')]
+    #[DataProvider('provideOutputBuildingCases')]
+    #[DataProvider('provideSample')]
+    public function testIntegrationOfUnitTestCasesPatch(string $expected, string $from, string $to): void
+    {
+        $this->doIntegrationTestPatch($expected, $from, $to);
+    }
+
+    #[DataProvider('provideBasicDiffGeneration')]
     public function testIntegrationDiffOutputBuilderVersusDiffCommand(string $diff, string $from, string $to): void
     {
         $this->assertNotSame('', $diff);

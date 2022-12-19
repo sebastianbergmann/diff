@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\Diff\Output;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
 
@@ -21,30 +22,7 @@ use SebastianBergmann\Diff\Differ;
  */
 final class AbstractChunkOutputBuilderTest extends TestCase
 {
-    /**
-     * @dataProvider provideGetCommonChunks
-     */
-    public function testGetCommonChunks(array $expected, string $from, string $to, int $lineThreshold = 5): void
-    {
-        $output = new class extends AbstractChunkOutputBuilder {
-            public function getDiff(array $diff): string
-            {
-                return '';
-            }
-
-            public function getChunks(array $diff, $lineThreshold)
-            {
-                return $this->getCommonChunks($diff, $lineThreshold);
-            }
-        };
-
-        $this->assertSame(
-            $expected,
-            $output->getChunks((new Differ(new UnifiedDiffOutputBuilder))->diffToArray($from, $to), $lineThreshold)
-        );
-    }
-
-    public function provideGetCommonChunks(): array
+    public static function provideGetCommonChunks(): array
     {
         return [
             'same (with default threshold)'       => [
@@ -142,5 +120,26 @@ final class AbstractChunkOutputBuilderTest extends TestCase
                 "A\nA\nA\nA\nA\nA\nB\nC\nC\nC\nC\nC\nC\nY",
             ],
         ];
+    }
+
+    #[DataProvider('provideGetCommonChunks')]
+    public function testGetCommonChunks(array $expected, string $from, string $to, int $lineThreshold = 5): void
+    {
+        $output = new class extends AbstractChunkOutputBuilder {
+            public function getDiff(array $diff): string
+            {
+                return '';
+            }
+
+            public function getChunks(array $diff, $lineThreshold)
+            {
+                return $this->getCommonChunks($diff, $lineThreshold);
+            }
+        };
+
+        $this->assertSame(
+            $expected,
+            $output->getChunks((new Differ(new UnifiedDiffOutputBuilder))->diffToArray($from, $to), $lineThreshold)
+        );
     }
 }
