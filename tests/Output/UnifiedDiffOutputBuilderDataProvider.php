@@ -14,7 +14,7 @@ final class UnifiedDiffOutputBuilderDataProvider
     public static function provideDiffWithLineNumbers(): array
     {
         return [
-            'diff line 1 non_patch_compat' => [
+            'diff line 1 non_patch_compat'                               => [
                 '--- Original
 +++ New
 @@ -1 +1 @@
@@ -24,7 +24,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 'AA',
                 'BA',
             ],
-            'diff line +1 non_patch_compat' => [
+            'diff line +1 non_patch_compat'                              => [
                 '--- Original
 +++ New
 @@ -1 +1,2 @@
@@ -35,7 +35,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 'AZ',
                 "\nB",
             ],
-            'diff line -1 non_patch_compat' => [
+            'diff line -1 non_patch_compat'                              => [
                 '--- Original
 +++ New
 @@ -1,2 +1 @@
@@ -46,7 +46,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\nAF",
                 'B',
             ],
-            'II non_patch_compat' => [
+            'II non_patch_compat'                                        => [
                 '--- Original
 +++ New
 @@ -1,4 +1,2 @@
@@ -76,12 +76,12 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\n\n",
                 "\n",
             ],
-            'diff line endings non_patch_compat' => [
+            'diff line endings non_patch_compat'                         => [
                 "--- Original\n+++ New\n@@ -1 +1 @@\n #Warning: Strings contain different line endings!\n-<?php\r\n+<?php\n",
                 "<?php\r\n",
                 "<?php\n",
             ],
-            'same non_patch_compat' => [
+            'same non_patch_compat'                                      => [
                 '--- Original
 +++ New
 ',
@@ -101,7 +101,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "b\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
                 "a\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
             ],
-            'diff line @1' => [
+            'diff line @1'                                               => [
                 '--- Original
 +++ New
 @@ -1,2 +1,2 @@
@@ -112,7 +112,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\nAG\n",
                 "\nB\n",
             ],
-            'same multiple lines' => [
+            'same multiple lines'                                        => [
                 '--- Original
 +++ New
 @@ -1,4 +1,4 @@
@@ -125,7 +125,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\n\nV\nC213",
                 "\n\nB\nC213",
             ],
-            'diff last line I' => [
+            'diff last line I'                                           => [
                 '--- Original
 +++ New
 @@ -5,4 +5,4 @@
@@ -138,7 +138,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "A\n\n\n\n\n\n\nE\n",
                 "A\n\n\n\n\n\n\nB\n",
             ],
-            'diff line middle' => [
+            'diff line middle'                                           => [
                 '--- Original
 +++ New
 @@ -5,7 +5,7 @@
@@ -154,7 +154,7 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "A\n\n\n\n\n\n\nX\n\n\n\n\n\n\nAY",
                 "A\n\n\n\n\n\n\nZ\n\n\n\n\n\n\nAY",
             ],
-            'diff last line III' => [
+            'diff last line III'                                         => [
                 '--- Original
 +++ New
 @@ -12,4 +12,4 @@
