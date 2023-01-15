@@ -9,11 +9,10 @@
  */
 namespace SebastianBergmann\Diff;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \SebastianBergmann\Diff\Line
- */
+#[CoversClass(Line::class)]
 final class LineTest extends TestCase
 {
     private Line $line;

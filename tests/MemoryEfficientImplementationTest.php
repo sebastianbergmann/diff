@@ -9,9 +9,9 @@
  */
 namespace SebastianBergmann\Diff;
 
-/**
- * @covers \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
- */
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(MemoryEfficientLongestCommonSubsequenceCalculator::class)]
 final class MemoryEfficientImplementationTest extends LongestCommonSubsequenceTestCase
 {
     protected function createImplementation(): LongestCommonSubsequenceCalculator

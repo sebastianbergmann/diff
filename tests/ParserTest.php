@@ -10,17 +10,16 @@
 namespace SebastianBergmann\Diff;
 
 use function unserialize;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Utils\FileUtils;
 
-/**
- * @covers \SebastianBergmann\Diff\Parser
- *
- * @uses \SebastianBergmann\Diff\Chunk
- * @uses \SebastianBergmann\Diff\Diff
- * @uses \SebastianBergmann\Diff\Line
- */
+#[CoversClass(Parser::class)]
+#[UsesClass(Chunk::class)]
+#[UsesClass(Diff::class)]
+#[UsesClass(Line::class)]
 final class ParserTest extends TestCase
 {
     private Parser $parser;

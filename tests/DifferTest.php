@@ -9,19 +9,19 @@
  */
 namespace SebastianBergmann\Diff;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
+use SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
-/**
- * @covers \SebastianBergmann\Diff\Differ
- * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
- *
- * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- */
+#[CoversClass(Differ::class)]
+#[CoversClass(UnifiedDiffOutputBuilder::class)]
+#[UsesClass(MemoryEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(AbstractChunkOutputBuilder::class)]
 final class DifferTest extends TestCase
 {
     private Differ $differ;
