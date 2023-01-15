@@ -42,16 +42,13 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         'toFile'              => null,
         'toFileDate'          => null,
     ];
-
     private bool $changed;
-
     private bool $collapseRanges;
 
     /**
      * @psalm-var positive-int
      */
     private int $commonLineThreshold;
-
     private string $header;
 
     /**

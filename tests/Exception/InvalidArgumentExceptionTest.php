@@ -19,7 +19,7 @@ final class InvalidArgumentExceptionTest extends TestCase
 {
     public function testInvalidArgumentException(): void
     {
-        $previousException = new LogicException();
+        $previousException = new LogicException;
         $message           = 'test';
         $code              = 123;
 

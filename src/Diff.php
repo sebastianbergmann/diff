@@ -12,7 +12,6 @@ namespace SebastianBergmann\Diff;
 final class Diff
 {
     private string $from;
-
     private string $to;
 
     /**

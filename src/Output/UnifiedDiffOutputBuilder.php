@@ -27,17 +27,14 @@ use SebastianBergmann\Diff\Differ;
  */
 final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 {
-    private bool $collapseRanges = true;
-
+    private bool $collapseRanges     = true;
     private int $commonLineThreshold = 6;
 
     /**
      * @psalm-var positive-int
      */
     private int $contextLines = 3;
-
     private string $header;
-
     private bool $addLineNumbers;
 
     public function __construct(string $header = "--- Original\n+++ New\n", bool $addLineNumbers = false)

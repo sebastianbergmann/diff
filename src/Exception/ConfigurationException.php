@@ -9,7 +9,6 @@
  */
 namespace SebastianBergmann\Diff;
 
-use function get_class;
 use function gettype;
 use function is_object;
 use function sprintf;
@@ -29,7 +28,7 @@ final class ConfigurationException extends InvalidArgumentException
                 'Option "%s" must be %s, got "%s".',
                 $option,
                 $expected,
-                is_object($value) ? get_class($value) : (null === $value ? '<null>' : gettype($value) . '#' . $value)
+                is_object($value) ? $value::class : (null === $value ? '<null>' : gettype($value) . '#' . $value)
             ),
             $code,
             $previous

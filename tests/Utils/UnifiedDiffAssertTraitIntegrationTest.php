@@ -31,7 +31,6 @@ use Symfony\Component\Process\Process;
 final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
-
     private string $filePatch;
 
     /**

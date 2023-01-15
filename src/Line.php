@@ -16,9 +16,7 @@ final class Line
     public const REMOVED = 2;
 
     public const UNCHANGED = 3;
-
     private int $type;
-
     private string $content;
 
     public function __construct(int $type = self::UNCHANGED, string $content = '')

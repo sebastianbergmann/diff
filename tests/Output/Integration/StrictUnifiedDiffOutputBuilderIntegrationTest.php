@@ -42,13 +42,9 @@ use Symfony\Component\Process\Process;
 final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
-
     private string $dir;
-
     private string $fileFrom;
-
     private string $fileTo;
-
     private string $filePatch;
 
     public static function provideOutputBuildingCases(): array

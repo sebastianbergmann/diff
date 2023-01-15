@@ -38,18 +38,16 @@ use Symfony\Component\Process\Process;
 final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
-
     private string $dir;
-
     private string $fileFrom;
-
     private string $filePatch;
 
     public static function provideDiffWithLineNumbers(): array
     {
         return array_filter(
             UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers(),
-            static function ($key) {
+            static function ($key)
+            {
                 return !is_string($key) || false === strpos($key, 'non_patch_compat');
             },
             ARRAY_FILTER_USE_KEY
