@@ -2,7 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.0.0] - 2021-MM-DD
+## [5.0.0] - 2022-02-03
 
 ### Changed
 
@@ -86,7 +86,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
-[5.0.0]: https://github.com/sebastianbergmann/diff/compare/4.0.4...master
+[5.0.0]: https://github.com/sebastianbergmann/diff/compare/4.0.4...main
 [4.0.4]: https://github.com/sebastianbergmann/diff/compare/4.0.3...4.0.4
 [4.0.3]: https://github.com/sebastianbergmann/diff/compare/4.0.2...4.0.3
 [4.0.2]: https://github.com/sebastianbergmann/diff/compare/4.0.1...4.0.2
