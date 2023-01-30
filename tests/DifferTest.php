@@ -93,7 +93,7 @@ final class DifferTest extends TestCase
                 'abcdde',
                 'abcde',
             ],
-            'same start'                              => [
+            'same start' => [
                 [
                     [17, Differ::OLD],
                     ['b', Differ::REMOVED],
@@ -102,7 +102,7 @@ final class DifferTest extends TestCase
                 [30 => 17, 'a' => 'b'],
                 [30 => 17, 'c' => 'd'],
             ],
-            'same end'                                => [
+            'same end' => [
                 [
                     [1, Differ::REMOVED],
                     [2, Differ::ADDED],
@@ -111,7 +111,7 @@ final class DifferTest extends TestCase
                 [1 => 1, 'a' => 'b'],
                 [1 => 2, 'a' => 'b'],
             ],
-            'same start (2), same end (1)'            => [
+            'same start (2), same end (1)' => [
                 [
                     [17, Differ::OLD],
                     [2, Differ::OLD],
@@ -123,14 +123,14 @@ final class DifferTest extends TestCase
                 [30 => 17, 1 => 2, 2 => 4, 'z' => 'x'],
                 [30 => 17, 1 => 2, 3 => 'a', 2 => 5, 'z' => 'x'],
             ],
-            'same'                                    => [
+            'same' => [
                 [
                     ['x', Differ::OLD],
                 ],
                 ['z' => 'x'],
                 ['z' => 'x'],
             ],
-            'diff'                                    => [
+            'diff' => [
                 [
                     ['y', Differ::REMOVED],
                     ['x', Differ::ADDED],
@@ -138,7 +138,7 @@ final class DifferTest extends TestCase
                 ['x' => 'y'],
                 ['z' => 'x'],
             ],
-            'diff 2'                                  => [
+            'diff 2' => [
                 [
                     ['y', Differ::REMOVED],
                     ['b', Differ::REMOVED],
@@ -148,7 +148,7 @@ final class DifferTest extends TestCase
                 ['x' => 'y', 'a' => 'b'],
                 ['z' => 'x', 'c' => 'd'],
             ],
-            'test line diff detection'                => [
+            'test line diff detection' => [
                 [
                     [
                         "#Warning: Strings contain different line endings!\n",

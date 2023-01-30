@@ -25,58 +25,58 @@ final class AbstractChunkOutputBuilderTest extends TestCase
     public static function provideGetCommonChunks(): array
     {
         return [
-            'same (with default threshold)'       => [
+            'same (with default threshold)' => [
                 [],
                 'A',
                 'A',
             ],
-            'same (threshold 0)'                  => [
+            'same (threshold 0)' => [
                 [0 => 0],
                 'A',
                 'A',
                 0,
             ],
-            'empty'                               => [
+            'empty' => [
                 [],
                 '',
                 '',
             ],
-            'single line diff'                    => [
+            'single line diff' => [
                 [],
                 'A',
                 'B',
             ],
-            'below threshold I'                   => [
+            'below threshold I' => [
                 [],
                 "A\nX\nC",
                 "A\nB\nC",
             ],
-            'below threshold II'                  => [
+            'below threshold II' => [
                 [],
                 "A\n\n\n\nX\nC",
                 "A\n\n\n\nB\nC",
             ],
-            'below threshold III'                 => [
+            'below threshold III' => [
                 [0 => 5],
                 "A\n\n\n\n\n\nB",
                 "A\n\n\n\n\n\nA",
             ],
-            'same start'                          => [
+            'same start' => [
                 [0 => 5],
                 "A\n\n\n\n\n\nX\nC",
                 "A\n\n\n\n\n\nB\nC",
             ],
-            'same start long'                     => [
+            'same start long' => [
                 [0 => 13],
                 "\n\n\n\n\n\n\n\n\n\n\n\n\n\nA",
                 "\n\n\n\n\n\n\n\n\n\n\n\n\n\nB",
             ],
-            'same part in between'                => [
+            'same part in between' => [
                 [2 => 8],
                 "A\n\n\n\n\n\n\nX\nY\nZ\n\n",
                 "B\n\n\n\n\n\n\nX\nA\nZ\n\n",
             ],
-            'same trailing'                       => [
+            'same trailing' => [
                 [2 => 14],
                 "A\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
                 "B\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
@@ -86,19 +86,19 @@ final class AbstractChunkOutputBuilderTest extends TestCase
                 "A\n\n\n\n\n\n\nA\n\n\n\n\n\n\n",
                 "B\n\n\n\n\n\n\nB\n\n\n\n\n\n\n",
             ],
-            'below custom threshold I'            => [
+            'below custom threshold I' => [
                 [],
                 "A\n\nB",
                 "A\n\nD",
                 2,
             ],
-            'custom threshold I'                  => [
+            'custom threshold I' => [
                 [0 => 1],
                 "A\n\nB",
                 "A\n\nD",
                 1,
             ],
-            'custom threshold II'                 => [
+            'custom threshold II' => [
                 [],
                 "A\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
                 "A\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
