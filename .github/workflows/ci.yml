@@ -73,13 +73,6 @@ jobs:
           coverage: "pcov"
           ini-values: memory_limit=-1
 
-      - name: "Cache dependencies installed with Composer"
-        uses: "actions/cache@v2"
-        with:
-          path: "~/.composer/cache"
-          key: "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}"
-          restore-keys: "php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-"
-
       - name: "Install dependencies with Composer"
         run: "./tools/composer update --no-ansi --no-interaction --no-progress"
 
