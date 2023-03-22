@@ -201,6 +201,9 @@ index abcdefg..abcdefh 100644
 --- a/Test.txt
 +++ b/Test.txt
 @@ -49,0 +49,0 @@
+@@ -50 +50 @@
+ A
+-B
 END;
         $diffs = $this->parser->parse($content);
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
@@ -209,13 +212,19 @@ END;
         $chunks = $diffs[0]->getChunks();
 
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
-        $this->assertCount(1, $chunks);
+        $this->assertCount(2, $chunks);
 
         $chunk = $chunks[0];
         $this->assertSame(49, $chunk->getStart());
         $this->assertSame(49, $chunk->getEnd());
         $this->assertSame(0, $chunk->getStartRange());
         $this->assertSame(0, $chunk->getEndRange());
+
+        $chunk = $chunks[1];
+        $this->assertSame(50, $chunk->getStart());
+        $this->assertSame(50, $chunk->getEnd());
+        $this->assertSame(1, $chunk->getStartRange());
+        $this->assertSame(1, $chunk->getEndRange());
     }
 
     /**
