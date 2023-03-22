@@ -193,6 +193,31 @@ END;
         $this->assertCount(1, $diff->getChunks());
     }
 
+    public function testParseWithRange(): void
+    {
+        $content = <<<'END'
+diff --git a/Test.txt b/Test.txt
+index abcdefg..abcdefh 100644
+--- a/Test.txt
++++ b/Test.txt
+@@ -49,0 +49,0 @@
+END;
+        $diffs = $this->parser->parse($content);
+        $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
+        $this->assertCount(1, $diffs);
+
+        $chunks = $diffs[0]->getChunks();
+
+        $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0];
+        $this->assertSame(49, $chunk->getStart());
+        $this->assertSame(49, $chunk->getEnd());
+        $this->assertSame(0, $chunk->getStartRange());
+        $this->assertSame(0, $chunk->getEndRange());
+    }
+
     /**
      * @psalm-param list<Diff> $expected
      */
