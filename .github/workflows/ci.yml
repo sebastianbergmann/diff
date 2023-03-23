@@ -9,6 +9,9 @@ name: "CI"
 permissions:
   contents: read
 
+env:
+  COMPOSER_ROOT_VERSION: "5.0-dev"
+
 jobs:
   coding-guidelines:
     name: Coding Guidelines
