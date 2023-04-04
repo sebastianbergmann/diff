@@ -30,14 +30,10 @@ use SebastianBergmann\Diff\Output\DiffOutputBuilderInterface;
 
 final class Differ
 {
-    public const OLD = 0;
-
-    public const ADDED = 1;
-
-    public const REMOVED = 2;
-
-    public const DIFF_LINE_END_WARNING = 3;
-
+    public const OLD                     = 0;
+    public const ADDED                   = 1;
+    public const REMOVED                 = 2;
+    public const DIFF_LINE_END_WARNING   = 3;
     public const NO_LINE_END_EOF_WARNING = 4;
     private DiffOutputBuilderInterface $outputBuilder;
 
