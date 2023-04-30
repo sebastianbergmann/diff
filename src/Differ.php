@@ -35,9 +35,9 @@ final class Differ
     public const REMOVED                 = 2;
     public const DIFF_LINE_END_WARNING   = 3;
     public const NO_LINE_END_EOF_WARNING = 4;
-    private DiffOutputBuilderInterface $outputBuilder;
+    private ?DiffOutputBuilderInterface $outputBuilder;
 
-    public function __construct(DiffOutputBuilderInterface $outputBuilder)
+    public function __construct(?DiffOutputBuilderInterface $outputBuilder)
     {
         $this->outputBuilder = $outputBuilder;
     }
