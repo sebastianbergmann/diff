@@ -33,6 +33,21 @@ final class Line
         return $this->type;
     }
 
+    public function isAdded(): bool
+    {
+        return $this->type === self::ADDED;
+    }
+
+    public function isRemoved(): bool
+    {
+        return $this->type === self::REMOVED;
+    }
+
+    public function isUnchanged(): bool
+    {
+        return $this->type === self::UNCHANGED;
+    }
+
     /**
      * @deprecated
      */

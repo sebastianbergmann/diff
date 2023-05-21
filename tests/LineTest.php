@@ -10,32 +10,61 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Line::class)]
+#[Small]
 final class LineTest extends TestCase
 {
-    private Line $line;
-
-    protected function setUp(): void
+    public function testCanBeOfTypeAdded(): void
     {
-        $this->line = new Line;
+        $this->assertSame(Line::ADDED, $this->added()->type());
+        $this->assertSame(Line::ADDED, $this->added()->getType());
+
+        $this->assertTrue($this->added()->isAdded());
+        $this->assertFalse($this->added()->isRemoved());
+        $this->assertFalse($this->added()->isUnchanged());
     }
 
-    public function testCanBeCreatedWithoutArguments(): void
+    public function testCanBeOfTypeRemoved(): void
     {
-        $this->assertInstanceOf(Line::class, $this->line);
+        $this->assertSame(Line::REMOVED, $this->removed()->type());
+        $this->assertSame(Line::REMOVED, $this->removed()->getType());
+
+        $this->assertTrue($this->removed()->isRemoved());
+        $this->assertFalse($this->removed()->isAdded());
+        $this->assertFalse($this->removed()->isUnchanged());
     }
 
-    public function testTypeCanBeRetrieved(): void
+    public function testCanBeOfTypeUnchanged(): void
     {
-        $this->assertSame(Line::UNCHANGED, $this->line->type());
-        $this->assertSame(Line::UNCHANGED, $this->line->getType());
+        $this->assertSame(Line::UNCHANGED, $this->unchanged()->type());
+        $this->assertSame(Line::UNCHANGED, $this->unchanged()->getType());
+
+        $this->assertTrue($this->unchanged()->isUnchanged());
+        $this->assertFalse($this->unchanged()->isAdded());
+        $this->assertFalse($this->unchanged()->isRemoved());
     }
 
-    public function testContentCanBeRetrieved(): void
+    public function testHasContent(): void
     {
-        $this->assertSame('', $this->line->content());
-        $this->assertSame('', $this->line->getContent());
+        $this->assertSame('content', $this->added()->content());
+        $this->assertSame('content', $this->added()->getContent());
+    }
+
+    private function added(): Line
+    {
+        return new Line(Line::ADDED, 'content');
+    }
+
+    private function removed(): Line
+    {
+        return new Line(Line::REMOVED, 'content');
+    }
+
+    private function unchanged(): Line
+    {
+        return new Line(Line::UNCHANGED, 'content');
     }
 }
