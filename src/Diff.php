@@ -11,7 +11,14 @@ namespace SebastianBergmann\Diff;
 
 final class Diff
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $from;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $to;
 
     /**
@@ -20,6 +27,8 @@ final class Diff
     private array $chunks;
 
     /**
+     * @psalm-param non-empty-string $from
+     * @psalm-param non-empty-string $to
      * @psalm-param list<Chunk> $chunks
      */
     public function __construct(string $from, string $to, array $chunks = [])
@@ -29,11 +38,17 @@ final class Diff
         $this->chunks = $chunks;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function from(): string
     {
         return $this->from;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function to(): string
     {
         return $this->to;
@@ -56,6 +71,8 @@ final class Diff
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @deprecated
      */
     public function getFrom(): string
@@ -64,6 +81,8 @@ final class Diff
     }
 
     /**
+     * @psalm-return non-empty-string
+     *
      * @deprecated
      */
     public function getTo(): string
