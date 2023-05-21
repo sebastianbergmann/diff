@@ -10,8 +10,10 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 
 #[CoversClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[Small]
 final class TimeEfficientImplementationTest extends LongestCommonSubsequenceTestCase
 {
     protected function createImplementation(): LongestCommonSubsequenceCalculator

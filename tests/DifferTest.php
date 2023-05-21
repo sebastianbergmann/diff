@@ -11,6 +11,7 @@ namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
@@ -22,6 +23,7 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 #[UsesClass(MemoryEfficientLongestCommonSubsequenceCalculator::class)]
 #[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 #[UsesClass(AbstractChunkOutputBuilder::class)]
+#[Small]
 final class DifferTest extends TestCase
 {
     private Differ $differ;

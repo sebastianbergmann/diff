@@ -10,11 +10,13 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Diff::class)]
 #[UsesClass(Chunk::class)]
+#[Small]
 final class DiffTest extends TestCase
 {
     public function testGettersAfterConstructionWithDefault(): void

@@ -10,11 +10,13 @@
 namespace SebastianBergmann\Diff;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Chunk::class)]
 #[UsesClass(Line::class)]
+#[Small]
 final class ChunkTest extends TestCase
 {
     private Chunk $chunk;

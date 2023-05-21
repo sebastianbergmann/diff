@@ -10,12 +10,13 @@
 namespace SebastianBergmann\Diff;
 
 use BadMethodCallException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use SplFileInfo;
 
-/**
- * @covers \SebastianBergmann\Diff\ConfigurationException
- */
+#[CoversClass(ConfigurationException::class)]
+#[Small]
 final class ConfigurationExceptionTest extends TestCase
 {
     public function testConstructWithDefaults(): void

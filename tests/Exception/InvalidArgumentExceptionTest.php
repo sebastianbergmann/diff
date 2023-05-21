@@ -10,11 +10,12 @@
 namespace SebastianBergmann\Diff;
 
 use LogicException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \SebastianBergmann\Diff\InvalidArgumentException
- */
+#[CoversClass(InvalidArgumentException::class)]
+#[Small]
 final class InvalidArgumentExceptionTest extends TestCase
 {
     public function testInvalidArgumentException(): void
