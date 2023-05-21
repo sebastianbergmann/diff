@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="dev-master@">
+<files psalm-version="5.11.0@c9b192ab8400fdaf04b2b13d110575adc879aa90">
   <file src="src/Chunk.php">
-    <LessSpecificReturnStatement occurrences="1">
-      <code>$this-&gt;lines</code>
+    <LessSpecificReturnStatement>
+      <code><![CDATA[$this->lines]]></code>
+      <code><![CDATA[$this->lines]]></code>
     </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="1">
-      <code>list&lt;Line&gt;</code>
+    <MoreSpecificReturnType>
+      <code><![CDATA[list<Line>]]></code>
+      <code><![CDATA[list<Line>]]></code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Differ.php">
-    <MissingParamType occurrences="1">
+    <MissingParamType>
       <code>$line</code>
     </MissingParamType>
   </file>
   <file src="src/Exception/ConfigurationException.php">
-    <MissingParamType occurrences="1">
+    <MissingParamType>
       <code>$value</code>
     </MissingParamType>
   </file>
   <file src="src/Output/StrictUnifiedDiffOutputBuilder.php">
-    <InvalidPropertyAssignmentValue occurrences="1">
-      <code>$options['contextLines']</code>
+    <InvalidPropertyAssignmentValue>
+      <code><![CDATA[$options['contextLines']]]></code>
     </InvalidPropertyAssignmentValue>
-    <MissingParamType occurrences="2">
+    <MissingParamType>
       <code>$output</code>
       <code>$output</code>
     </MissingParamType>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor>
       <code>$changed</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Output/UnifiedDiffOutputBuilder.php">
-    <MissingParamType occurrences="2">
+    <MissingParamType>
       <code>$output</code>
       <code>$output</code>
     </MissingParamType>

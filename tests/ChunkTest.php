@@ -26,6 +26,7 @@ final class ChunkTest extends TestCase
 
     public function testHasInitiallyNoLines(): void
     {
+        $this->assertSame([], $this->chunk->lines());
         $this->assertSame([], $this->chunk->getLines());
     }
 
@@ -36,26 +37,31 @@ final class ChunkTest extends TestCase
 
     public function testStartCanBeRetrieved(): void
     {
+        $this->assertSame(0, $this->chunk->start());
         $this->assertSame(0, $this->chunk->getStart());
     }
 
     public function testStartRangeCanBeRetrieved(): void
     {
+        $this->assertSame(1, $this->chunk->startRange());
         $this->assertSame(1, $this->chunk->getStartRange());
     }
 
     public function testEndCanBeRetrieved(): void
     {
+        $this->assertSame(0, $this->chunk->end());
         $this->assertSame(0, $this->chunk->getEnd());
     }
 
     public function testEndRangeCanBeRetrieved(): void
     {
+        $this->assertSame(1, $this->chunk->endRange());
         $this->assertSame(1, $this->chunk->getEndRange());
     }
 
     public function testLinesCanBeRetrieved(): void
     {
+        $this->assertSame([], $this->chunk->lines());
         $this->assertSame([], $this->chunk->getLines());
     }
 
@@ -65,6 +71,7 @@ final class ChunkTest extends TestCase
 
         $this->chunk->setLines($lines);
 
+        $this->assertSame($lines, $this->chunk->lines());
         $this->assertSame($lines, $this->chunk->getLines());
     }
 }

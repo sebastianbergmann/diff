@@ -23,11 +23,27 @@ final class Line
         $this->content = $content;
     }
 
+    public function content(): string
+    {
+        return $this->content;
+    }
+
+    public function type(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @deprecated
+     */
     public function getContent(): string
     {
         return $this->content;
     }
 
+    /**
+     * @deprecated
+     */
     public function getType(): int
     {
         return $this->type;

@@ -29,12 +29,12 @@ final class Diff
         $this->chunks = $chunks;
     }
 
-    public function getFrom(): string
+    public function from(): string
     {
         return $this->from;
     }
 
-    public function getTo(): string
+    public function to(): string
     {
         return $this->to;
     }
@@ -42,7 +42,7 @@ final class Diff
     /**
      * @psalm-return list<Chunk>
      */
-    public function getChunks(): array
+    public function chunks(): array
     {
         return $this->chunks;
     }
@@ -53,5 +53,31 @@ final class Diff
     public function setChunks(array $chunks): void
     {
         $this->chunks = $chunks;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getTo(): string
+    {
+        return $this->to;
+    }
+
+    /**
+     * @psalm-return list<Chunk>
+     *
+     * @deprecated
+     */
+    public function getChunks(): array
+    {
+        return $this->chunks;
     }
 }

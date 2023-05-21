@@ -48,14 +48,13 @@ final class ParserTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
-        $chunks = $diffs[0]->getChunks();
+        $chunks = $diffs[0]->chunks();
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
 
         $this->assertCount(1, $chunks);
 
-        $this->assertSame(20, $chunks[0]->getStart());
-
-        $this->assertCount(4, $chunks[0]->getLines());
+        $this->assertSame(20, $chunks[0]->start());
+        $this->assertCount(4, $chunks[0]->lines());
     }
 
     public function testParseWithMultipleChunks(): void
@@ -66,16 +65,16 @@ final class ParserTest extends TestCase
 
         $this->assertCount(1, $diffs);
 
-        $chunks = $diffs[0]->getChunks();
+        $chunks = $diffs[0]->chunks();
         $this->assertCount(3, $chunks);
 
-        $this->assertSame(20, $chunks[0]->getStart());
-        $this->assertSame(320, $chunks[1]->getStart());
-        $this->assertSame(600, $chunks[2]->getStart());
+        $this->assertSame(20, $chunks[0]->start());
+        $this->assertSame(320, $chunks[1]->start());
+        $this->assertSame(600, $chunks[2]->start());
 
-        $this->assertCount(5, $chunks[0]->getLines());
-        $this->assertCount(5, $chunks[1]->getLines());
-        $this->assertCount(4, $chunks[2]->getLines());
+        $this->assertCount(5, $chunks[0]->lines());
+        $this->assertCount(5, $chunks[1]->lines());
+        $this->assertCount(4, $chunks[2]->lines());
     }
 
     public function testParseWithSpacesInFileNames(): void
@@ -95,8 +94,8 @@ PATCH;
 
         $diffs = $this->parser->parse($content);
 
-        $this->assertEquals('a/Foo Bar.txt', $diffs[0]->getFrom());
-        $this->assertEquals('b/Foo Bar.txt', $diffs[0]->getTo());
+        $this->assertEquals('a/Foo Bar.txt', $diffs[0]->from());
+        $this->assertEquals('b/Foo Bar.txt', $diffs[0]->to());
     }
 
     public function testParseWithSpacesInFileNamesAndTimesamp(): void
@@ -115,8 +114,8 @@ PATCH;
 
         $diffs = $this->parser->parse($content);
 
-        $this->assertEquals('a/Foo Bar.txt', $diffs[0]->getFrom());
-        $this->assertEquals('b/Foo Bar.txt', $diffs[0]->getTo());
+        $this->assertEquals('a/Foo Bar.txt', $diffs[0]->from());
+        $this->assertEquals('b/Foo Bar.txt', $diffs[0]->to());
     }
 
     public function testParseWithRemovedLines(): void
@@ -134,29 +133,29 @@ END;
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
-        $chunks = $diffs[0]->getChunks();
+        $chunks = $diffs[0]->chunks();
 
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(1, $chunks);
 
         $chunk = $chunks[0];
-        $this->assertSame(49, $chunk->getStart());
-        $this->assertSame(49, $chunk->getEnd());
-        $this->assertSame(9, $chunk->getStartRange());
-        $this->assertSame(8, $chunk->getEndRange());
+        $this->assertSame(49, $chunk->start());
+        $this->assertSame(49, $chunk->end());
+        $this->assertSame(9, $chunk->startRange());
+        $this->assertSame(8, $chunk->endRange());
 
-        $lines = $chunk->getLines();
+        $lines = $chunk->lines();
         $this->assertContainsOnlyInstancesOf(Line::class, $lines);
         $this->assertCount(2, $lines);
 
         /** @var Line $line */
         $line = $lines[0];
-        $this->assertSame('A', $line->getContent());
-        $this->assertSame(Line::UNCHANGED, $line->getType());
+        $this->assertSame('A', $line->content());
+        $this->assertSame(Line::UNCHANGED, $line->type());
 
         $line = $lines[1];
-        $this->assertSame('B', $line->getContent());
-        $this->assertSame(Line::REMOVED, $line->getType());
+        $this->assertSame('B', $line->content());
+        $this->assertSame(Line::REMOVED, $line->type());
     }
 
     public function testParseDiffForMulitpleFiles(): void
@@ -183,14 +182,14 @@ END;
 
         /** @var Diff $diff */
         $diff = $diffs[0];
-        $this->assertSame('a/Test.txt', $diff->getFrom());
-        $this->assertSame('b/Test.txt', $diff->getTo());
-        $this->assertCount(1, $diff->getChunks());
+        $this->assertSame('a/Test.txt', $diff->from());
+        $this->assertSame('b/Test.txt', $diff->to());
+        $this->assertCount(1, $diff->chunks());
 
         $diff = $diffs[1];
-        $this->assertSame('a/Test2.txt', $diff->getFrom());
-        $this->assertSame('b/Test2.txt', $diff->getTo());
-        $this->assertCount(1, $diff->getChunks());
+        $this->assertSame('a/Test2.txt', $diff->from());
+        $this->assertSame('b/Test2.txt', $diff->to());
+        $this->assertCount(1, $diff->chunks());
     }
 
     public function testParseWithRange(): void
@@ -209,22 +208,22 @@ END;
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
-        $chunks = $diffs[0]->getChunks();
+        $chunks = $diffs[0]->chunks();
 
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(2, $chunks);
 
         $chunk = $chunks[0];
-        $this->assertSame(49, $chunk->getStart());
-        $this->assertSame(49, $chunk->getEnd());
-        $this->assertSame(0, $chunk->getStartRange());
-        $this->assertSame(0, $chunk->getEndRange());
+        $this->assertSame(49, $chunk->start());
+        $this->assertSame(49, $chunk->end());
+        $this->assertSame(0, $chunk->startRange());
+        $this->assertSame(0, $chunk->endRange());
 
         $chunk = $chunks[1];
-        $this->assertSame(50, $chunk->getStart());
-        $this->assertSame(50, $chunk->getEnd());
-        $this->assertSame(1, $chunk->getStartRange());
-        $this->assertSame(1, $chunk->getEndRange());
+        $this->assertSame(50, $chunk->start());
+        $this->assertSame(50, $chunk->end());
+        $this->assertSame(1, $chunk->startRange());
+        $this->assertSame(1, $chunk->endRange());
     }
 
     /**

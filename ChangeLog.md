@@ -4,6 +4,18 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [5.1.0] - 2023-MM-DD
 
+### Added
+
+* `SebastianBergmann\Diff\Chunk::start()`, `SebastianBergmann\Diff\Chunk::startRange()`, `SebastianBergmann\Diff\Chunk::end()`, `SebastianBergmann\Diff\Chunk::endRange()`, and `SebastianBergmann\Diff\Chunk::lines()`
+* `SebastianBergmann\Diff\Diff::from()`, `SebastianBergmann\Diff\Diff::to()`, and `SebastianBergmann\Diff\Diff::chunks()`
+* `SebastianBergmann\Diff\Line::content()` and `SebastianBergmann\Diff\Diff::type()`
+
+### Deprecated
+
+* `SebastianBergmann\Diff\Chunk::getStart()`, `SebastianBergmann\Diff\Chunk::getStartRange()`, `SebastianBergmann\Diff\Chunk::getEnd()`, `SebastianBergmann\Diff\Chunk::getEndRange()`, and `SebastianBergmann\Diff\Chunk::getLines()`
+* `SebastianBergmann\Diff\Diff::getFrom()`, `SebastianBergmann\Diff\Diff::getTo()`, and `SebastianBergmann\Diff\Diff::getChunks()`
+* `SebastianBergmann\Diff\Line::getContent()` and `SebastianBergmann\Diff\Diff::getType()`
+
 ## [5.0.3] - 2023-05-01
 
 ### Changed
