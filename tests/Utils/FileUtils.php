@@ -23,11 +23,13 @@ final class FileUtils
         if (false === $content) {
             $error = error_get_last();
 
-            throw new RuntimeException(sprintf(
-                'Failed to read content of file "%s".%s',
-                $file,
-                $error ? ' ' . $error['message'] : ''
-            ));
+            throw new RuntimeException(
+                sprintf(
+                    'Failed to read content of file "%s".%s',
+                    $file,
+                    $error ? ' ' . $error['message'] : ''
+                )
+            );
         }
 
         return $content;
