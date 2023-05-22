@@ -9,7 +9,14 @@
  */
 namespace SebastianBergmann\Diff;
 
-final class Chunk
+use ArrayIterator;
+use IteratorAggregate;
+use Traversable;
+
+/**
+ * @template-implements IteratorAggregate<int, Line>
+ */
+final class Chunk implements IteratorAggregate
 {
     private int $start;
     private int $startRange;
@@ -108,5 +115,10 @@ final class Chunk
     public function getLines(): array
     {
         return $this->lines;
+    }
+
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->lines);
     }
 }

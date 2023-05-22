@@ -64,4 +64,15 @@ final class DiffTest extends TestCase
         $this->assertSame($chunks, $diff->chunks(), 'Expect chunks to be passed value.');
         $this->assertSame($chunks, $diff->getChunks(), 'Expect chunks to be passed value.');
     }
+
+    public function testCanBeIterated(): void
+    {
+        $chunk = new Chunk;
+        $diff  = new Diff('from', 'to', [$chunk]);
+
+        foreach ($diff as $index => $_chunk) {
+            $this->assertSame(0, $index);
+            $this->assertSame($chunk, $_chunk);
+        }
+    }
 }

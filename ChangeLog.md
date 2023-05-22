@@ -11,6 +11,11 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 * `SebastianBergmann\Diff\Line::content()` and `SebastianBergmann\Diff\Diff::type()`
 * `SebastianBergmann\Diff\Line::isAdded()`,`SebastianBergmann\Diff\Line::isRemoved()`, and `SebastianBergmann\Diff\Line::isUnchanged()`
 
+### Changed
+
+* `SebastianBergmann\Diff\Diff` now implements `IteratorAggregate`, iterating over it yields the aggregated `SebastianBergmann\Diff\Chunk` objects
+* `SebastianBergmann\Diff\Chunk` now implements `IteratorAggregate`, iterating over it yields the aggregated `SebastianBergmann\Diff\Line` objects
+
 ### Deprecated
 
 * `SebastianBergmann\Diff\Chunk::getStart()`, `SebastianBergmann\Diff\Chunk::getStartRange()`, `SebastianBergmann\Diff\Chunk::getEnd()`, `SebastianBergmann\Diff\Chunk::getEndRange()`, and `SebastianBergmann\Diff\Chunk::getLines()`

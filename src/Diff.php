@@ -9,7 +9,14 @@
  */
 namespace SebastianBergmann\Diff;
 
-final class Diff
+use ArrayIterator;
+use IteratorAggregate;
+use Traversable;
+
+/**
+ * @template-implements IteratorAggregate<int, Chunk>
+ */
+final class Diff implements IteratorAggregate
 {
     /**
      * @psalm-var non-empty-string
@@ -98,5 +105,10 @@ final class Diff
     public function getChunks(): array
     {
         return $this->chunks;
+    }
+
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->chunks);
     }
 }

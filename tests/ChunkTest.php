@@ -59,6 +59,17 @@ final class ChunkTest extends TestCase
         $this->assertSame($lines, $chunk->lines());
     }
 
+    public function testCanBeIterated(): void
+    {
+        $line  = new Line;
+        $chunk = new Chunk(lines: [$line]);
+
+        foreach ($chunk as $index => $_line) {
+            $this->assertSame(0, $index);
+            $this->assertSame($line, $_line);
+        }
+    }
+
     private function chunk(): Chunk
     {
         return new Chunk(
