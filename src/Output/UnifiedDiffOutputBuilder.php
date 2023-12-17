@@ -37,6 +37,9 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     private string $header;
     private bool $addLineNumbers;
 
+    /**
+     * @psalm-param positive-int $contextLines
+     */
     public function __construct(string $header = "--- Original\n+++ New\n", bool $addLineNumbers = false, int $contextLines = 3)
     {
         $this->header         = $header;
