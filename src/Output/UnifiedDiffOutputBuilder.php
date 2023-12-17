@@ -41,7 +41,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     {
         $this->header         = $header;
         $this->addLineNumbers = $addLineNumbers;
-        $this->contextLines = $contextLines;
+        $this->contextLines   = $contextLines;
     }
 
     public function getDiff(array $diff): string
