@@ -33,14 +33,15 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     /**
      * @psalm-var positive-int
      */
-    private int $contextLines = 3;
+    private int $contextLines;
     private string $header;
     private bool $addLineNumbers;
 
-    public function __construct(string $header = "--- Original\n+++ New\n", bool $addLineNumbers = false)
+    public function __construct(string $header = "--- Original\n+++ New\n", bool $addLineNumbers = false, int $contextLines = 3)
     {
         $this->header         = $header;
         $this->addLineNumbers = $addLineNumbers;
+        $this->contextLines = $contextLines;
     }
 
     public function getDiff(array $diff): string
