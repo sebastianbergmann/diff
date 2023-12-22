@@ -22,31 +22,26 @@ final class ChunkTest extends TestCase
     public function testHasLines(): void
     {
         $this->assertEquals([$this->line()], $this->chunk()->lines());
-        $this->assertEquals([$this->line()], $this->chunk()->getLines());
     }
 
     public function testHasStart(): void
     {
         $this->assertSame(1, $this->chunk()->start());
-        $this->assertSame(1, $this->chunk()->getStart());
     }
 
     public function testHasStartRange(): void
     {
         $this->assertSame(2, $this->chunk()->startRange());
-        $this->assertSame(2, $this->chunk()->getStartRange());
     }
 
     public function testHasEnd(): void
     {
         $this->assertSame(3, $this->chunk()->end());
-        $this->assertSame(3, $this->chunk()->getEnd());
     }
 
     public function testHasEndRange(): void
     {
         $this->assertSame(4, $this->chunk()->endRange());
-        $this->assertSame(4, $this->chunk()->getEndRange());
     }
 
     public function testLinesCanBeSet(): void

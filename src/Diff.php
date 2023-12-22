@@ -77,36 +77,6 @@ final class Diff implements IteratorAggregate
         $this->chunks = $chunks;
     }
 
-    /**
-     * @psalm-return non-empty-string
-     *
-     * @deprecated
-     */
-    public function getFrom(): string
-    {
-        return $this->from;
-    }
-
-    /**
-     * @psalm-return non-empty-string
-     *
-     * @deprecated
-     */
-    public function getTo(): string
-    {
-        return $this->to;
-    }
-
-    /**
-     * @psalm-return list<Chunk>
-     *
-     * @deprecated
-     */
-    public function getChunks(): array
-    {
-        return $this->chunks;
-    }
-
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->chunks);

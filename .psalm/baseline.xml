@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.11.0@c9b192ab8400fdaf04b2b13d110575adc879aa90">
+<files psalm-version="5.18.0@b113f3ed0259fd6e212d87c3df80eec95a6abf19">
   <file src="src/Chunk.php">
     <LessSpecificReturnStatement>
       <code><![CDATA[$this->lines]]></code>
-      <code><![CDATA[$this->lines]]></code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType>
-      <code><![CDATA[list<Line>]]></code>
       <code><![CDATA[list<Line>]]></code>
     </MoreSpecificReturnType>
   </file>

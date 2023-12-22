@@ -28,10 +28,6 @@ final class DiffTest extends TestCase
         $this->assertSame($from, $diff->from());
         $this->assertSame($to, $diff->to());
         $this->assertSame([], $diff->chunks(), 'Expect chunks to be default value "array()".');
-
-        $this->assertSame($from, $diff->getFrom());
-        $this->assertSame($to, $diff->getTo());
-        $this->assertSame([], $diff->getChunks(), 'Expect chunks to be default value "array()".');
     }
 
     public function testGettersAfterConstructionWithChunks(): void
@@ -45,10 +41,6 @@ final class DiffTest extends TestCase
         $this->assertSame($from, $diff->from());
         $this->assertSame($to, $diff->to());
         $this->assertSame($chunks, $diff->chunks(), 'Expect chunks to be passed value.');
-
-        $this->assertSame($from, $diff->getFrom());
-        $this->assertSame($to, $diff->getTo());
-        $this->assertSame($chunks, $diff->getChunks(), 'Expect chunks to be passed value.');
     }
 
     public function testSetChunksAfterConstruction(): void
@@ -56,13 +48,11 @@ final class DiffTest extends TestCase
         $diff = new Diff('line1c', 'line2c');
 
         $this->assertSame([], $diff->chunks(), 'Expect chunks to be default value "array()".');
-        $this->assertSame([], $diff->getChunks(), 'Expect chunks to be default value "array()".');
 
         $chunks = [new Chunk, new Chunk(2, 3)];
         $diff->setChunks($chunks);
 
         $this->assertSame($chunks, $diff->chunks(), 'Expect chunks to be passed value.');
-        $this->assertSame($chunks, $diff->getChunks(), 'Expect chunks to be passed value.');
     }
 
     public function testCanBeIterated(): void

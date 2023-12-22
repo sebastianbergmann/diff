@@ -20,7 +20,6 @@ final class LineTest extends TestCase
     public function testCanBeOfTypeAdded(): void
     {
         $this->assertSame(Line::ADDED, $this->added()->type());
-        $this->assertSame(Line::ADDED, $this->added()->getType());
 
         $this->assertTrue($this->added()->isAdded());
         $this->assertFalse($this->added()->isRemoved());
@@ -30,7 +29,6 @@ final class LineTest extends TestCase
     public function testCanBeOfTypeRemoved(): void
     {
         $this->assertSame(Line::REMOVED, $this->removed()->type());
-        $this->assertSame(Line::REMOVED, $this->removed()->getType());
 
         $this->assertTrue($this->removed()->isRemoved());
         $this->assertFalse($this->removed()->isAdded());
@@ -40,7 +38,6 @@ final class LineTest extends TestCase
     public function testCanBeOfTypeUnchanged(): void
     {
         $this->assertSame(Line::UNCHANGED, $this->unchanged()->type());
-        $this->assertSame(Line::UNCHANGED, $this->unchanged()->getType());
 
         $this->assertTrue($this->unchanged()->isUnchanged());
         $this->assertFalse($this->unchanged()->isAdded());
@@ -50,7 +47,6 @@ final class LineTest extends TestCase
     public function testHasContent(): void
     {
         $this->assertSame('content', $this->added()->content());
-        $this->assertSame('content', $this->added()->getContent());
     }
 
     private function added(): Line
