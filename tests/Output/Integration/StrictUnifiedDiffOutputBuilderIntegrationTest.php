@@ -19,26 +19,27 @@ use function preg_split;
 use function realpath;
 use function sprintf;
 use function unlink;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 use SebastianBergmann\Diff\Utils\FileUtils;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use SplFileInfo;
 use Symfony\Component\Process\Process;
 
-/**
- * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
- *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- *
- * @requires OS Linux
- */
+#[CoversClass(StrictUnifiedDiffOutputBuilder::class)]
+#[UsesClass(Differ::class)]
+#[UsesClass(MemoryEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[RequiresOperatingSystem('Linux')]
 final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;

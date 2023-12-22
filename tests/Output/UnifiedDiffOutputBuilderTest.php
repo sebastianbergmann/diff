@@ -9,17 +9,17 @@
  */
 namespace SebastianBergmann\Diff\Output;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 
-/**
- * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
- *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- */
+#[CoversClass(UnifiedDiffOutputBuilder::class)]
+#[UsesClass(Differ::class)]
+#[UsesClass(AbstractChunkOutputBuilder::class)]
+#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {
     public static function headerProvider(): array

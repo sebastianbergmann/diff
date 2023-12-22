@@ -9,17 +9,17 @@
  */
 namespace SebastianBergmann\Diff\Output;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 
-/**
- * @covers \SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder
- *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- */
+#[CoversClass(AbstractChunkOutputBuilder::class)]
+#[UsesClass(Differ::class)]
+#[UsesClass(UnifiedDiffOutputBuilder::class)]
+#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 final class AbstractChunkOutputBuilderTest extends TestCase
 {
     public static function provideGetCommonChunks(): array

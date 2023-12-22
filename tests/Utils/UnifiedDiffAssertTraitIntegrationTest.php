@@ -16,18 +16,17 @@ use function strlen;
 use function substr;
 use function unlink;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 use Symfony\Component\Process\Process;
 
-/**
- * @requires OS Linux
- *
- * @coversNothing
- */
+#[CoversNothing]
+#[RequiresOperatingSystem('Linux')]
 final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
