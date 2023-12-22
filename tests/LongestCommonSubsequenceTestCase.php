@@ -25,8 +25,6 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $this->iniSet('memory_limit', '-1');
-
         $this->implementation = $this->createImplementation();
     }
 
