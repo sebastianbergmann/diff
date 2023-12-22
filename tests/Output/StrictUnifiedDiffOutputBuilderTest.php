@@ -14,20 +14,20 @@ use function preg_quote;
 use function sprintf;
 use function substr;
 use function time;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\ConfigurationException;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use SplFileInfo;
 
-/**
- * @covers \SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder
- *
- * @uses \SebastianBergmann\Diff\ConfigurationException
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- */
+#[CoversClass(StrictUnifiedDiffOutputBuilder::class)]
+#[UsesClass(ConfigurationException::class)]
+#[UsesClass(Differ::class)]
+#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 {
     use UnifiedDiffAssertTrait;

@@ -22,19 +22,20 @@ use function realpath;
 use function sprintf;
 use function strpos;
 use function unlink;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
 
-/**
- * @covers \SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder
- *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- *
- * @requires OS Linux
- */
+#[CoversClass(UnifiedDiffOutputBuilder::class)]
+#[UsesClass(Differ::class)]
+#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[RequiresOperatingSystem('Linux')]
 final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {
     use UnifiedDiffAssertTrait;

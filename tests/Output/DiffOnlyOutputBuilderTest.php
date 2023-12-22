@@ -9,16 +9,16 @@
  */
 namespace SebastianBergmann\Diff\Output;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 
-/**
- * @covers \SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder
- *
- * @uses \SebastianBergmann\Diff\Differ
- * @uses \SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator
- */
+#[CoversClass(DiffOnlyOutputBuilder::class)]
+#[UsesClass(Differ::class)]
+#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 final class DiffOnlyOutputBuilderTest extends TestCase
 {
     public static function textForNoNonDiffLinesProvider(): array
