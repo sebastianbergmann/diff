@@ -74,7 +74,7 @@ final class ChunkTest extends TestCase
             4,
             [
                 $this->line(),
-            ]
+            ],
         );
     }
 

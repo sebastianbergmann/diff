@@ -82,7 +82,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             $options['fromFile'],
             null === $options['fromFileDate'] ? '' : "\t" . $options['fromFileDate'],
             $options['toFile'],
-            null === $options['toFileDate'] ? '' : "\t" . $options['toFileDate']
+            null === $options['toFileDate'] ? '' : "\t" . $options['toFileDate'],
         );
 
         $this->collapseRanges      = $options['collapseRanges'];
@@ -201,11 +201,11 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                         $fromRange - $cutOff + $contextStartOffset + $this->contextLines,
                         $toStart - $contextStartOffset,
                         $toRange - $cutOff + $contextStartOffset + $this->contextLines,
-                        $output
+                        $output,
                     );
 
                     $fromStart += $fromRange;
-                    $toStart += $toRange;
+                    $toStart   += $toRange;
 
                     $hunkCapture = false;
                     $sameCount   = $toRange = $fromRange = 0;
@@ -251,7 +251,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         $contextEndOffset = min($sameCount, $this->contextLines);
 
         $fromRange -= $sameCount;
-        $toRange -= $sameCount;
+        $toRange   -= $sameCount;
 
         $this->writeHunk(
             $diff,
@@ -261,7 +261,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             $fromRange + $contextStartOffset + $contextEndOffset,
             $toStart - $contextStartOffset,
             $toRange + $contextStartOffset + $contextEndOffset,
-            $output
+            $output,
         );
     }
 
@@ -302,11 +302,11 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                 $this->changed = true;
                 fwrite($output, $diff[$i][0]);
             }
-            //} elseif ($diff[$i][1] === Differ::DIFF_LINE_END_WARNING) { // custom comment inserted by PHPUnit/diff package
+            // } elseif ($diff[$i][1] === Differ::DIFF_LINE_END_WARNING) { // custom comment inserted by PHPUnit/diff package
             //  skip
-            //} else {
+            // } else {
             //  unknown/invalid
-            //}
+            // }
         }
     }
 

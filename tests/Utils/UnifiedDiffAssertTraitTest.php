@@ -99,7 +99,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  " . '
-'
+',
         );
     }
 
@@ -115,7 +115,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-'
+',
         );
     }
 
@@ -131,7 +131,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -Z
 1
 +U
-'
+',
         );
     }
 
@@ -146,7 +146,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ -8 +8 @@
 
 
-'
+',
         );
     }
 
@@ -161,7 +161,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ INVALID -1,1 +1,1 @@
 -Z
 +U
-'
+',
         );
     }
 
@@ -179,7 +179,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ -7,1 +9,1 @@
 -Z
 +U
-'
+',
         );
     }
 
@@ -197,7 +197,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 @@ -17,1 +7,1 @@
 -Z
 +U
-'
+',
         );
     }
 
@@ -213,7 +213,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -Z
 +U
 +O
-'
+',
         );
     }
 
@@ -229,7 +229,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
  ' . '
  ' . '
 @@ -38,12 +48,12 @@
-'
+',
         );
     }
 
@@ -247,7 +247,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 +U
 \ No newline at end of file
 +A
-'
+',
         );
     }
 
@@ -264,7 +264,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 \ No newline at end of file
 \ No newline at end of file
-'
+',
         );
     }
 
@@ -281,7 +281,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 \ No newline at end of file
 +A
-'
+',
         );
     }
 
@@ -292,7 +292,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 
         $this->assertValidUnifiedDiffFormat(
             '\ No newline at end of file
-'
+',
         );
     }
 
@@ -310,7 +310,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
  ' . '
 \ No newline at end of file
-'
+',
         );
     }
 
@@ -327,7 +327,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 -A
 \ No newline at end of file
-'
+',
         );
     }
 
@@ -344,7 +344,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
  A
 \ No newline at end of file
-'
+',
         );
     }
 
@@ -361,7 +361,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
 +A
 \ No newline at end of file
-'
+',
         );
     }
 
@@ -378,7 +378,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 \ No newline at end of file
  A
 \ No newline at end of file
-'
+',
         );
     }
 
@@ -394,7 +394,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-'
+',
         );
     }
 
@@ -410,7 +410,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-'
+',
         );
     }
 
@@ -426,7 +426,7 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 -A
 +B
  ' . '
-'
+',
         );
     }
 }

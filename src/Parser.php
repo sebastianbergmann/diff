@@ -83,7 +83,7 @@ final class Parser
                     (int) $match['start'],
                     isset($match['startrange']) ? max(0, (int) $match['startrange']) : 1,
                     (int) $match['end'],
-                    isset($match['endrange']) ? max(0, (int) $match['endrange']) : 1
+                    isset($match['endrange']) ? max(0, (int) $match['endrange']) : 1,
                 );
 
                 $chunks[]  = $chunk;

@@ -15,8 +15,8 @@ use function count;
 use function preg_match;
 use function preg_split;
 use function sprintf;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function substr;
 use RuntimeException;
 use UnexpectedValueException;
@@ -52,8 +52,8 @@ trait UnifiedDiffAssertTrait
             $this->unifiedDiffAssertLinePrefix($lines[0], 'Line 1.');
             $this->unifiedDiffAssertLinePrefix($lines[1], 'Line 2.');
 
-            if ('---' === substr($lines[0], 0, 3)) {
-                if ('+++' !== substr($lines[1], 0, 3)) {
+            if (str_starts_with($lines[0], '---')) {
+                if (!str_starts_with($lines[1], '+++')) {
                     throw new UnexpectedValueException(sprintf("Line 1 indicates a header, so line 2 must start with \"+++\".\nLine 1: \"%s\"\nLine 2: \"%s\".", $lines[0], $lines[1]));
                 }
 
@@ -211,7 +211,7 @@ trait UnifiedDiffAssertTrait
      */
     private function unifiedDiffAssertHeaderLine(string $line, string $start, string $message): void
     {
-        if (0 !== strpos($line, $start)) {
+        if (!str_starts_with($line, $start)) {
             throw new UnexpectedValueException(sprintf('Expected header line to start with "%s", got "%s". %s', $start . ' ', $line, $message));
         }
 
@@ -219,7 +219,7 @@ trait UnifiedDiffAssertTrait
         $match = preg_match(
             "/^([^\t]*)(?:[\t]([\\S].*[\\S]))?\n$/",
             substr($line, 4), // 4 === string length of "+++ " / "--- "
-            $matches
+            $matches,
         );
 
         if (1 !== $match) {
@@ -239,7 +239,7 @@ trait UnifiedDiffAssertTrait
         $match = preg_match(
             '/^([\d]{4})-([01]?[\d])-([0123]?[\d])(:? [\d]{1,2}:[\d]{1,2}(?::[\d]{1,2}(:?\.[\d]+)?)?(?: ([\+\-][\d]{4}))?)?$/',
             $date,
-            $matches
+            $matches,
         );
 
         if (1 !== $match || ($matchesCount = count($matches)) < 4) {
@@ -259,8 +259,8 @@ trait UnifiedDiffAssertTrait
                 sprintf(
                     'Hunk header line does not match expected pattern, got "%s". %s',
                     $line,
-                    $message
-                )
+                    $message,
+                ),
             );
         }
 

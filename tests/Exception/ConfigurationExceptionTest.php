@@ -35,7 +35,7 @@ final class ConfigurationExceptionTest extends TestCase
             'integer',
             new SplFileInfo(__FILE__),
             789,
-            new BadMethodCallException(__METHOD__)
+            new BadMethodCallException(__METHOD__),
         );
 
         $this->assertSame('Option "test" must be integer, got "SplFileInfo".', $e->getMessage());

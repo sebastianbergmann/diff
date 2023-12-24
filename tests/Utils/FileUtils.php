@@ -27,8 +27,8 @@ final class FileUtils
                 sprintf(
                     'Failed to read content of file "%s".%s',
                     $file,
-                    $error ? ' ' . $error['message'] : ''
-                )
+                    $error ? ' ' . $error['message'] : '',
+                ),
             );
         }
 
