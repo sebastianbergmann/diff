@@ -219,7 +219,7 @@ trait UnifiedDiffAssertTrait
         $match = preg_match(
             "/^([^\t]*)(?:[\t]([\\S].*[\\S]))?\n$/",
             substr($line, 4), // 4 === string length of "+++ " / "--- "
-            $matches
+            $matches,
         );
 
         if (1 !== $match) {
@@ -239,7 +239,7 @@ trait UnifiedDiffAssertTrait
         $match = preg_match(
             '/^([\d]{4})-([01]?[\d])-([0123]?[\d])(:? [\d]{1,2}:[\d]{1,2}(?::[\d]{1,2}(:?\.[\d]+)?)?(?: ([\+\-][\d]{4}))?)?$/',
             $date,
-            $matches
+            $matches,
         );
 
         if (1 !== $match || ($matchesCount = count($matches)) < 4) {
@@ -259,8 +259,8 @@ trait UnifiedDiffAssertTrait
                 sprintf(
                     'Hunk header line does not match expected pattern, got "%s". %s',
                     $line,
-                    $message
-                )
+                    $message,
+                ),
             );
         }
 

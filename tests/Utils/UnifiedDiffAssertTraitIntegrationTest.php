@@ -99,7 +99,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
                 'from'  => realpath($fileFrom),
                 'to'    => realpath($fileTo),
                 'patch' => $this->filePatch,
-            ]
+            ],
         );
 
         $exitCode = $p->getExitCode();
@@ -119,8 +119,8 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
                 $p->getCommandLine(),
                 $p->getOutput(),
                 $p->getErrorOutput(),
-                $p->getExitCode()
-            )
+                $p->getExitCode(),
+            ),
         );
 
         $this->assertValidUnifiedDiffFormat(FileUtils::getFileContent($this->filePatch));

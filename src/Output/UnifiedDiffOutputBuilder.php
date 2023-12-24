@@ -18,7 +18,6 @@ use function max;
 use function min;
 use function str_ends_with;
 use function stream_get_contents;
-use function strlen;
 use function substr;
 use SebastianBergmann\Diff\Differ;
 
@@ -67,7 +66,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         // This might happen when both the `from` and `to` do not have a trailing linebreak
         $last = substr($diff, -1);
 
-        return 0 !== strlen($diff) && "\n" !== $last && "\r" !== $last
+        return '' !== $diff && "\n" !== $last && "\r" !== $last
             ? $diff . "\n"
             : $diff;
     }
@@ -151,11 +150,11 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
                         $fromRange - $cutOff + $contextStartOffset + $this->contextLines,
                         $toStart - $contextStartOffset,
                         $toRange - $cutOff + $contextStartOffset + $this->contextLines,
-                        $output
+                        $output,
                     );
 
                     $fromStart += $fromRange;
-                    $toStart += $toRange;
+                    $toStart   += $toRange;
 
                     $hunkCapture = false;
                     $sameCount   = $toRange = $fromRange = 0;
@@ -199,7 +198,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         $contextEndOffset = min($sameCount, $this->contextLines);
 
         $fromRange -= $sameCount;
-        $toRange -= $sameCount;
+        $toRange   -= $sameCount;
 
         $this->writeHunk(
             $diff,
@@ -209,7 +208,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             $fromRange + $contextStartOffset + $contextEndOffset,
             $toStart - $contextStartOffset,
             $toRange + $contextStartOffset + $contextEndOffset,
-            $output
+            $output,
         );
     }
 

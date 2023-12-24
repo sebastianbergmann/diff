@@ -51,7 +51,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
             {
                 return !is_string($key) || !str_contains($key, 'non_patch_compat');
             },
-            ARRAY_FILTER_USE_KEY
+            ARRAY_FILTER_USE_KEY,
         );
     }
 
@@ -97,7 +97,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
             [
                 'from'  => $this->fileFrom,
                 'patch' => $this->filePatch,
-            ]
+            ],
         );
 
         $this->assertProcessSuccessful($p);
@@ -105,7 +105,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertStringEqualsFile(
             $this->fileFrom,
             $to,
-            sprintf('Patch command "%s".', $p->getCommandLine())
+            sprintf('Patch command "%s".', $p->getCommandLine()),
         );
     }
 
@@ -125,7 +125,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
             [
                 'dir'   => $this->dir,
                 'patch' => $this->filePatch,
-            ]
+            ],
         );
 
         $this->assertProcessSuccessful($p);
@@ -140,8 +140,8 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
                 $p->getCommandLine(),
                 $p->getOutput(),
                 $p->getErrorOutput(),
-                $p->getExitCode()
-            )
+                $p->getExitCode(),
+            ),
         );
     }
 

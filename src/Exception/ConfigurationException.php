@@ -28,10 +28,10 @@ final class ConfigurationException extends InvalidArgumentException
                 'Option "%s" must be %s, got "%s".',
                 $option,
                 $expected,
-                is_object($value) ? $value::class : (null === $value ? '<null>' : gettype($value) . '#' . $value)
+                is_object($value) ? $value::class : (null === $value ? '<null>' : gettype($value) . '#' . $value),
             ),
             $code,
-            $previous
+            $previous,
         );
     }
 }

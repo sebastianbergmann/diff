@@ -359,7 +359,7 @@ EOF
 -one
 +two
 ',
-            $this->differ->diff(['one'], ['two'])
+            $this->differ->diff(['one'], ['two']),
         );
     }
 

@@ -171,7 +171,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
             [
                 'from' => $this->fileFrom,
                 'to'   => $this->fileTo,
-            ]
+            ],
         );
 
         $this->assertSame(1, $p->getExitCode()); // note: Process assumes exit code 0 for `isSuccessful`, however `diff` uses the exit code `1` for success with diff
@@ -207,7 +207,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
             [
                 'dir'   => $this->dir,
                 'patch' => $this->filePatch,
-            ]
+            ],
         );
 
         $this->assertProcessSuccessful($p);
@@ -229,7 +229,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
             [
                 'from'  => $this->fileFrom,
                 'patch' => $this->filePatch,
-            ]
+            ],
         );
 
         $this->assertProcessSuccessful($p);
@@ -237,7 +237,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertStringEqualsFile(
             $this->fileFrom,
             $to,
-            sprintf('Patch command "%s".', $p->getCommandLine())
+            sprintf('Patch command "%s".', $p->getCommandLine()),
         );
     }
 
@@ -250,8 +250,8 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
                 $p->getCommandLine(),
                 $p->getOutput(),
                 $p->getErrorOutput(),
-                $p->getExitCode()
-            )
+                $p->getExitCode(),
+            ),
         );
     }
 

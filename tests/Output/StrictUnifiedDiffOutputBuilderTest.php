@@ -562,13 +562,13 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 -B
 +X
 ',
-            $diff
+            $diff,
         );
 
         $diff = $differ->diff("A\n", "A\n");
         $this->assertSame(
             '',
-            $diff
+            $diff,
         );
     }
 
@@ -581,7 +581,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 
         $this->assertSame(
             '',
-            $builder->getDiff([])
+            $builder->getDiff([]),
         );
     }
 

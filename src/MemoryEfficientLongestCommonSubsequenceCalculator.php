@@ -61,7 +61,7 @@ final class MemoryEfficientLongestCommonSubsequenceCalculator implements Longest
 
         return array_merge(
             $this->calculate($fromStart, $toStart),
-            $this->calculate($fromEnd, $toEnd)
+            $this->calculate($fromEnd, $toEnd),
         );
     }
 
