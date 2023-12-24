@@ -32,17 +32,11 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
 
-    /**
-     * @inheritDoc
-     */
     public static function provideOutputBuildingCases(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideOutputBuildingCases();
     }
 
-    /**
-     * @inheritDoc
-     */
     public static function provideSample(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideSample();
@@ -523,9 +517,6 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         $this->assertSame($expected, $diff);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function assertValidDiffFormat(string $diff): void
     {
         $this->assertValidUnifiedDiffFormat($diff);
