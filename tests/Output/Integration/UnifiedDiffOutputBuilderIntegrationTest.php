@@ -20,7 +20,7 @@ use function preg_replace;
 use function preg_split;
 use function realpath;
 use function sprintf;
-use function strpos;
+use function str_contains;
 use function unlink;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -49,7 +49,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
             UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers(),
             static function ($key)
             {
-                return !is_string($key) || false === strpos($key, 'non_patch_compat');
+                return !is_string($key) || !str_contains($key, 'non_patch_compat');
             },
             ARRAY_FILTER_USE_KEY
         );
