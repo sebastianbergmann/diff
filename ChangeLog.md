@@ -2,6 +2,10 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [3.0.5] - 2023-03-01
+
+* No code changes, only updated `.gitattributes` to not export non-essential files.
+
 ## [3.0.4] - 2023-05-07
 
 ### Changed
@@ -59,6 +63,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
+[3.0.5]: https://github.com/sebastianbergmann/diff/compare/3.0.4...3.0.5
 [3.0.4]: https://github.com/sebastianbergmann/diff/compare/3.0.3...3.0.4
 [3.0.3]: https://github.com/sebastianbergmann/diff/compare/3.0.2...3.0.3
 [3.0.2]: https://github.com/sebastianbergmann/diff/compare/3.0.1...3.0.2
