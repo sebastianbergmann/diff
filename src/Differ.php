@@ -42,14 +42,14 @@ final class Differ
         $this->outputBuilder = $outputBuilder;
     }
 
-    public function diff(array|string $from, array|string $to, LongestCommonSubsequenceCalculator $lcs = null): string
+    public function diff(array|string $from, array|string $to, ?LongestCommonSubsequenceCalculator $lcs = null): string
     {
         $diff = $this->diffToArray($from, $to, $lcs);
 
         return $this->outputBuilder->getDiff($diff);
     }
 
-    public function diffToArray(array|string $from, array|string $to, LongestCommonSubsequenceCalculator $lcs = null): array
+    public function diffToArray(array|string $from, array|string $to, ?LongestCommonSubsequenceCalculator $lcs = null): array
     {
         if (is_string($from)) {
             $from = $this->splitStringByLines($from);

@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.0.1] - 2024-03-02
+
+### Changed
+
+* Do not use implicitly nullable parameters
+
 ## [6.0.0] - 2024-02-02
 
 ### Removed
@@ -133,6 +139,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
+[6.0.1]: https://github.com/sebastianbergmann/diff/compare/6.0.0...6.0.1
 [6.0.0]: https://github.com/sebastianbergmann/diff/compare/5.1...6.0.0
 [5.1.0]: https://github.com/sebastianbergmann/diff/compare/5.0.3...5.1.0
 [5.0.3]: https://github.com/sebastianbergmann/diff/compare/5.0.2...5.0.3
