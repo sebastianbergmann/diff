@@ -17,6 +17,12 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 * `SebastianBergmann\Diff\Line::getContent()` and `SebastianBergmann\Diff\Diff::getType()`
 * Removed support for PHP 8.1
 
+## [5.1.1] - 2024-03-02
+
+### Changed
+
+* Do not use implicitly nullable parameters
+
 ## [5.1.0] - 2023-12-22
 
 ### Added
@@ -141,6 +147,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 [6.0.1]: https://github.com/sebastianbergmann/diff/compare/6.0.0...6.0.1
 [6.0.0]: https://github.com/sebastianbergmann/diff/compare/5.1...6.0.0
+[5.1.1]: https://github.com/sebastianbergmann/diff/compare/5.1.0...5.1.1
 [5.1.0]: https://github.com/sebastianbergmann/diff/compare/5.0.3...5.1.0
 [5.0.3]: https://github.com/sebastianbergmann/diff/compare/5.0.2...5.0.3
 [5.0.2]: https://github.com/sebastianbergmann/diff/compare/5.0.1...5.0.2
