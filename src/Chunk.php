@@ -54,7 +54,7 @@ final class Chunk implements IteratorAggregate
     }
 
     /**
-     * @psalm-return list<Line>
+     * @return list<Line>
      */
     public function lines(): array
     {
@@ -62,7 +62,7 @@ final class Chunk implements IteratorAggregate
     }
 
     /**
-     * @psalm-param list<Line> $lines
+     * @param list<Line> $lines
      */
     public function setLines(array $lines): void
     {

@@ -227,7 +227,7 @@ END;
     }
 
     /**
-     * @psalm-param list<Diff> $expected
+     * @param list<Diff> $expected
      */
     #[DataProvider('diffProvider')]
     public function testParser(string $diff, array $expected): void

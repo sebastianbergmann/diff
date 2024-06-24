@@ -19,7 +19,7 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
     private LongestCommonSubsequenceCalculator $implementation;
 
     /**
-     * @psalm-var list<int>
+     * @var list<int>
      */
     private array $stressSizes = [1, 2, 3, 100, 500, 1000, 2000];
 
