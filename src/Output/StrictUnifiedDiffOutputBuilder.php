@@ -101,6 +101,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         $this->changed = false;
 
         $buffer = fopen('php://memory', 'r+b');
+
         assert(is_resource($buffer));
 
         fwrite($buffer, $this->header);

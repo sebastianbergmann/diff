@@ -44,6 +44,7 @@ trait UnifiedDiffAssertTrait
         }
 
         $lines = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
         assert(is_array($lines));
 
         $lineCount        = count($lines);

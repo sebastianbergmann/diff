@@ -166,6 +166,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     private static function setDiffFileHeader(string $diff, string $file): string
     {
         $diffLines = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
         assert(is_array($diffLines));
 
         $diffLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1);

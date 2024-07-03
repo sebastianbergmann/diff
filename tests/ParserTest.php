@@ -39,6 +39,7 @@ final class ParserTest extends TestCase
     public static function diffProvider(): array
     {
         $diff = unserialize(FileUtils::getFileContent(__DIR__ . '/fixtures/serialized_diff.bin'));
+
         assert(is_array($diff));
         assert($diff[0] instanceof Diff);
 
