@@ -84,11 +84,11 @@ final class Differ
         reset($to);
 
         foreach ($common as $token) {
-            while (($fromToken = reset($from)) !== $token) {
+            while ((/* from-token */ reset($from)) !== $token) {
                 $diff[] = [array_shift($from), self::REMOVED];
             }
 
-            while (($toToken = reset($to)) !== $token) {
+            while ((/* to-token */ reset($to)) !== $token) {
                 $diff[] = [array_shift($to), self::ADDED];
             }
 

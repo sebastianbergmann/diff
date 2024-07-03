@@ -22,6 +22,16 @@ use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 #[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 final class AbstractChunkOutputBuilderTest extends TestCase
 {
+    /**
+     * @return array<
+     *     array{
+     *         0: array<int, int>,
+     *         1: string,
+     *         2: string,
+     *         3?: int,
+     *     }
+     * >
+     */
     public static function provideGetCommonChunks(): array
     {
         return [
@@ -122,6 +132,9 @@ final class AbstractChunkOutputBuilderTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<int, positive-int> $expected
+     */
     #[DataProvider('provideGetCommonChunks')]
     public function testGetCommonChunks(array $expected, string $from, string $to, int $lineThreshold = 5): void
     {
@@ -132,7 +145,10 @@ final class AbstractChunkOutputBuilderTest extends TestCase
                 return '';
             }
 
-            public function getChunks(array $diff, $lineThreshold)
+            /**
+             * @return array<int, positive-int>
+             */
+            public function getChunks(array $diff, int $lineThreshold): array
             {
                 return $this->getCommonChunks($diff, $lineThreshold);
             }

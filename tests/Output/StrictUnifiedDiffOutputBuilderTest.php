@@ -47,6 +47,19 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         return StrictUnifiedDiffOutputBuilderDataProvider::provideBasicDiffGeneration();
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *         3?: array{
+     *             commonLineThreshold?: int,
+     *             contextLines?: int,
+     *         },
+     *     }
+     * >
+     */
     public static function provideConfiguredDiffGeneration(): array
     {
         return [
@@ -189,57 +202,75 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: array<mixed>,
+     *     }
+     * >
+     */
     public static function provideInvalidConfiguration(): array
     {
         $time = time();
 
         return [
             [
-                ['collapseRanges' => 1],
                 'Option "collapseRanges" must be a bool, got "integer#1".',
+                ['collapseRanges' => 1],
             ],
             [
-                ['contextLines' => 'a'],
                 'Option "contextLines" must be an int >= 0, got "string#a".',
+                ['contextLines' => 'a'],
             ],
             [
-                ['commonLineThreshold' => -2],
                 'Option "commonLineThreshold" must be an int > 0, got "integer#-2".',
+                ['commonLineThreshold' => -2],
             ],
             [
-                ['commonLineThreshold' => 0],
                 'Option "commonLineThreshold" must be an int > 0, got "integer#0".',
+                ['commonLineThreshold' => 0],
             ],
             [
-                ['fromFile' => new SplFileInfo(__FILE__)],
                 'Option "fromFile" must be a string, got "SplFileInfo".',
+                ['fromFile' => new SplFileInfo(__FILE__)],
             ],
             [
-                ['fromFile' => null],
                 'Option "fromFile" must be a string, got "<null>".',
+                ['fromFile' => null],
             ],
             [
+                'Option "toFile" must be a string, got "integer#1".',
                 [
                     'fromFile' => __FILE__,
                     'toFile'   => 1,
                 ],
-                'Option "toFile" must be a string, got "integer#1".',
             ],
             [
+                'Option "toFileDate" must be a string or <null>, got "integer#' . $time . '".',
                 [
                     'fromFile'   => __FILE__,
                     'toFile'     => __FILE__,
                     'toFileDate' => $time,
                 ],
-                'Option "toFileDate" must be a string or <null>, got "integer#' . $time . '".',
             ],
             [
-                [],
                 'Option "fromFile" must be a string, got "<null>".',
+                [],
             ],
         ];
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *         3: int,
+     *     }
+     * >
+     */
     public static function provideCommonLineThresholdCases(): array
     {
         return [
@@ -277,6 +308,17 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *         3: int,
+     *         4?: int
+     *     }
+     * >
+     */
     public static function provideContextLineConfigurationCases(): array
     {
         $from = "A\nB\nC\nD\nE\nF\nX\nG\nH\nI\nJ\nK\nL\nM\n";
@@ -534,6 +576,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         $this->assertSame($expected, $diff);
     }
 
+    /** @param array<mixed> $config */
     #[DataProvider('provideConfiguredDiffGeneration')]
     public function testConfiguredDiffGeneration(string $expected, string $from, string $to, array $config = []): void
     {
@@ -585,13 +628,14 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         );
     }
 
+    /** @param array<mixed> $invalidConfig */
     #[DataProvider('provideInvalidConfiguration')]
-    public function testInvalidConfiguration(array $options, string $message): void
+    public function testInvalidConfiguration(string $expectedMessage, array $invalidConfig): void
     {
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($message, '#')));
+        $this->expectExceptionMessageMatches(sprintf('#^%s$#', preg_quote($expectedMessage, '#')));
 
-        new StrictUnifiedDiffOutputBuilder($options);
+        new StrictUnifiedDiffOutputBuilder($invalidConfig);
     }
 
     #[DataProvider('provideCommonLineThresholdCases')]

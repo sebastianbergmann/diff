@@ -22,6 +22,11 @@ use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 #[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {
+    /**
+     * @return array<
+     *     string[],
+     * >
+     */
     public static function headerProvider(): array
     {
         return [
@@ -52,11 +57,25 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
+    /**
+     * @return array{
+     *     string?: array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *     },
+     * }
+     */
     public static function provideDiffWithLineNumbers(): array
     {
         return UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers();
     }
 
+    /**
+     * @return array<
+     *     array{0: string, 1: string}
+     * >
+     */
     public static function provideStringsThatAreTheSame(): array
     {
         return [

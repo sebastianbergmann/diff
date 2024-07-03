@@ -21,6 +21,9 @@ final class UnifiedDiffAssertTraitTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
 
+    /**
+     * @return array<array{0: string}>
+     */
     public static function provideValidCases(): array
     {
         return [

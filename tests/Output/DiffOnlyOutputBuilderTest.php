@@ -21,6 +21,16 @@ use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
 #[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
 final class DiffOnlyOutputBuilderTest extends TestCase
 {
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *         3?: string,
+     *     }
+     * >
+     */
     public static function textForNoNonDiffLinesProvider(): array
     {
         return [

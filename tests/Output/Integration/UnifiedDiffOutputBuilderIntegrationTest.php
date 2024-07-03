@@ -13,8 +13,10 @@ use const ARRAY_FILTER_USE_KEY;
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
 use function array_filter;
+use function assert;
 use function file_put_contents;
 use function implode;
+use function is_array;
 use function is_string;
 use function preg_replace;
 use function preg_split;
@@ -43,6 +45,15 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     private string $fileFrom;
     private string $filePatch;
 
+    /**
+     * @return array{
+     *     string?: array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *     },
+     * }
+     */
     public static function provideDiffWithLineNumbers(): array
     {
         return array_filter(
@@ -70,15 +81,15 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     }
 
     #[DataProvider('provideDiffWithLineNumbers')]
-    public function testDiffWithLineNumbersPath($expected, $from, $to): void
+    public function testDiffWithLineNumbersPath(string $expected, string $from, string $to): void
     {
         $this->doIntegrationTestPatch($expected, $from, $to);
     }
 
     #[DataProvider('provideDiffWithLineNumbers')]
-    public function testDiffWithLineNumbersGitApply($expected, $from, $to): void
+    public function testDiffWithLineNumbersGitApply(string $expected, string $from): void
     {
-        $this->doIntegrationTestGitApply($expected, $from, $to);
+        $this->doIntegrationTestGitApply($expected, $from);
     }
 
     private function doIntegrationTestPatch(string $diff, string $from, string $to): void
@@ -109,7 +120,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
         );
     }
 
-    private function doIntegrationTestGitApply(string $diff, string $from, string $to): void
+    private function doIntegrationTestGitApply(string $diff, string $from): void
     {
         $this->assertNotSame('', $diff);
         $this->assertValidUnifiedDiffFormat($diff);
@@ -154,7 +165,9 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private static function setDiffFileHeader(string $diff, string $file): string
     {
-        $diffLines    = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $diffLines = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        assert(is_array($diffLines));
+
         $diffLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1);
         $diffLines[1] = preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1);
 

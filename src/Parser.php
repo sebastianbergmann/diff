@@ -71,6 +71,9 @@ final class Parser
         return $diffs;
     }
 
+    /**
+     * @param string[] $lines
+     */
     private function parseFileDiff(Diff $diff, array $lines): void
     {
         $chunks    = [];

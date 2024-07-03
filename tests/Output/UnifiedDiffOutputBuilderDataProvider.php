@@ -11,6 +11,15 @@ namespace SebastianBergmann\Diff\Output;
 
 final class UnifiedDiffOutputBuilderDataProvider
 {
+    /**
+     * @return array{
+     *     string?: array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *     },
+     * }
+     */
     public static function provideDiffWithLineNumbers(): array
     {
         return [

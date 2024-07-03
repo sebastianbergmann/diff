@@ -1,5 +1,9 @@
 parameters:
-    level: 2
+    level: 5
     paths:
         - src
         - tests
+    ignoreErrors:
+        -
+            message: '#Method SebastianBergmann\\Diff\\Differ::calculateEstimatedFootprint\(\) never returns float so it can be removed from the return type\.#'
+            path: src/Differ.php
