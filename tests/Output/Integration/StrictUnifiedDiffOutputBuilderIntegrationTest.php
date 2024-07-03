@@ -63,7 +63,10 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         return StrictUnifiedDiffOutputBuilderDataProvider::provideBasicDiffGeneration();
     }
 
-    public static function provideFilePairs(): array
+    /**
+     * @return iterable<string, array{0: string, 1: string}>
+     */
+    public static function provideFilePairs(): iterable
     {
         $cases     = [];
         $fromFile  = __FILE__;
@@ -77,9 +80,10 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
                 continue;
             }
 
-            $toFile                                                                                      = $file->getPathname();
-            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", realpath($fromFile), realpath($toFile))] = [$fromFile, $toFile];
-            $fromFile                                                                                    = $toFile;
+            $toFile = $file->getPathname();
+
+            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", realpath($fromFile), realpath($toFile)) => [$fromFile, $toFile];
+            $fromFile = $toFile;
         }
 
         return $cases;
@@ -119,7 +123,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
             return;
         }
 
-        $this->doIntegrationTestGitApply($diff, $from, $to);
+        $this->doIntegrationTestGitApply($diff, $from);
     }
 
     #[DataProvider('provideFilePairs')]
@@ -145,7 +149,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     #[DataProvider('provideSample')]
     public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to): void
     {
-        $this->doIntegrationTestGitApply($expected, $from, $to);
+        $this->doIntegrationTestGitApply($expected, $from);
     }
 
     #[DataProvider('provideBasicDiffGeneration')]
@@ -191,7 +195,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->assertSame($diff, $output);
     }
 
-    private function doIntegrationTestGitApply(string $diff, string $from, string $to): void
+    private function doIntegrationTestGitApply(string $diff, string $from): void
     {
         $this->assertNotSame('', $diff);
         $this->assertValidUnifiedDiffFormat($diff);

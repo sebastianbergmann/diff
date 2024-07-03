@@ -189,6 +189,15 @@ final class DifferTest extends TestCase
         ];
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *     }
+     * >
+     */
     public static function textProvider(): array
     {
         return [
@@ -255,6 +264,14 @@ EOF
         ];
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: array<string>,
+     *         1: string,
+     *     }
+     * >
+     */
     public static function provideSplitStringByLinesCases(): array
     {
         return [
@@ -368,7 +385,6 @@ EOF
     {
         $reflection = new ReflectionObject($this->differ);
         $method     = $reflection->getMethod('splitStringByLines');
-        $method->setAccessible(true);
 
         $this->assertSame($expected, $method->invoke($this->differ, $input));
     }

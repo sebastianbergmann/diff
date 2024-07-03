@@ -33,14 +33,13 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
     private string $filePatch;
 
     /**
-     * @return array<string, array<string, string>>
+     * @return iterable<string, array{0: string, 1: string}>
      */
-    public static function provideFilePairsCases(): array
+    public static function provideFilePairsCases(): iterable
     {
-        $cases = [];
-
         // created cases based on dedicated fixtures
-        $dir       = realpath(__DIR__ . '/../fixtures/UnifiedDiffAssertTraitIntegrationTest');
+        $dir = realpath(__DIR__ . '/../fixtures/UnifiedDiffAssertTraitIntegrationTest');
+        Assert::assertIsString($dir);
         $dirLength = strlen($dir);
 
         for ($i = 1; ; $i++) {
@@ -53,11 +52,12 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 
             Assert::assertFileExists($toFile);
 
-            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
+            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength)) => [$fromFile, $toFile];
         }
 
         // create cases based on PHP files within the vendor directory for integration testing
-        $dir       = realpath(__DIR__ . '/../../vendor');
+        $dir = realpath(__DIR__ . '/../../vendor');
+        Assert::assertIsString($dir);
         $dirLength = strlen($dir);
 
         $fileIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS));
@@ -69,12 +69,11 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
                 continue;
             }
 
-            $toFile                                                                                                                              = $file->getPathname();
-            $cases[sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength))] = [$fromFile, $toFile];
-            $fromFile                                                                                                                            = $toFile;
-        }
+            $toFile = $file->getPathname();
 
-        return $cases;
+            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength)) => [$fromFile, $toFile];
+            $fromFile = $toFile;
+        }
     }
 
     protected function setUp(): void

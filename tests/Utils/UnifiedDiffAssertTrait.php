@@ -11,7 +11,9 @@ namespace SebastianBergmann\Diff\Utils;
 
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
+use function assert;
 use function count;
+use function is_array;
 use function preg_match;
 use function preg_split;
 use function sprintf;
@@ -41,7 +43,9 @@ trait UnifiedDiffAssertTrait
             throw new UnexpectedValueException(sprintf('Expected diff to end with a line break, got "%s".', $last));
         }
 
-        $lines            = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $lines = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        assert(is_array($lines));
+
         $lineCount        = count($lines);
         $lineNumber       = $diffLineFromNumber = $diffLineToNumber = 1;
         $fromStart        = $fromTillOffset = $toStart = $toTillOffset = -1;
@@ -242,7 +246,7 @@ trait UnifiedDiffAssertTrait
             $matches,
         );
 
-        if (1 !== $match || ($matchesCount = count($matches)) < 4) {
+        if (1 !== $match || count($matches) < 4) {
             throw new UnexpectedValueException(sprintf('Date of header line does not match expected pattern, got "%s". %s', $date, $message));
         }
 

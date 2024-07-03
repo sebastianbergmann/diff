@@ -9,6 +9,8 @@
  */
 namespace SebastianBergmann\Diff;
 
+use function assert;
+use function is_array;
 use function unserialize;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -26,12 +28,24 @@ final class ParserTest extends TestCase
 {
     private Parser $parser;
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: array{0: Diff},
+     *     },
+     * >
+     */
     public static function diffProvider(): array
     {
+        $diff = unserialize(FileUtils::getFileContent(__DIR__ . '/fixtures/serialized_diff.bin'));
+        assert(is_array($diff));
+        assert($diff[0] instanceof Diff);
+
         return [
             [
                 "--- old.txt	2014-11-04 08:51:02.661868729 +0300\n+++ new.txt	2014-11-04 08:51:02.665868730 +0300\n@@ -1,3 +1,4 @@\n+2222111\n 1111111\n 1111111\n 1111111\n@@ -5,10 +6,8 @@\n 1111111\n 1111111\n 1111111\n +1121211\n 1111111\n -1111111\n -1111111\n -2222222\n 2222222\n 2222222\n 2222222\n@@ -17,5 +16,6 @@\n 2222222\n 2222222\n 2222222\n +2122212\n 2222222\n 2222222\n",
-                unserialize(FileUtils::getFileContent(__DIR__ . '/fixtures/serialized_diff.bin')),
+                $diff,
             ],
         ];
     }
@@ -100,7 +114,7 @@ PATCH;
         $this->assertEquals('b/Foo Bar.txt', $diffs[0]->to());
     }
 
-    public function testParseWithSpacesInFileNamesAndTimesamp(): void
+    public function testParseWithSpacesInFileNamesAndTimestamp(): void
     {
         $content = <<<'PATCH'
 diff --git a/Foo Bar.txt b/Foo Bar.txt
@@ -159,7 +173,7 @@ END;
         $this->assertSame(Line::REMOVED, $line->type());
     }
 
-    public function testParseDiffForMulitpleFiles(): void
+    public function testParseDiffForMultipleFiles(): void
     {
         $content = <<<'END'
 diff --git a/Test.txt b/Test.txt

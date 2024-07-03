@@ -11,6 +11,22 @@ namespace SebastianBergmann\Diff\Output;
 
 final class StrictUnifiedDiffOutputBuilderDataProvider
 {
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *         3: array{
+     *             "fromFile": string,
+     *             "toFile": string,
+     *             "collapseRanges"?: bool,
+     *             "fromFileDate"?: string,
+     *             "toFileDate"?: string,
+     *         },
+     *     },
+     * >
+     */
     public static function provideOutputBuildingCases(): array
     {
         return [
@@ -72,6 +88,19 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
         ];
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *         3: array{
+     *             "fromFile": string,
+     *             "toFile": string,
+     *         },
+     *     },
+     * >
+     */
     public static function provideSample(): array
     {
         return [
@@ -97,6 +126,15 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
         ];
     }
 
+    /**
+     * @return array<
+     *     array{
+     *         0: string,
+     *         1: string,
+     *         2: string,
+     *     }
+     * >
+     */
     public static function provideBasicDiffGeneration(): array
     {
         return [
