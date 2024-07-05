@@ -11,12 +11,12 @@ namespace SebastianBergmann\Diff\Utils;
 
 use function preg_quote;
 use function sprintf;
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
-#[CoversClass(UnifiedDiffAssertTrait::class)]
+#[CoversTrait(UnifiedDiffAssertTrait::class)]
 final class UnifiedDiffAssertTraitTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
