@@ -1,4 +1,4 @@
-[![Latest Stable Version](https://poser.pugx.org/sebastian/diff/v/stable.png)](https://packagist.org/packages/sebastian/diff)
+[![Latest Stable Version](https://poser.pugx.org/sebastian/diff/v)](https://packagist.org/packages/sebastian/diff)
 [![CI Status](https://github.com/sebastianbergmann/diff/workflows/CI/badge.svg)](https://github.com/sebastianbergmann/diff/actions)
 [![codecov](https://codecov.io/gh/sebastianbergmann/diff/branch/main/graph/badge.svg)](https://codecov.io/gh/sebastianbergmann/diff)
 
