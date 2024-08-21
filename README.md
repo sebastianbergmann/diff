@@ -27,7 +27,7 @@ composer require --dev sebastian/diff
 The `Differ` class can be used to generate a textual representation of the difference between two strings:
 
 ```php
-<?php
+<?php declare(strict_types=1);
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
