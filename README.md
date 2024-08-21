@@ -29,8 +29,10 @@ The `Differ` class can be used to generate a textual representation of the diffe
 ```php
 <?php
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
-$differ = new Differ;
+$differ = new Differ(new UnifiedDiffOutputBuilder);
+
 print $differ->diff('foo', 'bar');
 ```
 
