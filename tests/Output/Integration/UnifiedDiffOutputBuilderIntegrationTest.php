@@ -17,7 +17,6 @@ use function assert;
 use function file_put_contents;
 use function implode;
 use function is_array;
-use function is_string;
 use function preg_replace;
 use function preg_split;
 use function realpath;
@@ -58,9 +57,9 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     {
         return array_filter(
             UnifiedDiffOutputBuilderDataProvider::provideDiffWithLineNumbers(),
-            static function ($key)
+            static function (string $key)
             {
-                return !is_string($key) || !str_contains($key, 'non_patch_compat');
+                return !str_contains($key, 'non_patch_compat');
             },
             ARRAY_FILTER_USE_KEY,
         );

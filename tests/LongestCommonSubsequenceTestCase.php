@@ -173,7 +173,6 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
     {
         $diff = $this->implementation->calculate(['5'], ['05']);
 
-        $this->assertIsArray($diff);
         $this->assertCount(0, $diff);
     }
 

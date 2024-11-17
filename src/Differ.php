@@ -137,7 +137,7 @@ final class Differ
         return new TimeEfficientLongestCommonSubsequenceCalculator;
     }
 
-    private function calculateEstimatedFootprint(array $from, array $to): float|int
+    private function calculateEstimatedFootprint(array $from, array $to): int
     {
         $itemSize = PHP_INT_SIZE === 4 ? 76 : 144;
 

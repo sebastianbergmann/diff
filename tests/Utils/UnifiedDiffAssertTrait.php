@@ -247,7 +247,7 @@ trait UnifiedDiffAssertTrait
             $matches,
         );
 
-        if (1 !== $match || count($matches) < 4) {
+        if (1 !== $match) {
             throw new UnexpectedValueException(sprintf('Date of header line does not match expected pattern, got "%s". %s', $date, $message));
         }
 
