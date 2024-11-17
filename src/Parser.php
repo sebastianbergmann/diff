@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\Diff;
 
+use const PREG_UNMATCHED_AS_NULL;
 use function array_pop;
 use function assert;
 use function count;
