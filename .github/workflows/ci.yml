@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  COMPOSER_ROOT_VERSION: "6.0.x-dev"
+  COMPOSER_ROOT_VERSION: "7.0.x-dev"
 
 jobs:
   coding-guidelines:
@@ -61,7 +61,6 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.2"
           - "8.3"
           - "8.4"
           - "8.5"
