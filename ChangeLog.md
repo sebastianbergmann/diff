@@ -157,7 +157,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
-[7.0.0]: https://github.com/sebastianbergmann/diff/compare/6.0...main
+[7.0.0]: https://github.com/sebastianbergmann/diff/compare/6.0...7.0.0
 [6.0.2]: https://github.com/sebastianbergmann/diff/compare/6.0.1...6.0.2
 [6.0.1]: https://github.com/sebastianbergmann/diff/compare/6.0.0...6.0.1
 [6.0.0]: https://github.com/sebastianbergmann/diff/compare/5.1...6.0.0

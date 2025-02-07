@@ -18,7 +18,6 @@
         "issues": "https://github.com/sebastianbergmann/diff/issues",
         "security": "https://github.com/sebastianbergmann/diff/security/policy"
     },
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
         "platform": {
@@ -31,7 +30,7 @@
         "php": ">=8.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^12.0-dev",
+        "phpunit/phpunit": "^12.0",
         "symfony/process": "^7.2"
     },
     "autoload": {
