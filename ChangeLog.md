@@ -6,7 +6,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ### Removed
 
-* This component is no longer supported on PHP 8.3
+* This component is no longer supported on PHP 8.2
 
 ## [6.0.2] - 2024-07-03
 
