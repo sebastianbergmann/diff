@@ -271,8 +271,10 @@ trait UnifiedDiffAssertTrait
 
         return [
             (int) $matches[1],
+            /** @phpstan-ignore empty.notAllowed */
             empty($matches[2]) ? 1 : (int) substr($matches[2], 1),
             (int) $matches[3],
+            /** @phpstan-ignore empty.notAllowed */
             empty($matches[4]) ? 1 : (int) substr($matches[4], 1),
         ];
     }
