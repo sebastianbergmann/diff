@@ -182,7 +182,7 @@ final class Differ
         return false;
     }
 
-    private function getLinebreak($line): string
+    private function getLinebreak(int|string $line): string
     {
         if (!is_string($line)) {
             return '';

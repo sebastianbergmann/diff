@@ -75,8 +75,10 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             : $diff;
     }
 
-    private function writeDiffHunks($output, array $diff): void
+    private function writeDiffHunks(mixed $output, array $diff): void
     {
+        assert(is_resource($output));
+
         // detect "No newline at end of file" and insert into `$diff` if needed
 
         $upperLimit = count($diff);
@@ -224,8 +226,10 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         int $fromRange,
         int $toStart,
         int $toRange,
-        $output
+        mixed $output
     ): void {
+        assert(is_resource($output));
+
         if ($this->addLineNumbers) {
             fwrite($output, '@@ -' . $fromStart);
 
