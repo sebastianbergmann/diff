@@ -103,7 +103,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
                         array_splice($diff, $i + 1, 0, [["\n\\ No newline at end of file\n", Differ::NO_LINE_END_EOF_WARNING]]);
                     }
 
-                    if (!count($toFind)) {
+                    if ($toFind === []) {
                         break;
                     }
                 }

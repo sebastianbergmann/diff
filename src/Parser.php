@@ -29,7 +29,9 @@ final class Parser
     {
         $lines = preg_split('(\r\n|\r|\n)', $string);
 
-        if (!empty($lines) && $lines[count($lines) - 1] === '') {
+        if ($lines !== false &&
+            $lines !== [] &&
+            $lines[count($lines) - 1] === '') {
             array_pop($lines);
         }
 
@@ -63,7 +65,7 @@ final class Parser
             }
         }
 
-        if ($diff !== null && count($collected)) {
+        if ($diff !== null && $collected !== []) {
             $this->parseFileDiff($diff, $collected);
 
             $diffs[] = $diff;
