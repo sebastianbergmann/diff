@@ -168,9 +168,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         $hunkCapture = false;
         $sameCount   = $toRange = $fromRange = 0;
         $toStart     = $fromStart = 1;
-        $i           = 0;
 
-        /** @var int $i */
         foreach ($diff as $i => $entry) {
             if (0 === $entry[1]) { // same
                 if (false === $hunkCapture) {
@@ -259,6 +257,8 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         $fromRange -= $sameCount;
         $toRange   -= $sameCount;
+
+        assert(isset($i) && is_int($i));
 
         $this->writeHunk(
             $diff,

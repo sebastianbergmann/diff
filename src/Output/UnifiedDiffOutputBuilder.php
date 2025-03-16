@@ -15,6 +15,7 @@ use function count;
 use function fclose;
 use function fopen;
 use function fwrite;
+use function is_int;
 use function is_resource;
 use function max;
 use function min;
@@ -116,9 +117,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         $hunkCapture = false;
         $sameCount   = $toRange = $fromRange = 0;
         $toStart     = $fromStart = 1;
-        $i           = 0;
 
-        /** @var int $i */
         foreach ($diff as $i => $entry) {
             if (0 === $entry[1]) { // same
                 if (false === $hunkCapture) {
@@ -205,6 +204,8 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         $fromRange -= $sameCount;
         $toRange   -= $sameCount;
+
+        assert(isset($i) && is_int($i));
 
         $this->writeHunk(
             $diff,
