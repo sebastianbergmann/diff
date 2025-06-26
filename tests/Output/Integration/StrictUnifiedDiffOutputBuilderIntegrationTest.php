@@ -147,7 +147,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     #[DataProvider('provideBasicDiffGeneration')]
     #[DataProvider('provideOutputBuildingCases')]
     #[DataProvider('provideSample')]
-    public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to): void
+    public function testIntegrationOfUnitTestCasesGitApply(string $expected, string $from, string $to, ?array $options = null): void
     {
         $this->doIntegrationTestGitApply($expected, $from);
     }
@@ -155,7 +155,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     #[DataProvider('provideBasicDiffGeneration')]
     #[DataProvider('provideOutputBuildingCases')]
     #[DataProvider('provideSample')]
-    public function testIntegrationOfUnitTestCasesPatch(string $expected, string $from, string $to): void
+    public function testIntegrationOfUnitTestCasesPatch(string $expected, string $from, string $to, ?array $options = null): void
     {
         $this->doIntegrationTestPatch($expected, $from, $to);
     }

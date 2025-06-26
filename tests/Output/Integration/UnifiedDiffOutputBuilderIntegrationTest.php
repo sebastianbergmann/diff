@@ -86,7 +86,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     }
 
     #[DataProvider('provideDiffWithLineNumbers')]
-    public function testDiffWithLineNumbersGitApply(string $expected, string $from): void
+    public function testDiffWithLineNumbersGitApply(string $expected, string $from, string $to): void
     {
         $this->doIntegrationTestGitApply($expected, $from);
     }
