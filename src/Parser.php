@@ -22,7 +22,7 @@ use function preg_split;
 final class Parser
 {
     /**
-     * @return Diff[]
+     * @return list<Diff>
      */
     public function parse(string $string): array
     {
