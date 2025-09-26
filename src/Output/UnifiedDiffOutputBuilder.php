@@ -29,6 +29,7 @@ use SebastianBergmann\Diff\Differ;
  */
 final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 {
+    /** @phpstan-ignore property.tooWideBool */
     private bool $collapseRanges     = true;
     private int $commonLineThreshold = 6;
 

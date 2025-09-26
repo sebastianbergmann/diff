@@ -44,5 +44,8 @@ parameters:
         property: 100
         constant: 100
 
+    ignoreErrors:
+        - '#Call to internal method PHPUnit\\Framework\\TestCase::addToAssertionCount\(\) from outside its root namespace PHPUnit.#'
+
 includes:
 	- phar://phpstan.phar/conf/bleedingEdge.neon
