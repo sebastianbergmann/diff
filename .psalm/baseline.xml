@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.11.0@c9b192ab8400fdaf04b2b13d110575adc879aa90">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="src/Chunk.php">
     <LessSpecificReturnStatement>
       <code><![CDATA[$this->lines]]></code>
@@ -12,12 +12,12 @@
   </file>
   <file src="src/Differ.php">
     <MissingParamType>
-      <code>$line</code>
+      <code><![CDATA[$line]]></code>
     </MissingParamType>
   </file>
   <file src="src/Exception/ConfigurationException.php">
     <MissingParamType>
-      <code>$value</code>
+      <code><![CDATA[$value]]></code>
     </MissingParamType>
   </file>
   <file src="src/Output/StrictUnifiedDiffOutputBuilder.php">
@@ -25,17 +25,23 @@
       <code><![CDATA[$options['contextLines']]]></code>
     </InvalidPropertyAssignmentValue>
     <MissingParamType>
-      <code>$output</code>
-      <code>$output</code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
     </MissingParamType>
     <PropertyNotSetInConstructor>
-      <code>$changed</code>
+      <code><![CDATA[$changed]]></code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Output/UnifiedDiffOutputBuilder.php">
     <MissingParamType>
-      <code>$output</code>
-      <code>$output</code>
+      <code><![CDATA[$output]]></code>
+      <code><![CDATA[$output]]></code>
     </MissingParamType>
+  </file>
+  <file src="src/Parser.php">
+    <RiskyTruthyFalsyComparison>
+      <code><![CDATA[empty($fromMatch['file'])]]></code>
+      <code><![CDATA[empty($toMatch['file'])]]></code>
+    </RiskyTruthyFalsyComparison>
   </file>
 </files>
