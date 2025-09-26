@@ -62,10 +62,13 @@ final class ParserTest extends TestCase
 
         $diffs = $this->parser->parse($content);
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
         $chunks = $diffs[0]->chunks();
+
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
 
         $this->assertCount(1, $chunks);
@@ -147,11 +150,14 @@ index abcdefg..abcdefh 100644
 -B
 END;
         $diffs = $this->parser->parse($content);
+
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
         $chunks = $diffs[0]->chunks();
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(1, $chunks);
 
@@ -162,6 +168,8 @@ END;
         $this->assertSame(8, $chunk->endRange());
 
         $lines = $chunk->lines();
+
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertContainsOnlyInstancesOf(Line::class, $lines);
         $this->assertCount(2, $lines);
 
@@ -220,11 +228,14 @@ index abcdefg..abcdefh 100644
 -B
 END;
         $diffs = $this->parser->parse($content);
+
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
         $chunks = $diffs[0]->chunks();
 
+        /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(2, $chunks);
 
