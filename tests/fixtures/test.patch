@@ -1,0 +1,14 @@
+diff --git a/file1.txt b/file1.txt
+new file mode 100644
+--- /dev/null
++++ b/file1.txt
+@@ -0,0 +1,2 @@
++Line A
++Line B
+diff --git a/file2.txt b/file2.txt
+new file mode 100644
+--- /dev/null
++++ b/file2.txt
+@@ -0,0 +1,2 @@
++Line X
++Line Y
