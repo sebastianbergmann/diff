@@ -114,7 +114,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $from = FileUtils::getFileContent($fileFrom);
         $to   = FileUtils::getFileContent($fileTo);
 
-        $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
+        $diff = new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New']))->diff($from, $to);
 
         if ('' === $diff && $from === $to) {
             // odd case: test after executing as it is more efficient than to read the files and check the contents every time
@@ -132,7 +132,7 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $from = FileUtils::getFileContent($fileFrom);
         $to   = FileUtils::getFileContent($fileTo);
 
-        $diff = (new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New'])))->diff($from, $to);
+        $diff = new Differ(new StrictUnifiedDiffOutputBuilder(['fromFile' => 'Original', 'toFile' => 'New']))->diff($from, $to);
 
         if ('' === $diff && $from === $to) {
             // odd case: test after executing as it is more efficient than to read the files and check the contents every time

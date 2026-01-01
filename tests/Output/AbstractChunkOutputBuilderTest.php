@@ -156,7 +156,7 @@ final class AbstractChunkOutputBuilderTest extends TestCase
 
         $this->assertSame(
             $expected,
-            $output->getChunks((new Differ(new UnifiedDiffOutputBuilder))->diffToArray($from, $to), $lineThreshold),
+            $output->getChunks(new Differ(new UnifiedDiffOutputBuilder)->diffToArray($from, $to), $lineThreshold),
         );
     }
 }
