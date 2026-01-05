@@ -74,6 +74,25 @@ final class ParserTest extends TestCase
         $this->assertCount(4, $chunks[0]->lines());
     }
 
+    public function testParseNewFileMode(): void
+    {
+        $content = FileUtils::getFileContent(__DIR__ . '/fixtures/test.patch');
+
+        $diffs = $this->parser->parse($content);
+
+        foreach ($diffs as $diff) {
+            foreach ($diff->chunks() as $chunk) {
+                foreach ($chunk->lines() as $index => $line) {
+                    $content = $line->content();
+
+                    if (str_starts_with($content, 'new file mode')) {
+                        self::fail('Line #' . $index + 1 . ' in chunk ' . $chunk->start() . ' of diff ' . $diff->to() . ' is invalid');
+                    }
+                }
+            }
+        }
+    }
+
     public function testParseWithMultipleChunks(): void
     {
         $content = FileUtils::getFileContent(__DIR__ . '/fixtures/patch2.txt');
