@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Nette Framework (https://nette.org)
  * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
  */
-
-declare(strict_types=1);
 
 namespace Nette\Utils;
 
@@ -22,6 +20,7 @@ final class ReflectionMethod extends \ReflectionMethod
 	private readonly \ReflectionClass $originalClass;
 
 
+	/** @param  class-string|object  $objectOrMethod */
 	public function __construct(object|string $objectOrMethod, ?string $method = null)
 	{
 		if (is_string($objectOrMethod) && str_contains($objectOrMethod, '::')) {
