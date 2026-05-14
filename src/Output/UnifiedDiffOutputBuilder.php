@@ -39,7 +39,6 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     private int $contextLines;
     private string $header;
     private bool $addLineNumbers;
-    private bool $changed;
 
     /**
      * @param positive-int $contextLines
@@ -53,12 +52,6 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
     public function getDiff(array $diff): string
     {
-        if (0 === count($diff)) {
-            return '';
-        }
-
-        $this->changed = false;
-
         $buffer = fopen('php://memory', 'r+b');
 
         assert(is_resource($buffer));
@@ -71,12 +64,8 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             }
         }
 
-        $this->writeDiffHunks($buffer, $diff);
-
-        if (!$this->changed) {
-            fclose($buffer);
-
-            return '';
+        if (0 !== count($diff)) {
+            $this->writeDiffHunks($buffer, $diff);
         }
 
         $diff = stream_get_contents($buffer, -1, 0);
@@ -190,8 +179,6 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
                 continue;
             }
 
-            $this->changed = true;
-
             if (false === $hunkCapture) {
                 $hunkCapture = $i;
             }
@@ -269,16 +256,15 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         for ($i = $diffStartIndex; $i < $diffEndIndex; $i++) {
             if ($diff[$i][1] === Differ::ADDED) {
-                $this->changed = true;
                 fwrite($output, '+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::REMOVED) {
-                $this->changed = true;
                 fwrite($output, '-' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::OLD) {
                 fwrite($output, ' ' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::NO_LINE_END_EOF_WARNING) {
-                $this->changed = true;
-                fwrite($output, $diff[$i][0]);
+                fwrite($output, "\n"); // $diff[$i][0]
+            } else { /* Not changed (old) Differ::OLD or Warning Differ::DIFF_LINE_END_WARNING */
+                fwrite($output, ' ' . $diff[$i][0]);
             }
         }
     }

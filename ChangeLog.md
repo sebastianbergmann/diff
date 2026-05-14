@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.2.1] - 2026-05-14
+
+### Changed
+
+* [#136](https://github.com/sebastianbergmann/diff/issues/136): Reverted changes introduced in version 8.2.0
+
 ## [8.2.0] - 2026-05-14
 
 ### Changed
@@ -175,6 +181,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
+[8.2.1]: https://github.com/sebastianbergmann/diff/compare/8.2.0...8.2.1
 [8.2.0]: https://github.com/sebastianbergmann/diff/compare/8.1.0...8.2.0
 [8.1.0]: https://github.com/sebastianbergmann/diff/compare/8.0.0...8.1.0
 [8.0.0]: https://github.com/sebastianbergmann/diff/compare/7.0...8.0.0
