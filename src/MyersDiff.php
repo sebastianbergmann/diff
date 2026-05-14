@@ -23,7 +23,7 @@ use function count;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MyersDiff
+final readonly class MyersDiff
 {
     /**
      * @param list<mixed> $from
