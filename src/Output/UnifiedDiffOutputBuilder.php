@@ -110,6 +110,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         /** @phpstan-ignore offsetAccess.notFound */
         if (0 === $diff[$upperLimit - 1][1]) {
+            /** @phpstan-ignore argument.type */
             $lc = substr($diff[$upperLimit - 1][0], -1);
 
             if ("\n" !== $lc) {
@@ -124,6 +125,8 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
                 /** @phpstan-ignore offsetAccess.notFound */
                 if (isset($toFind[$diff[$i][1]])) {
                     unset($toFind[$diff[$i][1]]);
+
+                    /** @phpstan-ignore argument.type */
                     $lc = substr($diff[$i][0], -1);
 
                     if ("\n" !== $lc) {
@@ -283,14 +286,19 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         for ($i = $diffStartIndex; $i < $diffEndIndex; $i++) {
             /** @phpstan-ignore offsetAccess.notFound */
             if ($diff[$i][1] === Differ::ADDED) {
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, '+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::REMOVED) {
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, '-' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::OLD) {
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, ' ' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::NO_LINE_END_EOF_WARNING) {
+                /** @phpstan-ignore argument.type */
                 fwrite($output, $this->emitNoLineEndEofWarning ? $diff[$i][0] : "\n");
             } elseif ($diff[$i][1] === Differ::DIFF_LINE_END_WARNING) {
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, ' ' . $diff[$i][0]);
             }
             // else: unknown/invalid type - silently skip
