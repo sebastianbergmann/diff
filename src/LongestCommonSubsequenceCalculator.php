@@ -9,6 +9,9 @@
  */
 namespace SebastianBergmann\Diff;
 
+/**
+ * @deprecated https://github.com/sebastianbergmann/diff/pull/138
+ */
 interface LongestCommonSubsequenceCalculator
 {
     /**
