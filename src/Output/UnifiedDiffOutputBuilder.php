@@ -98,7 +98,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
     }
 
     /**
-     * @param list<array{0: mixed, 1: int}> $diff
+     * @param non-empty-list<array{0: mixed, 1: int}> $diff
      */
     private function writeDiffHunks(mixed $output, array $diff): void
     {
@@ -108,6 +108,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 
         $upperLimit = count($diff);
 
+        /** @phpstan-ignore offsetAccess.notFound */
         if (0 === $diff[$upperLimit - 1][1]) {
             $lc = substr($diff[$upperLimit - 1][0], -1);
 
@@ -120,6 +121,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             $toFind = [1 => true, 2 => true];
 
             for ($i = $upperLimit - 1; $i >= 0; $i--) {
+                /** @phpstan-ignore offsetAccess.notFound */
                 if (isset($toFind[$diff[$i][1]])) {
                     unset($toFind[$diff[$i][1]]);
                     $lc = substr($diff[$i][0], -1);
@@ -279,6 +281,7 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         }
 
         for ($i = $diffStartIndex; $i < $diffEndIndex; $i++) {
+            /** @phpstan-ignore offsetAccess.notFound */
             if ($diff[$i][1] === Differ::ADDED) {
                 fwrite($output, '+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::REMOVED) {

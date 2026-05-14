@@ -65,7 +65,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
     private string $header;
 
     /**
-     * @var positive-int
+     * @var int<0, max>
      */
     private int $contextLines;
 
@@ -172,7 +172,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
     }
 
     /**
-     * @param list<array{0: mixed, 1: int}> $diff
+     * @param non-empty-list<array{0: mixed, 1: int}> $diff
      */
     private function writeDiffHunks(mixed $output, array $diff): void
     {
@@ -182,6 +182,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         $upperLimit = count($diff);
 
+        /** @phpstan-ignore offsetAccess.notFound */
         if (0 === $diff[$upperLimit - 1][1]) {
             $lc = substr($diff[$upperLimit - 1][0], -1);
 
@@ -194,6 +195,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             $toFind = [1 => true, 2 => true];
 
             for ($i = $upperLimit - 1; $i >= 0; $i--) {
+                /** @phpstan-ignore offsetAccess.notFound */
                 if (isset($toFind[$diff[$i][1]])) {
                     unset($toFind[$diff[$i][1]]);
                     $lc = substr($diff[$i][0], -1);
@@ -353,6 +355,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         }
 
         for ($i = $diffStartIndex; $i < $diffEndIndex; $i++) {
+            /** @phpstan-ignore offsetAccess.notFound */
             if ($diff[$i][1] === Differ::ADDED) {
                 $this->changed = true;
                 fwrite($output, '+' . $diff[$i][0]);
@@ -375,8 +378,10 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
      */
     private function assertString(array $options, string $option): void
     {
-        if (!is_string($options[$option])) {
-            throw new ConfigurationException($option, 'a string', $options[$option]);
+        $value = $options[$option] ?? null;
+
+        if (!is_string($value)) {
+            throw new ConfigurationException($option, 'a string', $value);
         }
     }
 
@@ -385,8 +390,10 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
      */
     private function assertStringOrNull(array $options, string $option): void
     {
-        if (null !== $options[$option] && !is_string($options[$option])) {
-            throw new ConfigurationException($option, 'a string or <null>', $options[$option]);
+        $value = $options[$option] ?? null;
+
+        if (null !== $value && !is_string($value)) {
+            throw new ConfigurationException($option, 'a string or <null>', $value);
         }
     }
 }

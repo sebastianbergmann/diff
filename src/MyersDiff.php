@@ -57,6 +57,7 @@ final readonly class MyersDiff
         $n      = count($diff);
 
         while ($i < $n) {
+            /** @phpstan-ignore offsetAccess.notFound */
             if ($diff[$i][1] === Differ::OLD) {
                 $result[] = $diff[$i];
                 $i++;
@@ -67,6 +68,7 @@ final readonly class MyersDiff
             $removes = [];
             $adds    = [];
 
+            /** @phpstan-ignore offsetAccess.notFound */
             while ($i < $n && $diff[$i][1] !== Differ::OLD) {
                 if ($diff[$i][1] === Differ::REMOVED) {
                     $removes[] = $diff[$i];
@@ -97,6 +99,8 @@ final readonly class MyersDiff
     private function diffRange(array $a, int $aLo, int $aHi, array $b, int $bLo, int $bHi, array &$out): void
     {
         // Trim common prefix.
+        // $aLo < $aHi <= count($a) and $bLo < $bHi <= count($b) ensure offsets exist.
+        /** @phpstan-ignore offsetAccess.notFound, offsetAccess.notFound */
         while ($aLo < $aHi && $bLo < $bHi && $a[$aLo] === $b[$bLo]) {
             $out[] = [$a[$aLo], Differ::OLD];
             $aLo++;
@@ -106,9 +110,12 @@ final readonly class MyersDiff
         // Trim common suffix; defer emission until after the middle is processed.
         $suffix = [];
 
+        /** @phpstan-ignore offsetAccess.notFound, offsetAccess.notFound */
         while ($aLo < $aHi && $bLo < $bHi && $a[$aHi - 1] === $b[$bHi - 1]) {
             $aHi--;
             $bHi--;
+
+            /** @phpstan-ignore offsetAccess.notFound */
             $suffix[] = [$a[$aHi], Differ::OLD];
         }
 
@@ -117,10 +124,12 @@ final readonly class MyersDiff
 
         if ($n === 0) {
             for ($j = $bLo; $j < $bHi; $j++) {
+                /** @phpstan-ignore offsetAccess.notFound */
                 $out[] = [$b[$j], Differ::ADDED];
             }
         } elseif ($m === 0) {
             for ($i = $aLo; $i < $aHi; $i++) {
+                /** @phpstan-ignore offsetAccess.notFound */
                 $out[] = [$a[$i], Differ::REMOVED];
             }
         } else {
@@ -130,6 +139,7 @@ final readonly class MyersDiff
                 $this->diffRange($a, $aLo, $aLo + $xs, $b, $bLo, $bLo + $ys, $out);
 
                 for ($i = $xs; $i < $xe; $i++) {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $out[] = [$a[$aLo + $i], Differ::OLD];
                 }
 
@@ -138,19 +148,23 @@ final readonly class MyersDiff
                 // d == 1: a single insertion. Common prefix already consumed above means
                 // n elements match the first n of b; the (n+1)-th element of b is the insert.
                 for ($i = 0; $i < $n; $i++) {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $out[] = [$a[$aLo + $i], Differ::OLD];
                 }
 
                 for ($j = $n; $j < $m; $j++) {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $out[] = [$b[$bLo + $j], Differ::ADDED];
                 }
             } else {
                 // d == 1: a single deletion (n > m).
                 for ($j = 0; $j < $m; $j++) {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $out[] = [$b[$bLo + $j], Differ::OLD];
                 }
 
                 for ($i = $m; $i < $n; $i++) {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $out[] = [$a[$aLo + $i], Differ::REMOVED];
                 }
             }
@@ -158,6 +172,7 @@ final readonly class MyersDiff
 
         // Emit the deferred common suffix in original order.
         for ($i = count($suffix) - 1; $i >= 0; $i--) {
+            /** @phpstan-ignore offsetAccess.notFound */
             $out[] = $suffix[$i];
         }
     }
@@ -173,6 +188,9 @@ final readonly class MyersDiff
      */
     private function findMiddleSnake(array $a, int $aLo, int $aHi, array $b, int $bLo, int $bHi): array
     {
+        // All $vf, $vb offsets below resolve to indices within [0, $size) by the algorithm's
+        // invariants (|$k| <= $d <= $maxD, $offset = $maxD + 1). The $a, $b accesses are guarded
+        // by $x < $n, $y < $m bounds and $aHi <= count($a), $bHi <= count($b) by construction.
         $n          = $aHi - $aLo;
         $m          = $bHi - $bLo;
         $delta      = $n - $m;
@@ -186,9 +204,12 @@ final readonly class MyersDiff
         for ($d = 0; $d <= $maxD; $d++) {
             // Forward pass.
             for ($k = -$d; $k <= $d; $k += 2) {
+                /** @phpstan-ignore offsetAccess.notFound, offsetAccess.notFound */
                 if ($k === -$d || ($k !== $d && $vf[$offset + $k - 1] < $vf[$offset + $k + 1])) {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $x = $vf[$offset + $k + 1];
                 } else {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $x = $vf[$offset + $k - 1] + 1;
                 }
 
@@ -196,6 +217,7 @@ final readonly class MyersDiff
                 $xs = $x;
                 $ys = $y;
 
+                /** @phpstan-ignore offsetAccess.notFound, offsetAccess.notFound */
                 while ($x < $n && $y < $m && $a[$aLo + $x] === $b[$bLo + $y]) {
                     $x++;
                     $y++;
@@ -206,6 +228,7 @@ final readonly class MyersDiff
                 if ($deltaIsOdd) {
                     $kb = $delta - $k;
 
+                    /** @phpstan-ignore offsetAccess.notFound */
                     if ($kb >= -($d - 1) && $kb <= $d - 1 && $vf[$offset + $k] + $vb[$offset + $kb] >= $n) {
                         return [$xs, $ys, $x, $y, 2 * $d - 1];
                     }
@@ -214,9 +237,12 @@ final readonly class MyersDiff
 
             // Backward pass.
             for ($k = -$d; $k <= $d; $k += 2) {
+                /** @phpstan-ignore offsetAccess.notFound, offsetAccess.notFound */
                 if ($k === -$d || ($k !== $d && $vb[$offset + $k - 1] < $vb[$offset + $k + 1])) {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $x = $vb[$offset + $k + 1];
                 } else {
+                    /** @phpstan-ignore offsetAccess.notFound */
                     $x = $vb[$offset + $k - 1] + 1;
                 }
 
@@ -224,6 +250,7 @@ final readonly class MyersDiff
                 $xs = $x;
                 $ys = $y;
 
+                /** @phpstan-ignore offsetAccess.notFound, offsetAccess.notFound */
                 while ($x < $n && $y < $m && $a[$aLo + $n - 1 - $x] === $b[$bLo + $m - 1 - $y]) {
                     $x++;
                     $y++;
@@ -234,6 +261,7 @@ final readonly class MyersDiff
                 if (!$deltaIsOdd) {
                     $kf = $delta - $k;
 
+                    /** @phpstan-ignore offsetAccess.notFound */
                     if ($kf >= -$d && $kf <= $d && $vf[$offset + $kf] + $vb[$offset + $k] >= $n) {
                         return [$n - $x, $m - $y, $n - $xs, $m - $ys, 2 * $d];
                     }

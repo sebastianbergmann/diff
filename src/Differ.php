@@ -40,8 +40,8 @@ final class Differ
     }
 
     /**
-     * @param list<string>|string $from
-     * @param list<string>|string $to
+     * @param array<int|string, int|string>|string $from
+     * @param array<int|string, int|string>|string $to
      */
     public function diff(array|string $from, array|string $to): string
     {
@@ -51,8 +51,8 @@ final class Differ
     }
 
     /**
-     * @param list<string>|string $from
-     * @param list<string>|string $to
+     * @param array<int|string, int|string>|string $from
+     * @param array<int|string, int|string>|string $to
      *
      * @return list<array{0: mixed, 1: int}>
      */
@@ -94,7 +94,13 @@ final class Differ
      */
     private function splitStringByLines(string $input): array
     {
-        return preg_split('/(.*\R)/', $input, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+        $result = preg_split('/(.*\R)/', $input, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        if ($result === false) {
+            return [];
+        }
+
+        return $result;
     }
 
     /**
@@ -154,10 +160,10 @@ final class Differ
     }
 
     /**
-     * @param array<int, string> $from
-     * @param array<int, string> $to
+     * @param array<int|string, int|string> $from
+     * @param array<int|string, int|string> $to
      *
-     * @return array{0: array<int, string>, 1: array<int, string>, 2: array<int, string>, 3: array<int, string>}
+     * @return array{0: array<int|string, int|string>, 1: array<int|string, int|string>, 2: array<int|string, int|string>, 3: array<int|string, int|string>}
      */
     private static function getArrayDiffParted(array &$from, array &$to): array
     {
@@ -169,6 +175,7 @@ final class Differ
         foreach ($from as $k => $v) {
             $toK = key($to);
 
+            /** @phpstan-ignore offsetAccess.notFound */
             if ($toK === $k && $v === $to[$k]) {
                 $start[$k] = $v;
 
@@ -192,6 +199,7 @@ final class Differ
             prev($from);
             prev($to);
 
+            /** @phpstan-ignore offsetAccess.notFound */
             $end = [$fromK => $from[$fromK]] + $end;
             unset($from[$fromK], $to[$toK]);
         } while (true);

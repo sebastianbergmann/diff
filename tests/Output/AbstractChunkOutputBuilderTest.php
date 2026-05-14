@@ -25,10 +25,10 @@ final class AbstractChunkOutputBuilderTest extends TestCase
     /**
      * @return array<
      *     array{
-     *         0: array<int, int>,
+     *         0: array<int, int<0, max>>,
      *         1: string,
      *         2: string,
-     *         3?: int,
+     *         3?: int<0, max>,
      *     }
      * >
      */
@@ -133,7 +133,8 @@ final class AbstractChunkOutputBuilderTest extends TestCase
     }
 
     /**
-     * @param array<int, positive-int> $expected
+     * @param array<int, int<0, max>> $expected
+     * @param int<0, max>             $lineThreshold
      */
     #[DataProvider('provideGetCommonChunks')]
     public function testGetCommonChunks(array $expected, string $from, string $to, int $lineThreshold = 5): void
@@ -147,8 +148,9 @@ final class AbstractChunkOutputBuilderTest extends TestCase
 
             /**
              * @param list<array{0: mixed, 1: int}> $diff
+             * @param int<0, max>                   $lineThreshold
              *
-             * @return array<int, positive-int>
+             * @return array<int, int<0, max>>
              */
             public function getChunks(array $diff, int $lineThreshold): array
             {
