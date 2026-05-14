@@ -14,12 +14,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\MyersDiff;
 
 #[CoversClass(UnifiedDiffOutputBuilder::class)]
 #[UsesClass(Differ::class)]
 #[UsesClass(AbstractChunkOutputBuilder::class)]
-#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(MyersDiff::class)]
 final class UnifiedDiffOutputBuilderTest extends TestCase
 {
     /**

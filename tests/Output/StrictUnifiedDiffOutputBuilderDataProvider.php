@@ -33,16 +33,16 @@ final class StrictUnifiedDiffOutputBuilderDataProvider
             [
                 '--- input.txt
 +++ output.txt
-@@ -1,3 +1,4 @@
+@@ -1,4 +1,4 @@
+-
 +b
  ' . '
  ' . '
  ' . '
-@@ -16,5 +17,4 @@
+@@ -17,4 +17,4 @@
  ' . '
  ' . '
  ' . '
--
 -B
 +A
 ',

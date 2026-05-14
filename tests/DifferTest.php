@@ -20,8 +20,7 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
 #[CoversClass(Differ::class)]
 #[CoversClass(UnifiedDiffOutputBuilder::class)]
-#[UsesClass(MemoryEfficientLongestCommonSubsequenceCalculator::class)]
-#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(MyersDiff::class)]
 #[UsesClass(AbstractChunkOutputBuilder::class)]
 #[Small]
 final class DifferTest extends TestCase
@@ -344,27 +343,15 @@ EOF
     }
 
     #[DataProvider('arrayProvider')]
-    public function testArrayRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(array $expected, array|string $from, array|string $to): void
+    public function testArrayRepresentationOfDiffCanBeRendered(array $expected, array|string $from, array|string $to): void
     {
-        $this->assertSame($expected, $this->differ->diffToArray($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
+        $this->assertSame($expected, $this->differ->diffToArray($from, $to));
     }
 
     #[DataProvider('textProvider')]
-    public function testTextRepresentationOfDiffCanBeRenderedUsingTimeEfficientLcsImplementation(string $expected, string $from, string $to): void
+    public function testTextRepresentationOfDiffCanBeRendered(string $expected, string $from, string $to): void
     {
-        $this->assertSame($expected, $this->differ->diff($from, $to, new TimeEfficientLongestCommonSubsequenceCalculator));
-    }
-
-    #[DataProvider('arrayProvider')]
-    public function testArrayRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(array $expected, array|string $from, array|string $to): void
-    {
-        $this->assertSame($expected, $this->differ->diffToArray($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
-    }
-
-    #[DataProvider('textProvider')]
-    public function testTextRepresentationOfDiffCanBeRenderedUsingMemoryEfficientLcsImplementation(string $expected, string $from, string $to): void
-    {
-        $this->assertSame($expected, $this->differ->diff($from, $to, new MemoryEfficientLongestCommonSubsequenceCalculator));
+        $this->assertSame($expected, $this->differ->diff($from, $to));
     }
 
     public function testArrayDiffs(): void

@@ -1,0 +1,18 @@
+--- /usr/local/src/diff/vendor/phpunit/phpunit/src/Metadata/DoesNotPerformAssertions.php	2026-05-13 06:00:53.000000000 +0200
++++ /usr/local/src/diff/vendor/phpunit/phpunit/src/Metadata/Exception/Exception.php	2026-05-13 06:00:53.000000000 +0200
+@@ -10,14 +10,8 @@
+ namespace PHPUnit\Metadata;
+ 
+ /**
+- * @immutable
+- *
+  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+  */
+-final readonly class DoesNotPerformAssertions extends Metadata
++interface Exception extends \PHPUnit\Exception
+ {
+-    public function isDoesNotPerformAssertions(): true
+-    {
+-        return true;
+-    }
+ }
