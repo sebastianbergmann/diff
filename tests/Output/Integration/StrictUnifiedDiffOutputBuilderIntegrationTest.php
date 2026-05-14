@@ -28,8 +28,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator;
-use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\MyersDiff;
 use SebastianBergmann\Diff\Utils\FileUtils;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use SplFileInfo;
@@ -37,8 +36,7 @@ use Symfony\Component\Process\Process;
 
 #[CoversClass(StrictUnifiedDiffOutputBuilder::class)]
 #[UsesClass(Differ::class)]
-#[UsesClass(MemoryEfficientLongestCommonSubsequenceCalculator::class)]
-#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(MyersDiff::class)]
 #[RequiresOperatingSystem('Linux')]
 final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {

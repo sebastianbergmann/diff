@@ -20,14 +20,14 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\ConfigurationException;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\MyersDiff;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use SplFileInfo;
 
 #[CoversClass(StrictUnifiedDiffOutputBuilder::class)]
 #[UsesClass(ConfigurationException::class)]
 #[UsesClass(Differ::class)]
-#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(MyersDiff::class)]
 final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 {
     use UnifiedDiffAssertTrait;

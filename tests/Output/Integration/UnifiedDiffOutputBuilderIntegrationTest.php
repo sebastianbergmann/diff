@@ -29,13 +29,13 @@ use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator;
+use SebastianBergmann\Diff\MyersDiff;
 use SebastianBergmann\Diff\Utils\UnifiedDiffAssertTrait;
 use Symfony\Component\Process\Process;
 
 #[CoversClass(UnifiedDiffOutputBuilder::class)]
 #[UsesClass(Differ::class)]
-#[UsesClass(TimeEfficientLongestCommonSubsequenceCalculator::class)]
+#[UsesClass(MyersDiff::class)]
 #[RequiresOperatingSystem('Linux')]
 final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
 {
