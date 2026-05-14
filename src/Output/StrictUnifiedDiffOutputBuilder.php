@@ -36,6 +36,9 @@ use SebastianBergmann\Diff\Differ;
  */
 final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 {
+    /**
+     * @var array{collapseRanges: bool, commonLineThreshold: int, contextLines: int, fromFile: null|string, fromFileDate: null|string, toFile: null|string, toFileDate: null|string}
+     */
     private static array $default = [
         'addLineNumbers'          => true,  // when false, hunk header is rendered as `@@ @@` (no line numbers); when true, as `@@ -from,range +to,range @@`
         'collapseRanges'          => true,  // ranges of length one are rendered with the trailing `,1`
@@ -66,6 +69,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
      */
     private int $contextLines;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(array $options = [])
     {
         $options = array_merge(self::$default, $options);
@@ -121,6 +127,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         $this->emitNoLineEndEofWarning = $options['emitNoLineEndEofWarning'];
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     public function getDiff(array $diff): string
     {
         if (0 === count($diff)) {
@@ -162,6 +171,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             : $diff;
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     private function writeDiffHunks(mixed $output, array $diff): void
     {
         assert(is_resource($output));
@@ -307,6 +319,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         );
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     private function writeHunk(
         array $diff,
         int $diffStartIndex,
@@ -355,6 +370,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         }
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     private function assertString(array $options, string $option): void
     {
         if (!is_string($options[$option])) {
@@ -362,6 +380,9 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         }
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     private function assertStringOrNull(array $options, string $option): void
     {
         if (null !== $options[$option] && !is_string($options[$option])) {

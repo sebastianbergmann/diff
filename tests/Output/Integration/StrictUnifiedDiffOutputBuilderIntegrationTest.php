@@ -46,16 +46,25 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
     private string $fileTo;
     private string $filePatch;
 
+    /**
+     * @return array<array{0: string, 1: string, 2: string, 3: array{fromFile: string, toFile: string, collapseRanges?: bool, fromFileDate?: string, toFileDate?: string}}>
+     */
     public static function provideOutputBuildingCases(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideOutputBuildingCases();
     }
 
+    /**
+     * @return array<array{0: string, 1: string, 2: string, 3: array{fromFile: string, toFile: string}}>
+     */
     public static function provideSample(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideSample();
     }
 
+    /**
+     * @return array<array{0: string, 1: string, 2: string}>
+     */
     public static function provideBasicDiffGeneration(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideBasicDiffGeneration();
@@ -142,6 +151,9 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->doIntegrationTestPatch($diff, $from, $to);
     }
 
+    /**
+     * @param null|array<string, mixed> $options
+     */
     #[DataProvider('provideBasicDiffGeneration')]
     #[DataProvider('provideOutputBuildingCases')]
     #[DataProvider('provideSample')]
@@ -150,6 +162,9 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $this->doIntegrationTestGitApply($expected, $from);
     }
 
+    /**
+     * @param null|array<string, mixed> $options
+     */
     #[DataProvider('provideBasicDiffGeneration')]
     #[DataProvider('provideOutputBuildingCases')]
     #[DataProvider('provideSample')]

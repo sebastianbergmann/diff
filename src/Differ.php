@@ -53,6 +53,8 @@ final class Differ
     /**
      * @param list<string>|string $from
      * @param list<string>|string $to
+     *
+     * @return list<array{0: mixed, 1: int}>
      */
     public function diffToArray(array|string $from, array|string $to): array
     {
@@ -87,11 +89,17 @@ final class Differ
         return $diff;
     }
 
+    /**
+     * @return list<string>
+     */
     private function splitStringByLines(string $input): array
     {
         return preg_split('/(.*\R)/', $input, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     private function detectUnmatchedLineEndings(array $diff): bool
     {
         $newLineBreaks = ['' => true];
@@ -145,6 +153,12 @@ final class Differ
         return "\n";
     }
 
+    /**
+     * @param array<int, string> $from
+     * @param array<int, string> $to
+     *
+     * @return array{0: array<int, string>, 1: array<int, string>, 2: array<int, string>, 3: array<int, string>}
+     */
     private static function getArrayDiffParted(array &$from, array &$to): array
     {
         $start = [];

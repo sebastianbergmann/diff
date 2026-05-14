@@ -53,6 +53,9 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         $this->emitNoLineEndEofWarning = $emitNoLineEndEofWarning;
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     public function getDiff(array $diff): string
     {
         if (0 === count($diff)) {
@@ -94,6 +97,9 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
             : $diff;
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     private function writeDiffHunks(mixed $output, array $diff): void
     {
         assert(is_resource($output));
@@ -239,6 +245,9 @@ final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
         );
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     private function writeHunk(
         array $diff,
         int $diffStartIndex,
