@@ -20,6 +20,8 @@ use function count;
  * Space:  O(N + M)
  *
  * Where N and M are the input lengths and D is the edit distance.
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class MyersDiff
 {
