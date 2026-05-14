@@ -27,6 +27,9 @@ final class DifferTest extends TestCase
 {
     private Differ $differ;
 
+    /**
+     * @return array<array-key, array{0: list<array{0: mixed, 1: int}>, 1: array<int|string, int|string>|string, 2: array<int|string, int|string>|string}>
+     */
     public static function arrayProvider(): array
     {
         return [
@@ -342,6 +345,11 @@ EOF
         $this->differ = new Differ(new UnifiedDiffOutputBuilder);
     }
 
+    /**
+     * @param list<array{0: mixed, 1: int}>        $expected
+     * @param array<int|string, int|string>|string $from
+     * @param array<int|string, int|string>|string $to
+     */
     #[DataProvider('arrayProvider')]
     public function testArrayRepresentationOfDiffCanBeRendered(array $expected, array|string $from, array|string $to): void
     {
@@ -369,6 +377,9 @@ EOF
         );
     }
 
+    /**
+     * @param list<string> $expected
+     */
     #[DataProvider('provideSplitStringByLinesCases')]
     public function testSplitStringByLines(array $expected, string $input): void
     {

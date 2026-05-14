@@ -32,16 +32,25 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 {
     use UnifiedDiffAssertTrait;
 
+    /**
+     * @return array<array{0: string, 1: string, 2: string, 3: array{fromFile: string, toFile: string, collapseRanges?: bool, fromFileDate?: string, toFileDate?: string}}>
+     */
     public static function provideOutputBuildingCases(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideOutputBuildingCases();
     }
 
+    /**
+     * @return array<array{0: string, 1: string, 2: string, 3: array{fromFile: string, toFile: string}}>
+     */
     public static function provideSample(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideSample();
     }
 
+    /**
+     * @return array<array{0: string, 1: string, 2: string}>
+     */
     public static function provideBasicDiffGeneration(): array
     {
         return StrictUnifiedDiffOutputBuilderDataProvider::provideBasicDiffGeneration();
@@ -541,6 +550,9 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     #[DataProvider('provideOutputBuildingCases')]
     public function testOutputBuilding(string $expected, string $from, string $to, array $options): void
     {
@@ -550,6 +562,9 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         $this->assertSame($expected, $diff);
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     #[DataProvider('provideSample')]
     public function testSample(string $expected, string $from, string $to, array $options): void
     {
@@ -810,6 +825,8 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
 
     /**
      * Returns a new instance of a Differ with a new instance of the class (DiffOutputBuilderInterface) under test.
+     *
+     * @param array<string, mixed> $options
      */
     private function getDiffer(array $options = []): Differ
     {

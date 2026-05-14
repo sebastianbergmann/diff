@@ -15,5 +15,8 @@ namespace SebastianBergmann\Diff\Output;
  */
 interface DiffOutputBuilderInterface
 {
+    /**
+     * @param list<array{0: mixed, 1: int}> $diff
+     */
     public function getDiff(array $diff): string;
 }

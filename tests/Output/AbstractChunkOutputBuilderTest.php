@@ -146,6 +146,8 @@ final class AbstractChunkOutputBuilderTest extends TestCase
             }
 
             /**
+             * @param list<array{0: mixed, 1: int}> $diff
+             *
              * @return array<int, positive-int>
              */
             public function getChunks(array $diff, int $lineThreshold): array
