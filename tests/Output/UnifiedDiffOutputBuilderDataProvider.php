@@ -28,7 +28,9 @@ final class UnifiedDiffOutputBuilderDataProvider
 +++ New
 @@ -1 +1 @@
 -AA
+\ No newline at end of file
 +BA
+\ No newline at end of file
 ',
                 'AA',
                 'BA',
@@ -38,8 +40,10 @@ final class UnifiedDiffOutputBuilderDataProvider
 +++ New
 @@ -1 +1,2 @@
 -AZ
+\ No newline at end of file
 +
 +B
+\ No newline at end of file
 ',
                 'AZ',
                 "\nB",
@@ -50,7 +54,9 @@ final class UnifiedDiffOutputBuilderDataProvider
 @@ -1,2 +1 @@
 -
 -AF
+\ No newline at end of file
 +B
+\ No newline at end of file
 ',
                 "\nAF",
                 'B',
@@ -63,6 +69,7 @@ final class UnifiedDiffOutputBuilderDataProvider
 -
  A
  1
+\ No newline at end of file
 ',
                 "\n\nA\n1",
                 "A\n1",
@@ -75,7 +82,9 @@ final class UnifiedDiffOutputBuilderDataProvider
  ' . '
  ' . '
 -E
+\ No newline at end of file
 +B
+\ No newline at end of file
 ',
                 "A\n\n\n\n\n\n\nE",
                 "A\n\n\n\n\n\n\nB",
@@ -86,14 +95,12 @@ final class UnifiedDiffOutputBuilderDataProvider
                 "\n",
             ],
             'diff line endings non_patch_compat' => [
-                "--- Original\n+++ New\n@@ -1 +1 @@\n #Warning: Strings contain different line endings!\n-<?php\r\n+<?php\n",
+                "--- Original\n+++ New\n@@ -1 +1 @@\n-<?php\r\n+<?php\n",
                 "<?php\r\n",
                 "<?php\n",
             ],
             'same non_patch_compat' => [
-                '--- Original
-+++ New
-',
+                '',
                 "AT\n",
                 "AT\n",
             ],
@@ -130,6 +137,7 @@ final class UnifiedDiffOutputBuilderDataProvider
 -V
 +B
  C213
+\ No newline at end of file
 ',
                 "\n\nV\nC213",
                 "\n\nB\nC213",
@@ -190,6 +198,7 @@ final class UnifiedDiffOutputBuilderDataProvider
 -G
 +G1
  H
+\ No newline at end of file
 ',
                 "A\nB\nD\nE\nEE\nF\nG\nH",
                 "A\nB1\nD\nE\nEE\nF\nG1\nH",

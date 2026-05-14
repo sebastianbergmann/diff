@@ -202,12 +202,12 @@ final class DifferTest extends TestCase
     {
         return [
             [
-                "--- Original\n+++ New\n@@ @@\n-a\n+b\n",
+                "--- Original\n+++ New\n@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n-A\n+A1\n B\n",
+                "--- Original\n+++ New\n@@ @@\n-A\n+A1\n B\n\\ No newline at end of file\n",
                 "A\nB",
                 "A1\nB",
             ],
@@ -252,12 +252,12 @@ EOF
                 "B\n1\n2\n3\n4\n5\n6\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n",
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-<?php\r\n+<?php\n A\n",
+                "--- Original\n+++ New\n@@ @@\n-<?php\r\n+<?php\n A\n",
                 "<?php\r\nA\n",
                 "<?php\nA\n",
             ],
             [
-                "--- Original\n+++ New\n@@ @@\n #Warning: Strings contain different line endings!\n-a\r\n+\n+c\r\n",
+                "--- Original\n+++ New\n@@ @@\n-a\r\n+\n+c\r\n\\ No newline at end of file\n",
                 "a\r\n",
                 "\nc\r",
             ],
@@ -374,7 +374,9 @@ EOF
 +++ New
 @@ @@
 -one
+\ No newline at end of file
 +two
+\ No newline at end of file
 ',
             $this->differ->diff(['one'], ['two']),
         );

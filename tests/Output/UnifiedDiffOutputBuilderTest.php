@@ -31,25 +31,25 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
     {
         return [
             [
-                "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
+                "CUSTOM HEADER\n@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 'CUSTOM HEADER',
             ],
             [
-                "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
+                "CUSTOM HEADER\n@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 "CUSTOM HEADER\n",
             ],
             [
-                "CUSTOM HEADER\n\n@@ @@\n-a\n+b\n",
+                "CUSTOM HEADER\n\n@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 "CUSTOM HEADER\n\n",
             ],
             [
-                "@@ @@\n-a\n+b\n",
+                "@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 '',
