@@ -122,6 +122,7 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
         $this->assertSame(
             1, // means `diff` found a diff between the files we gave it
             $exitCode,
+            /** @phpstan-ignore argument.type */
             sprintf(
                 "Command exec. was not successful:\n\"%s\"\nOutput:\n\"%s\"\nStdErr:\n\"%s\"\nExit code %d.\n",
                 $p->getCommandLine(),

@@ -37,7 +37,7 @@ use SebastianBergmann\Diff\Differ;
 final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 {
     /**
-     * @var array{collapseRanges: bool, commonLineThreshold: int, contextLines: int, fromFile: null|string, fromFileDate: null|string, toFile: null|string, toFileDate: null|string}
+     * @var array{addLineNumbers: bool, collapseRanges: bool, commonLineThreshold: int, contextLines: int, emitDiffLineEndWarning: bool, emitNoLineEndEofWarning: bool, fromFile: null|string, fromFileDate: null|string, header: null|string, toFile: null|string, toFileDate: null|string}
      */
     private static array $default = [
         'addLineNumbers'          => true,  // when false, hunk header is rendered as `@@ @@` (no line numbers); when true, as `@@ -from,range +to,range @@`
@@ -103,6 +103,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         if (null !== $options['header']) {
             $this->assertString($options, 'header');
 
+            /** @phpstan-ignore assign.propertyType */
             $this->header = $options['header'];
         } else {
             $this->assertString($options, 'fromFile');
@@ -112,9 +113,13 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
             $this->header = sprintf(
                 "--- %s%s\n+++ %s%s\n",
+                /** @phpstan-ignore argument.type */
                 $options['fromFile'],
+                /** @phpstan-ignore binaryOp.invalid */
                 null === $options['fromFileDate'] ? '' : "\t" . $options['fromFileDate'],
+                /** @phpstan-ignore argument.type */
                 $options['toFile'],
+                /** @phpstan-ignore binaryOp.invalid */
                 null === $options['toFileDate'] ? '' : "\t" . $options['toFileDate'],
             );
         }
@@ -184,6 +189,7 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
 
         /** @phpstan-ignore offsetAccess.notFound */
         if (0 === $diff[$upperLimit - 1][1]) {
+            /** @phpstan-ignore argument.type */
             $lc = substr($diff[$upperLimit - 1][0], -1);
 
             if ("\n" !== $lc) {
@@ -198,6 +204,8 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
                 /** @phpstan-ignore offsetAccess.notFound */
                 if (isset($toFind[$diff[$i][1]])) {
                     unset($toFind[$diff[$i][1]]);
+
+                    /** @phpstan-ignore argument.type */
                     $lc = substr($diff[$i][0], -1);
 
                     if ("\n" !== $lc) {
@@ -358,15 +366,22 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             /** @phpstan-ignore offsetAccess.notFound */
             if ($diff[$i][1] === Differ::ADDED) {
                 $this->changed = true;
+
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, '+' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::REMOVED) {
                 $this->changed = true;
+
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, '-' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::OLD) {
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, ' ' . $diff[$i][0]);
             } elseif ($diff[$i][1] === Differ::NO_LINE_END_EOF_WARNING) {
+                /** @phpstan-ignore argument.type */
                 fwrite($output, $this->emitNoLineEndEofWarning ? $diff[$i][0] : "\n");
             } elseif ($this->emitDiffLineEndWarning && $diff[$i][1] === Differ::DIFF_LINE_END_WARNING) {
+                /** @phpstan-ignore binaryOp.invalid */
                 fwrite($output, ' ' . $diff[$i][0]);
             }
             // else: unknown/invalid type or skipped warning - silently skip

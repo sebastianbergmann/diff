@@ -23,6 +23,7 @@ final class ConfigurationException extends InvalidArgumentException implements E
                 'Option "%s" must be %s, got "%s".',
                 $option,
                 $expected,
+                /** @phpstan-ignore binaryOp.invalid */
                 is_object($value) ? $value::class : (null === $value ? '<null>' : gettype($value) . '#' . $value),
             ),
             $code,

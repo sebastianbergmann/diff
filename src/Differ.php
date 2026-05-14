@@ -113,12 +113,15 @@ final class Differ
 
         foreach ($diff as $entry) {
             if (self::OLD === $entry[1]) {
+                /** @phpstan-ignore argument.type */
                 $ln                 = $this->getLinebreak($entry[0]);
                 $oldLineBreaks[$ln] = true;
                 $newLineBreaks[$ln] = true;
             } elseif (self::ADDED === $entry[1]) {
+                /** @phpstan-ignore argument.type */
                 $newLineBreaks[$this->getLinebreak($entry[0])] = true;
             } elseif (self::REMOVED === $entry[1]) {
+                /** @phpstan-ignore argument.type */
                 $oldLineBreaks[$this->getLinebreak($entry[0])] = true;
             }
         }

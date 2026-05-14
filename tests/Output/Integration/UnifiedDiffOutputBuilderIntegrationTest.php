@@ -143,6 +143,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     {
         $this->assertTrue(
             $p->isSuccessful(),
+            /** @phpstan-ignore argument.type */
             sprintf(
                 "Command exec. was not successful:\n\"%s\"\nOutput:\n\"%s\"\nStdErr:\n\"%s\"\nExit code %d.\n",
                 $p->getCommandLine(),

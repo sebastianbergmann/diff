@@ -591,7 +591,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         $this->assertSame($expected, $diff);
     }
 
-    /** @param array<mixed> $config */
+    /** @param array<string, mixed> $config */
     #[DataProvider('provideConfiguredDiffGeneration')]
     public function testConfiguredDiffGeneration(string $expected, string $from, string $to, array $config = []): void
     {
@@ -785,7 +785,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         ]);
     }
 
-    /** @param array<mixed> $invalidConfig */
+    /** @param array<string, mixed> $invalidConfig */
     #[DataProvider('provideInvalidConfiguration')]
     public function testInvalidConfiguration(string $expectedMessage, array $invalidConfig): void
     {
