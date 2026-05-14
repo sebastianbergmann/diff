@@ -18,8 +18,9 @@ abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
      * Iterates through diff line by line.
      *
      * @param list<array{0: mixed, 1: int}> $diff
+     * @param int<0, max>                   $lineThreshold
      *
-     * @return array<int, positive-int>
+     * @return array<int, int<0, max>>
      */
     protected function getCommonChunks(array $diff, int $lineThreshold = 5): array
     {
@@ -30,6 +31,7 @@ abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
         $commonChunks = [];
 
         for ($i = 0; $i < $diffSize; $i++) {
+            /** @phpstan-ignore offsetAccess.notFound */
             if ($diff[$i][1] === 0 /* OLD */) {
                 if ($capturing === false) {
                     $capturing  = true;

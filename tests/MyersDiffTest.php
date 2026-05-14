@@ -51,9 +51,13 @@ final class MyersDiffTest extends TestCase
 
             $this->assertCount($size, $result);
 
-            foreach ($result as $i => $entry) {
-                $this->assertSame([$seq[$i], Differ::OLD], $entry);
+            $expected = [];
+
+            foreach ($seq as $value) {
+                $expected[] = [$value, Differ::OLD];
             }
+
+            $this->assertSame($expected, $result);
         }
     }
 

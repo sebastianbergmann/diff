@@ -79,6 +79,10 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
         $fromFile  = __FILE__;
         $vendorDir = realpath(__DIR__ . '/../../../vendor');
 
+        if ($vendorDir === false) {
+            throw new RuntimeException('vendor directory not found.');
+        }
+
         $fileIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($vendorDir, RecursiveDirectoryIterator::SKIP_DOTS));
 
         /** @var SplFileInfo $file */
@@ -87,9 +91,15 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
                 continue;
             }
 
-            $toFile = $file->getPathname();
+            $toFile   = $file->getPathname();
+            $fromReal = realpath($fromFile);
+            $toReal   = realpath($toFile);
 
-            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", realpath($fromFile), realpath($toFile)) => [$fromFile, $toFile];
+            if ($fromReal === false || $toReal === false) {
+                continue;
+            }
+
+            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", $fromReal, $toReal) => [$fromFile, $toFile];
             $fromFile = $toFile;
         }
 
@@ -195,15 +205,8 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
         $output = $p->getOutput();
 
-        $diffLines    = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $diffLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $this->fileFrom, $diffLines[0], 1);
-        $diffLines[1] = preg_replace('#^\+\+\+ .*#', '+++ /' . $this->fileFrom, $diffLines[1], 1);
-        $diff         = implode('', $diffLines);
-
-        $outputLines    = preg_split('/(.*\R)/', $output, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $outputLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $this->fileFrom, $outputLines[0], 1);
-        $outputLines[1] = preg_replace('#^\+\+\+ .*#', '+++ /' . $this->fileFrom, $outputLines[1], 1);
-        $output         = implode('', $outputLines);
+        $diff   = self::setDiffFileHeader($diff, $this->fileFrom);
+        $output = self::setDiffFileHeader($output, $this->fileFrom);
 
         $this->assertSame($diff, $output);
     }
@@ -283,9 +286,14 @@ final class StrictUnifiedDiffOutputBuilderIntegrationTest extends TestCase
 
     private static function setDiffFileHeader(string $diff, string $file): string
     {
-        $diffLines    = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $diffLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1);
-        $diffLines[1] = preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1);
+        $diffLines = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+        if ($diffLines === false || !isset($diffLines[0], $diffLines[1])) {
+            return $diff;
+        }
+
+        $diffLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1) ?? $diffLines[0];
+        $diffLines[1] = preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1) ?? $diffLines[1];
 
         return implode('', $diffLines);
     }

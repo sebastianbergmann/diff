@@ -52,7 +52,12 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
 
             Assert::assertFileExists($toFile);
 
-            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength)) => [$fromFile, $toFile];
+            $fromReal = realpath($fromFile);
+            $toReal   = realpath($toFile);
+            Assert::assertIsString($fromReal);
+            Assert::assertIsString($toReal);
+
+            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr($fromReal, $dirLength), substr($toReal, $dirLength)) => [$fromFile, $toFile];
         }
 
         // create cases based on PHP files within the vendor directory for integration testing
@@ -69,9 +74,13 @@ final class UnifiedDiffAssertTraitIntegrationTest extends TestCase
                 continue;
             }
 
-            $toFile = $file->getPathname();
+            $toFile   = $file->getPathname();
+            $fromReal = realpath($fromFile);
+            $toReal   = realpath($toFile);
+            Assert::assertIsString($fromReal);
+            Assert::assertIsString($toReal);
 
-            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr(realpath($fromFile), $dirLength), substr(realpath($toFile), $dirLength)) => [$fromFile, $toFile];
+            yield sprintf("Diff file:\n\"%s\"\nvs.\n\"%s\"\n", substr($fromReal, $dirLength), substr($toReal, $dirLength)) => [$fromFile, $toFile];
             $fromFile = $toFile;
         }
     }

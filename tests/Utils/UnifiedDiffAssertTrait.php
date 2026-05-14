@@ -11,7 +11,6 @@ namespace SebastianBergmann\Diff\Utils;
 
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
-use function assert;
 use function count;
 use function is_array;
 use function preg_match;
@@ -45,7 +44,9 @@ trait UnifiedDiffAssertTrait
 
         $lines = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
-        assert(is_array($lines));
+        if (!is_array($lines)) {
+            throw new RuntimeException('Failed to split diff into lines.');
+        }
 
         $lineCount        = count($lines);
         $lineNumber       = $diffLineFromNumber = $diffLineToNumber = 1;
@@ -54,16 +55,19 @@ trait UnifiedDiffAssertTrait
 
         // check for header
         if ($lineCount > 1) {
-            $this->unifiedDiffAssertLinePrefix($lines[0], 'Line 1.');
-            $this->unifiedDiffAssertLinePrefix($lines[1], 'Line 2.');
+            $line1 = $lines[0] ?? throw new UnexpectedValueException('Line 1 missing.');
+            $line2 = $lines[1] ?? throw new UnexpectedValueException('Line 2 missing.');
 
-            if (str_starts_with($lines[0], '---')) {
-                if (!str_starts_with($lines[1], '+++')) {
-                    throw new UnexpectedValueException(sprintf("Line 1 indicates a header, so line 2 must start with \"+++\".\nLine 1: \"%s\"\nLine 2: \"%s\".", $lines[0], $lines[1]));
+            $this->unifiedDiffAssertLinePrefix($line1, 'Line 1.');
+            $this->unifiedDiffAssertLinePrefix($line2, 'Line 2.');
+
+            if (str_starts_with($line1, '---')) {
+                if (!str_starts_with($line2, '+++')) {
+                    throw new UnexpectedValueException(sprintf("Line 1 indicates a header, so line 2 must start with \"+++\".\nLine 1: \"%s\"\nLine 2: \"%s\".", $line1, $line2));
                 }
 
-                $this->unifiedDiffAssertHeaderLine($lines[0], '--- ', 'Line 1.');
-                $this->unifiedDiffAssertHeaderLine($lines[1], '+++ ', 'Line 2.');
+                $this->unifiedDiffAssertHeaderLine($line1, '--- ', 'Line 1.');
+                $this->unifiedDiffAssertHeaderLine($line2, '+++ ', 'Line 2.');
 
                 $lineNumber = 3;
             }
@@ -78,7 +82,7 @@ trait UnifiedDiffAssertTrait
                 throw new UnexpectedValueException(sprintf('Unexpected line as 2 "No newline" markers have found, ". Line %d.', $lineNumber));
             }
 
-            $line = $lines[$lineNumber - 1]; // line numbers start by 1, array index at 0
+            $line = $lines[$lineNumber - 1] ?? throw new UnexpectedValueException(sprintf('Line %d missing.', $lineNumber)); // line numbers start by 1, array index at 0
             $type = $this->unifiedDiffAssertLinePrefix($line, sprintf('Line %d.', $lineNumber));
 
             if ($expectHunkHeader && '@' !== $type && '\\' !== $type) {
@@ -255,7 +259,7 @@ trait UnifiedDiffAssertTrait
     }
 
     /**
-     * @return int[]
+     * @return array{0: int, 1: int, 2: int, 3: int}
      */
     private function unifiedDiffAssertHunkHeader(string $line, string $message): array
     {

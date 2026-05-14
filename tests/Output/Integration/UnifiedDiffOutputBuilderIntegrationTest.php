@@ -13,10 +13,8 @@ use const ARRAY_FILTER_USE_KEY;
 use const PREG_SPLIT_DELIM_CAPTURE;
 use const PREG_SPLIT_NO_EMPTY;
 use function array_filter;
-use function assert;
 use function file_put_contents;
 use function implode;
-use function is_array;
 use function preg_replace;
 use function preg_split;
 use function realpath;
@@ -166,10 +164,12 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     {
         $diffLines = preg_split('/(.*\R)/', $diff, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
-        assert(is_array($diffLines));
+        if ($diffLines === false || !isset($diffLines[0], $diffLines[1])) {
+            return $diff;
+        }
 
-        $diffLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1);
-        $diffLines[1] = preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1);
+        $diffLines[0] = preg_replace('#^\-\-\- .*#', '--- /' . $file, $diffLines[0], 1) ?? $diffLines[0];
+        $diffLines[1] = preg_replace('#^\+\+\+ .*#', '+++ /' . $file, $diffLines[1], 1) ?? $diffLines[1];
 
         return implode('', $diffLines);
     }
