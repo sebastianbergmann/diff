@@ -4,6 +4,16 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [8.3.0] - 2026-MM-DD
 
+### Added
+
+* [#136](https://github.com/sebastianbergmann/diff/issues/136): `UnifiedDiffOutputBuilder` now accepts a fourth `$emitNoLineEndEofWarning` constructor parameter (default `true`) to suppress the `\ No newline at end of file` marker for use cases such as PHPUnit comparison failures that are not related to files
+* [#136](https://github.com/sebastianbergmann/diff/issues/136): `StrictUnifiedDiffOutputBuilder` now accepts the options `addLineNumbers`, `emitDiffLineEndWarning`, `emitNoLineEndEofWarning`, and `header`
+
+### Changed
+
+* [#136](https://github.com/sebastianbergmann/diff/issues/136): `UnifiedDiffOutputBuilder` now returns an empty string when no difference is detected (previously: returned the header)
+* [#136](https://github.com/sebastianbergmann/diff/issues/136): `UnifiedDiffOutputBuilder::writeHunk()` now writes the actual `\ No newline at end of file` marker text (previously: wrote only a line break) and silently skips diff entries with unknown types
+
 ### Deprecated
 
 * The `SebastianBergmann\Diff\LongestCommonSubsequenceCalculator` interface, its two implementations `SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator` and `SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator`, and the `$lcs` parameter of `SebastianBergmann\Diff\Differ::diff()` and `SebastianBergmann\Diff\Differ::diffToArray()` are now deprecated; do not pass the `$lcs` parameter any more in preparation for the removal of these symbols and this parameter, respectively

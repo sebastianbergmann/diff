@@ -31,25 +31,25 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
     {
         return [
             [
-                "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
+                "CUSTOM HEADER\n@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 'CUSTOM HEADER',
             ],
             [
-                "CUSTOM HEADER\n@@ @@\n-a\n+b\n",
+                "CUSTOM HEADER\n@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 "CUSTOM HEADER\n",
             ],
             [
-                "CUSTOM HEADER\n\n@@ @@\n-a\n+b\n",
+                "CUSTOM HEADER\n\n@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 "CUSTOM HEADER\n\n",
             ],
             [
-                "@@ @@\n-a\n+b\n",
+                "@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
                 'a',
                 'b',
                 '',
@@ -138,5 +138,48 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
 
         $this->assertStringContainsString(' line1', $diff5);
         $this->assertStringContainsString(' line9', $diff5);
+    }
+
+    public function testIdenticalInputsProduceEmptyOutputEvenWithHeader(): void
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder("--- Original\n+++ New\n"));
+
+        $this->assertSame('', $differ->diff("foo\n", "foo\n"));
+    }
+
+    public function testNoLineEndEofWarningCanBeSuppressed(): void
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder('', false, 3, false));
+
+        $this->assertSame(
+            "@@ @@\n-a\n+b\n",
+            $differ->diff('a', 'b'),
+        );
+    }
+
+    public function testNoLineEndEofWarningIsRenderedWithItsActualContent(): void
+    {
+        $differ = new Differ(new UnifiedDiffOutputBuilder('', false));
+
+        $this->assertSame(
+            "@@ @@\n-a\n\\ No newline at end of file\n+b\n\\ No newline at end of file\n",
+            $differ->diff('a', 'b'),
+        );
+    }
+
+    public function testUnknownDiffEntryTypesAreSilentlySkipped(): void
+    {
+        $builder = new UnifiedDiffOutputBuilder('', false);
+
+        $diff = [
+            ["a\n", Differ::REMOVED],
+            ['unknown', 99],
+            ["b\n", Differ::ADDED],
+        ];
+
+        $this->assertSame(
+            "@@ @@\n-a\n+b\n",
+            $builder->getDiff($diff),
+        );
     }
 }

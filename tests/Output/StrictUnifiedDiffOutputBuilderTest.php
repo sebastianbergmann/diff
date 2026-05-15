@@ -628,6 +628,148 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
         );
     }
 
+    public function testCustomHeaderCanBeProvided(): void
+    {
+        $differ = new Differ(new StrictUnifiedDiffOutputBuilder([
+            'header' => "--- Expected\n+++ Actual\n",
+        ]));
+
+        $this->assertSame(
+            "--- Expected\n+++ Actual\n@@ -1 +1 @@\n-a\n+b\n",
+            $differ->diff("a\n", "b\n"),
+        );
+    }
+
+    public function testCustomHeaderTakesPrecedenceOverFromFileAndToFile(): void
+    {
+        $builder = new StrictUnifiedDiffOutputBuilder([
+            'header'   => "CUSTOM\n",
+            'fromFile' => 'ignored.txt',
+            'toFile'   => 'ignored.txt',
+        ]);
+
+        $differ = new Differ($builder);
+
+        $this->assertSame(
+            "CUSTOM\n@@ -1 +1 @@\n-a\n+b\n",
+            $differ->diff("a\n", "b\n"),
+        );
+    }
+
+    public function testCustomHeaderWithoutTrailingNewlineGetsOneAppended(): void
+    {
+        $differ = new Differ(new StrictUnifiedDiffOutputBuilder([
+            'header' => 'NO TRAILING NEWLINE',
+        ]));
+
+        $this->assertSame(
+            "NO TRAILING NEWLINE\n@@ -1 +1 @@\n-a\n+b\n",
+            $differ->diff("a\n", "b\n"),
+        );
+    }
+
+    public function testLineNumbersCanBeOmittedFromHunkHeader(): void
+    {
+        $differ = new Differ(new StrictUnifiedDiffOutputBuilder([
+            'addLineNumbers' => false,
+            'fromFile'       => 'input.txt',
+            'toFile'         => 'output.txt',
+        ]));
+
+        $this->assertSame(
+            "--- input.txt\n+++ output.txt\n@@ @@\n-a\n+b\n",
+            $differ->diff("a\n", "b\n"),
+        );
+    }
+
+    public function testNoLineEndEofWarningCanBeSuppressed(): void
+    {
+        $differ = new Differ(new StrictUnifiedDiffOutputBuilder([
+            'emitNoLineEndEofWarning' => false,
+            'fromFile'                => 'input.txt',
+            'toFile'                  => 'output.txt',
+        ]));
+
+        $this->assertSame(
+            "--- input.txt\n+++ output.txt\n@@ -1 +1 @@\n-a\n+b\n",
+            $differ->diff('a', 'b'),
+        );
+    }
+
+    public function testDiffLineEndWarningIsEmittedWhenEnabled(): void
+    {
+        $differ = new Differ(new StrictUnifiedDiffOutputBuilder([
+            'addLineNumbers'         => false,
+            'emitDiffLineEndWarning' => true,
+            'fromFile'               => 'input.txt',
+            'toFile'                 => 'output.txt',
+        ]));
+
+        $this->assertSame(
+            "--- input.txt\n+++ output.txt\n@@ @@\n #Warning: Strings contain different line endings!\n-foo\r\n+foo\n",
+            $differ->diff("foo\r\n", "foo\n"),
+        );
+    }
+
+    public function testDiffLineEndWarningIsSuppressedByDefault(): void
+    {
+        $differ = new Differ(new StrictUnifiedDiffOutputBuilder([
+            'fromFile' => 'input.txt',
+            'toFile'   => 'output.txt',
+        ]));
+
+        $this->assertSame(
+            "--- input.txt\n+++ output.txt\n@@ -1 +1 @@\n-foo\r\n+foo\n",
+            $differ->diff("foo\r\n", "foo\n"),
+        );
+    }
+
+    public function testInvalidAddLineNumbersOptionIsRejected(): void
+    {
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Option "addLineNumbers" must be a bool, got "integer#1".');
+
+        new StrictUnifiedDiffOutputBuilder([
+            'addLineNumbers' => 1,
+            'fromFile'       => 'input.txt',
+            'toFile'         => 'output.txt',
+        ]);
+    }
+
+    public function testInvalidEmitNoLineEndEofWarningOptionIsRejected(): void
+    {
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Option "emitNoLineEndEofWarning" must be a bool, got "string#yes".');
+
+        new StrictUnifiedDiffOutputBuilder([
+            'emitNoLineEndEofWarning' => 'yes',
+            'fromFile'                => 'input.txt',
+            'toFile'                  => 'output.txt',
+        ]);
+    }
+
+    public function testInvalidEmitDiffLineEndWarningOptionIsRejected(): void
+    {
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Option "emitDiffLineEndWarning" must be a bool, got "integer#0".');
+
+        new StrictUnifiedDiffOutputBuilder([
+            'emitDiffLineEndWarning' => 0,
+            'fromFile'               => 'input.txt',
+            'toFile'                 => 'output.txt',
+        ]);
+    }
+
+    public function testInvalidHeaderOptionIsRejected(): void
+    {
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Option "header" must be a string, got "integer#1".');
+
+        new StrictUnifiedDiffOutputBuilder([
+            'header' => 1,
+        ]);
+    }
+
     /** @param array<mixed> $invalidConfig */
     #[DataProvider('provideInvalidConfiguration')]
     public function testInvalidConfiguration(string $expectedMessage, array $invalidConfig): void
