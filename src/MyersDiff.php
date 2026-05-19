@@ -11,6 +11,7 @@ namespace SebastianBergmann\Diff;
 
 use function array_fill;
 use function count;
+use function intdiv;
 
 /**
  * Linear-space variant of the Myers diff algorithm (Eugene W. Myers, 1986,
@@ -65,22 +66,17 @@ final readonly class MyersDiff
                 continue;
             }
 
-            $removes = [];
-            $adds    = [];
+            $adds = [];
 
             /** @phpstan-ignore offsetAccess.notFound */
             while ($i < $n && $diff[$i][1] !== Differ::OLD) {
                 if ($diff[$i][1] === Differ::REMOVED) {
-                    $removes[] = $diff[$i];
+                    $result[] = $diff[$i];
                 } else {
                     $adds[] = $diff[$i];
                 }
 
                 $i++;
-            }
-
-            foreach ($removes as $entry) {
-                $result[] = $entry;
             }
 
             foreach ($adds as $entry) {
@@ -133,41 +129,19 @@ final readonly class MyersDiff
                 $out[] = [$a[$i], Differ::REMOVED];
             }
         } else {
-            [$xs, $ys, $xe, $ye, $d] = $this->findMiddleSnake($a, $aLo, $aHi, $b, $bLo, $bHi);
+            // Both n > 0 and m > 0 here, so the edit distance is at least 2
+            // (one deletion plus one insertion); a single edit would have been
+            // fully consumed by the prefix/suffix trimming above.
+            [$xs, $ys, $xe, $ye] = $this->findMiddleSnake($a, $aLo, $aHi, $b, $bLo, $bHi);
 
-            if ($d > 1) {
-                $this->diffRange($a, $aLo, $aLo + $xs, $b, $bLo, $bLo + $ys, $out);
+            $this->diffRange($a, $aLo, $aLo + $xs, $b, $bLo, $bLo + $ys, $out);
 
-                for ($i = $xs; $i < $xe; $i++) {
-                    /** @phpstan-ignore offsetAccess.notFound */
-                    $out[] = [$a[$aLo + $i], Differ::OLD];
-                }
-
-                $this->diffRange($a, $aLo + $xe, $aHi, $b, $bLo + $ye, $bHi, $out);
-            } elseif ($m > $n) {
-                // d == 1: a single insertion. Common prefix already consumed above means
-                // n elements match the first n of b; the (n+1)-th element of b is the insert.
-                for ($i = 0; $i < $n; $i++) {
-                    /** @phpstan-ignore offsetAccess.notFound */
-                    $out[] = [$a[$aLo + $i], Differ::OLD];
-                }
-
-                for ($j = $n; $j < $m; $j++) {
-                    /** @phpstan-ignore offsetAccess.notFound */
-                    $out[] = [$b[$bLo + $j], Differ::ADDED];
-                }
-            } else {
-                // d == 1: a single deletion (n > m).
-                for ($j = 0; $j < $m; $j++) {
-                    /** @phpstan-ignore offsetAccess.notFound */
-                    $out[] = [$b[$bLo + $j], Differ::OLD];
-                }
-
-                for ($i = $m; $i < $n; $i++) {
-                    /** @phpstan-ignore offsetAccess.notFound */
-                    $out[] = [$a[$aLo + $i], Differ::REMOVED];
-                }
+            for ($i = $xs; $i < $xe; $i++) {
+                /** @phpstan-ignore offsetAccess.notFound */
+                $out[] = [$a[$aLo + $i], Differ::OLD];
             }
+
+            $this->diffRange($a, $aLo + $xe, $aHi, $b, $bLo + $ye, $bHi, $out);
         }
 
         // Emit the deferred common suffix in original order.
@@ -184,7 +158,7 @@ final readonly class MyersDiff
      * @param list<mixed> $a
      * @param list<mixed> $b
      *
-     * @return array{0: int, 1: int, 2: int, 3: int, 4: int} [xStart, yStart, xEnd, yEnd, d] in coords relative to (aLo, bLo)
+     * @return array{0: int, 1: int, 2: int, 3: int} [xStart, yStart, xEnd, yEnd] in coords relative to (aLo, bLo)
      */
     private function findMiddleSnake(array $a, int $aLo, int $aHi, array $b, int $bLo, int $bHi): array
     {
@@ -195,7 +169,7 @@ final readonly class MyersDiff
         $m          = $bHi - $bLo;
         $delta      = $n - $m;
         $deltaIsOdd = ($delta & 1) !== 0;
-        $maxD       = (int) (($n + $m + 1) / 2);
+        $maxD       = intdiv($n + $m + 1, 2);
         $offset     = $maxD + 1;
         $size       = 2 * $maxD + 2;
         $vf         = array_fill(0, $size, 0);
@@ -230,7 +204,7 @@ final readonly class MyersDiff
 
                     /** @phpstan-ignore offsetAccess.notFound */
                     if ($kb >= -($d - 1) && $kb <= $d - 1 && $vf[$offset + $k] + $vb[$offset + $kb] >= $n) {
-                        return [$xs, $ys, $x, $y, 2 * $d - 1];
+                        return [$xs, $ys, $x, $y];
                     }
                 }
             }
@@ -263,13 +237,14 @@ final readonly class MyersDiff
 
                     /** @phpstan-ignore offsetAccess.notFound */
                     if ($kf >= -$d && $kf <= $d && $vf[$offset + $kf] + $vb[$offset + $k] >= $n) {
-                        return [$n - $x, $m - $y, $n - $xs, $m - $ys, 2 * $d];
+                        return [$n - $x, $m - $y, $n - $xs, $m - $ys];
                     }
                 }
             }
         }
 
-        // Unreachable: an optimal D-path is guaranteed to exist for D <= n + m.
-        return [0, 0, 0, 0, 0];
+        // @codeCoverageIgnoreStart
+        throw new NoMiddleSnakeFoundException;
+        // @codeCoverageIgnoreEnd
     }
 }
