@@ -11,6 +11,9 @@ namespace SebastianBergmann\Diff\Output;
 
 use function count;
 
+/**
+ * @deprecated https://github.com/sebastianbergmann/diff/issues/137
+ */
 abstract class AbstractChunkOutputBuilder implements DiffOutputBuilderInterface
 {
     /**

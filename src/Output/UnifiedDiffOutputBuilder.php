@@ -26,6 +26,8 @@ use SebastianBergmann\Diff\Differ;
 
 /**
  * Builds a diff string representation in unified diff format in chunks.
+ *
+ * @deprecated https://github.com/sebastianbergmann/diff/issues/137
  */
 final class UnifiedDiffOutputBuilder extends AbstractChunkOutputBuilder
 {
