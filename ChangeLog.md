@@ -8,8 +8,9 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * [#138](https://github.com/sebastianbergmann/diff/pull/138): Use Eugene W. Myers' linear-space algorithm
 
-### Deprecated
+### Removed
 
+* [#157](https://github.com/sebastianbergmann/diff/issues/157): The `UnifiedDiffOutputBuilder` and `AbstractChunkOutputBuilder` classes have been removed, use `StrictUnifiedDiffOutputBuilder` instead
 * The `SebastianBergmann\Diff\LongestCommonSubsequenceCalculator` interface, its two implementations `SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator` and `SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator`, and the `$lcs` parameter of `SebastianBergmann\Diff\Differ::diff()` and `SebastianBergmann\Diff\Differ::diffToArray()` have been removed
 
 ## [8.3.1] - 2026-MM-DD

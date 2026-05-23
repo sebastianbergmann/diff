@@ -15,13 +15,11 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
-use SebastianBergmann\Diff\Output\AbstractChunkOutputBuilder;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
+use SebastianBergmann\Diff\Output\StrictUnifiedDiffOutputBuilder;
 
 #[CoversClass(Differ::class)]
-#[CoversClass(UnifiedDiffOutputBuilder::class)]
+#[CoversClass(StrictUnifiedDiffOutputBuilder::class)]
 #[UsesClass(MyersDiff::class)]
-#[UsesClass(AbstractChunkOutputBuilder::class)]
 #[Small]
 final class DifferTest extends TestCase
 {
@@ -342,7 +340,14 @@ EOF
 
     protected function setUp(): void
     {
-        $this->differ = new Differ(new UnifiedDiffOutputBuilder);
+        $this->differ = new Differ(
+            new StrictUnifiedDiffOutputBuilder([
+                'fromFile'               => 'Original',
+                'toFile'                 => 'New',
+                'addLineNumbers'         => false,
+                'emitDiffLineEndWarning' => true,
+            ]),
+        );
     }
 
     /**
