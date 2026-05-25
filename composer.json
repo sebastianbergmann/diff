@@ -30,7 +30,7 @@
         "php": ">=8.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^12.5.26",
+        "phpunit/phpunit": "^12.5.27",
         "symfony/process": "^7.4.11"
     },
     "autoload": {
