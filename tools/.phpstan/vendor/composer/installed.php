@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => 'a264a86980eae11af2d95394c183d465839cd40c',
+        'pretty_version' => '8.3.x-dev',
+        'version' => '8.3.9999999.9999999-dev',
+        'reference' => 'b5a0b4eca31ab50939137dcfdeade78db247d2d5',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'a264a86980eae11af2d95394c183d465839cd40c',
+            'pretty_version' => '8.3.x-dev',
+            'version' => '8.3.9999999.9999999-dev',
+            'reference' => 'b5a0b4eca31ab50939137dcfdeade78db247d2d5',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -65,9 +65,9 @@
             'dev_requirement' => true,
         ),
         'tomasvotruba/type-coverage' => array(
-            'pretty_version' => '2.1.0',
-            'version' => '2.1.0.0',
-            'reference' => '468354b3964120806a69890cbeb3fcf005876391',
+            'pretty_version' => '2.2.1',
+            'version' => '2.2.1.0',
+            'reference' => '4087caa4639bdd4c646f2984bc333efeddf69e4b',
             'type' => 'phpstan-extension',
             'install_path' => __DIR__ . '/../tomasvotruba/type-coverage',
             'aliases' => array(),
