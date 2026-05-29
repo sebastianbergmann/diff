@@ -45,13 +45,7 @@ final class UnifiedDiffOutputBuilderIntegrationTest extends TestCase
     private string $filePatch;
 
     /**
-     * @return array{
-     *     string?: array{
-     *         0: string,
-     *         1: string,
-     *         2: string,
-     *     },
-     * }
+     * @return array<int|string, array{string, string, string}>
      */
     public static function provideDiffWithLineNumbers(): array
     {
