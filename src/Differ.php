@@ -162,7 +162,7 @@ final class Differ
         }
 
         // if either input or output is a single line without breaks than no warning should be raised
-        if (['' => true] === $newLineBreaks || ['' => true] === $oldLineBreaks) {
+        if (count($newLineBreaks) === 1 || count($oldLineBreaks) === 1) {
             return false;
         }
 
