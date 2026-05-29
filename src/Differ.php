@@ -14,6 +14,7 @@ use const PREG_SPLIT_NO_EMPTY;
 use function array_any;
 use function array_unshift;
 use function array_values;
+use function count;
 use function current;
 use function end;
 use function is_string;
