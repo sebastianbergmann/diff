@@ -2,7 +2,7 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [9.0.0] - 2026-MM-DD
+## [9.0.0] - 2026-06-05
 
 ### Changed
 
@@ -12,12 +12,6 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * [#157](https://github.com/sebastianbergmann/diff/issues/157): The `UnifiedDiffOutputBuilder` and `AbstractChunkOutputBuilder` classes have been removed, use `StrictUnifiedDiffOutputBuilder` instead
 * The `SebastianBergmann\Diff\LongestCommonSubsequenceCalculator` interface, its two implementations `SebastianBergmann\Diff\TimeEfficientLongestCommonSubsequenceCalculator` and `SebastianBergmann\Diff\MemoryEfficientLongestCommonSubsequenceCalculator`, and the `$lcs` parameter of `SebastianBergmann\Diff\Differ::diff()` and `SebastianBergmann\Diff\Differ::diffToArray()` have been removed
-
-## [8.3.1] - 2026-MM-DD
-
-### Deprecated
-
-* [#137](https://github.com/sebastianbergmann/diff/issues/137): The `UnifiedDiffOutputBuilder` and `AbstractChunkOutputBuilder` classes have been deprecated, use `StrictUnifiedDiffOutputBuilder` instead
 
 ## [8.3.0] - 2026-05-15
 
@@ -214,8 +208,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
-[9.0.0]: https://github.com/sebastianbergmann/diff/compare/8.3...main
-[8.3.1]: https://github.com/sebastianbergmann/diff/compare/8.3.0...8.3
+[9.0.0]: https://github.com/sebastianbergmann/diff/compare/8.3.0...9.0.0
 [8.3.0]: https://github.com/sebastianbergmann/diff/compare/8.2.1...8.3.0
 [8.2.1]: https://github.com/sebastianbergmann/diff/compare/8.2.0...8.2.1
 [8.2.0]: https://github.com/sebastianbergmann/diff/compare/8.1.0...8.2.0
