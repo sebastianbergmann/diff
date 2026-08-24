@@ -21,6 +21,8 @@ use function preg_split;
  */
 final class Parser
 {
+    private const string CHUNK_HEADER = '/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/';
+
     /**
      * @return list<Diff>
      */
@@ -36,10 +38,12 @@ final class Parser
             array_pop($lines);
         }
 
-        $lineCount = count($lines);
-        $diffs     = [];
-        $diff      = null;
-        $collected = [];
+        $lineCount     = count($lines);
+        $diffs         = [];
+        $diff          = null;
+        $collected     = [];
+        $fromLinesLeft = 0;
+        $toLinesLeft   = 0;
 
         for ($i = 0; $i < $lineCount; $i++) {
             if (!isset($lines[$i])) {
@@ -48,6 +52,37 @@ final class Parser
 
             $line     = $lines[$i];
             $nextLine = $lines[$i + 1] ?? null;
+
+            if ($fromLinesLeft > 0 || $toLinesLeft > 0) {
+                $marker = $line === '' ? ' ' : $line[0];
+
+                if ($marker === ' ' || $marker === '+' || $marker === '-' || $marker === '\\') {
+                    $collected[] = $line;
+
+                    if ($marker !== '+' && $marker !== '\\') {
+                        $fromLinesLeft--;
+                    }
+
+                    if ($marker !== '-' && $marker !== '\\') {
+                        $toLinesLeft--;
+                    }
+
+                    continue;
+                }
+
+                // malformed chunk: resynchronize on headers
+                $fromLinesLeft = 0;
+                $toLinesLeft   = 0;
+            }
+
+            if (preg_match(self::CHUNK_HEADER, $line, $chunkMatch, PREG_UNMATCHED_AS_NULL) === 1) {
+                $fromLinesLeft = isset($chunkMatch['startrange']) ? max(0, (int) $chunkMatch['startrange']) : 1;
+                $toLinesLeft   = isset($chunkMatch['endrange']) ? max(0, (int) $chunkMatch['endrange']) : 1;
+
+                $collected[] = $line;
+
+                continue;
+            }
 
             if ($nextLine !== null &&
                 preg_match('#^---\h+"?(?P<file>[^\\v\\t"]+)#', $line, $fromMatch) === 1 &&
@@ -92,7 +127,7 @@ final class Parser
         $diffLines = [];
 
         foreach ($lines as $line) {
-            if (preg_match('/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/', $line, $match, PREG_UNMATCHED_AS_NULL) === 1) {
+            if (preg_match(self::CHUNK_HEADER, $line, $match, PREG_UNMATCHED_AS_NULL) === 1) {
                 $chunk = new Chunk(
                     (int) $match['start'],
                     isset($match['startrange']) ? max(0, (int) $match['startrange']) : 1,

@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\Diff;
 
+use function count;
 use function is_array;
 use function unserialize;
 use LogicException;
@@ -226,11 +227,15 @@ diff --git a/migration.sql b/migration.sql
 index abcdefg..abcdefh 100644
 --- a/migration.sql
 +++ b/migration.sql
-@@ -1,3 +1,4 @@
+@@ -1,5 +1,6 @@
  -- header comment
 +-- a comment added by this change
 +-- b comment added by this change
 -++ a stray marker removed
+--- a/foo gone
++++ b/foo added
+--- x removed
++++ y added
  SELECT 1;
 END;
         $diffs = $this->parser->parse($content);
@@ -243,27 +248,26 @@ END;
         $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
         $lines = $chunk->lines();
         $this->assertContainsOnlyInstancesOf(Line::class, $lines);
-        $this->assertCount(5, $lines);
 
-        $line = $lines[0] ?? throw new LogicException('Expected first line.');
-        $this->assertSame('-- header comment', $line->content());
-        $this->assertSame(Line::UNCHANGED, $line->type());
+        $expected = [
+            ['-- header comment', Line::UNCHANGED],
+            ['-- a comment added by this change', Line::ADDED],
+            ['-- b comment added by this change', Line::ADDED],
+            ['++ a stray marker removed', Line::REMOVED],
+            ['-- a/foo gone', Line::REMOVED],
+            ['++ b/foo added', Line::ADDED],
+            ['-- x removed', Line::REMOVED],
+            ['++ y added', Line::ADDED],
+            ['SELECT 1;', Line::UNCHANGED],
+        ];
 
-        $line = $lines[1] ?? throw new LogicException('Expected second line.');
-        $this->assertSame('-- a comment added by this change', $line->content());
-        $this->assertSame(Line::ADDED, $line->type());
+        $this->assertCount(count($expected), $lines);
 
-        $line = $lines[2] ?? throw new LogicException('Expected third line.');
-        $this->assertSame('-- b comment added by this change', $line->content());
-        $this->assertSame(Line::ADDED, $line->type());
-
-        $line = $lines[3] ?? throw new LogicException('Expected fourth line.');
-        $this->assertSame('++ a stray marker removed', $line->content());
-        $this->assertSame(Line::REMOVED, $line->type());
-
-        $line = $lines[4] ?? throw new LogicException('Expected fifth line.');
-        $this->assertSame('SELECT 1;', $line->content());
-        $this->assertSame(Line::UNCHANGED, $line->type());
+        foreach ($expected as $index => [$expectedContent, $expectedType]) {
+            $line = $lines[$index] ?? throw new LogicException('Expected line #' . $index . '.');
+            $this->assertSame($expectedContent, $line->content());
+            $this->assertSame($expectedType, $line->type());
+        }
     }
 
     public function testParseWithRange(): void
