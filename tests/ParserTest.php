@@ -236,27 +236,34 @@ END;
         $diffs = $this->parser->parse($content);
         $this->assertCount(1, $diffs);
 
-        $chunks = $diffs[0]->chunks();
+        $diff   = $diffs[0] ?? throw new LogicException('Expected one diff.');
+        $chunks = $diff->chunks();
         $this->assertCount(1, $chunks);
 
-        $lines = $chunks[0]->lines();
+        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $lines = $chunk->lines();
         $this->assertContainsOnlyInstancesOf(Line::class, $lines);
         $this->assertCount(5, $lines);
 
-        $this->assertSame('-- header comment', $lines[0]->content());
-        $this->assertSame(Line::UNCHANGED, $lines[0]->type());
+        $line = $lines[0] ?? throw new LogicException('Expected first line.');
+        $this->assertSame('-- header comment', $line->content());
+        $this->assertSame(Line::UNCHANGED, $line->type());
 
-        $this->assertSame('-- a comment added by this change', $lines[1]->content());
-        $this->assertSame(Line::ADDED, $lines[1]->type());
+        $line = $lines[1] ?? throw new LogicException('Expected second line.');
+        $this->assertSame('-- a comment added by this change', $line->content());
+        $this->assertSame(Line::ADDED, $line->type());
 
-        $this->assertSame('-- b comment added by this change', $lines[2]->content());
-        $this->assertSame(Line::ADDED, $lines[2]->type());
+        $line = $lines[2] ?? throw new LogicException('Expected third line.');
+        $this->assertSame('-- b comment added by this change', $line->content());
+        $this->assertSame(Line::ADDED, $line->type());
 
-        $this->assertSame('++ a stray marker removed', $lines[3]->content());
-        $this->assertSame(Line::REMOVED, $lines[3]->type());
+        $line = $lines[3] ?? throw new LogicException('Expected fourth line.');
+        $this->assertSame('++ a stray marker removed', $line->content());
+        $this->assertSame(Line::REMOVED, $line->type());
 
-        $this->assertSame('SELECT 1;', $lines[4]->content());
-        $this->assertSame(Line::UNCHANGED, $lines[4]->type());
+        $line = $lines[4] ?? throw new LogicException('Expected fifth line.');
+        $this->assertSame('SELECT 1;', $line->content());
+        $this->assertSame(Line::UNCHANGED, $line->type());
     }
 
     public function testParseWithRange(): void
