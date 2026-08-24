@@ -219,6 +219,46 @@ END;
         $this->assertCount(1, $diff->chunks());
     }
 
+    public function testParseWithContentLinesResemblingHeaderLines(): void
+    {
+        $content = <<<'END'
+diff --git a/migration.sql b/migration.sql
+index abcdefg..abcdefh 100644
+--- a/migration.sql
++++ b/migration.sql
+@@ -1,3 +1,4 @@
+ -- header comment
++-- a comment added by this change
++-- b comment added by this change
+-++ a stray marker removed
+ SELECT 1;
+END;
+        $diffs = $this->parser->parse($content);
+        $this->assertCount(1, $diffs);
+
+        $chunks = $diffs[0]->chunks();
+        $this->assertCount(1, $chunks);
+
+        $lines = $chunks[0]->lines();
+        $this->assertContainsOnlyInstancesOf(Line::class, $lines);
+        $this->assertCount(5, $lines);
+
+        $this->assertSame('-- header comment', $lines[0]->content());
+        $this->assertSame(Line::UNCHANGED, $lines[0]->type());
+
+        $this->assertSame('-- a comment added by this change', $lines[1]->content());
+        $this->assertSame(Line::ADDED, $lines[1]->type());
+
+        $this->assertSame('-- b comment added by this change', $lines[2]->content());
+        $this->assertSame(Line::ADDED, $lines[2]->type());
+
+        $this->assertSame('++ a stray marker removed', $lines[3]->content());
+        $this->assertSame(Line::REMOVED, $lines[3]->type());
+
+        $this->assertSame('SELECT 1;', $lines[4]->content());
+        $this->assertSame(Line::UNCHANGED, $lines[4]->type());
+    }
+
     public function testParseWithRange(): void
     {
         $content = <<<'END'

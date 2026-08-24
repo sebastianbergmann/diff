@@ -66,7 +66,7 @@ final class Parser
                 continue;
             }
 
-            if (preg_match('/^(?:diff --git |index [\da-f.]+|[+-]{3} [ab])/', $line) === 1) {
+            if (preg_match('/^(?:diff --git |index [\da-f.]+|(?:---|\+\+\+) [ab]\/)/', $line) === 1) {
                 continue;
             }
 
