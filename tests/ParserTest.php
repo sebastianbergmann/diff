@@ -10,6 +10,7 @@
 namespace SebastianBergmann\Diff;
 
 use function assert;
+use function count;
 use function is_array;
 use function unserialize;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -205,6 +206,90 @@ END;
         $this->assertSame('a/Test2.txt', $diff->from());
         $this->assertSame('b/Test2.txt', $diff->to());
         $this->assertCount(1, $diff->chunks());
+    }
+
+    public function testParseDoesNotMistakeContentLinesForHeaderLines(): void
+    {
+        $content = <<<'END'
+diff --git a/migration.sql b/migration.sql
+index abcdefg..abcdefh 100644
+--- a/migration.sql
++++ b/migration.sql
+@@ -1,5 +1,6 @@
+ -- header comment
++-- a comment added by this change
++-- b comment added by this change
+-++ a stray marker removed
+--- a/foo gone
++++ b/foo added
+--- x removed
++++ y added
+ SELECT 1;
+END;
+        $diffs = $this->parser->parse($content);
+        $this->assertCount(1, $diffs);
+
+        $chunks = $diffs[0]->chunks();
+        $this->assertCount(1, $chunks);
+
+        $lines = $chunks[0]->lines();
+        $this->assertContainsOnlyInstancesOf(Line::class, $lines);
+
+        $expected = [
+            ['-- header comment', Line::UNCHANGED],
+            ['-- a comment added by this change', Line::ADDED],
+            ['-- b comment added by this change', Line::ADDED],
+            ['++ a stray marker removed', Line::REMOVED],
+            ['-- a/foo gone', Line::REMOVED],
+            ['++ b/foo added', Line::ADDED],
+            ['-- x removed', Line::REMOVED],
+            ['++ y added', Line::ADDED],
+            ['SELECT 1;', Line::UNCHANGED],
+        ];
+
+        $this->assertCount(count($expected), $lines);
+
+        foreach ($expected as $i => [$expectedContent, $expectedType]) {
+            $this->assertSame($expectedContent, $lines[$i]->content());
+            $this->assertSame($expectedType, $lines[$i]->type());
+        }
+    }
+
+    public function testParseContinuesWithNextFileAfterChunkWithFewerLinesThanAnnounced(): void
+    {
+        $content = <<<'END'
+diff --git a/first.txt b/first.txt
+index abcdefg..abcdefh 100644
+--- a/first.txt
++++ b/first.txt
+@@ -1,3 +1,3 @@
+ shared
+-removed
++added
+diff --git a/second.txt b/second.txt
+index abcdefg..abcdefh 100644
+--- a/second.txt
++++ b/second.txt
+@@ -1 +1 @@
+-old
++new
+END;
+        $diffs = $this->parser->parse($content);
+        $this->assertCount(2, $diffs);
+
+        $this->assertSame('a/first.txt', $diffs[0]->from());
+        $this->assertSame('b/first.txt', $diffs[0]->to());
+
+        $chunks = $diffs[0]->chunks();
+        $this->assertCount(1, $chunks);
+        $this->assertCount(3, $chunks[0]->lines());
+
+        $this->assertSame('a/second.txt', $diffs[1]->from());
+        $this->assertSame('b/second.txt', $diffs[1]->to());
+
+        $chunks = $diffs[1]->chunks();
+        $this->assertCount(1, $chunks);
+        $this->assertCount(2, $chunks[0]->lines());
     }
 
     public function testParseWithRange(): void

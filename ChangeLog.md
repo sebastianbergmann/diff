@@ -2,6 +2,12 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.0.1] - 2026-MM-DD
+
+### Fixed
+
+* Parser drops lines that look like file headers
+
 ## [7.0.0] - 2025-02-07
 
 ### Removed
@@ -157,6 +163,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 5.6
 
+[7.0.1]: https://github.com/sebastianbergmann/diff/compare/7.0.0...7.0
 [7.0.0]: https://github.com/sebastianbergmann/diff/compare/6.0...7.0.0
 [6.0.2]: https://github.com/sebastianbergmann/diff/compare/6.0.1...6.0.2
 [6.0.1]: https://github.com/sebastianbergmann/diff/compare/6.0.0...6.0.1
