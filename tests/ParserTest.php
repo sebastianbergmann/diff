@@ -9,6 +9,7 @@
  */
 namespace SebastianBergmann\Diff;
 
+use function count;
 use function is_array;
 use function unserialize;
 use LogicException;
@@ -217,6 +218,100 @@ END;
         $this->assertSame('a/Test2.txt', $diff->from());
         $this->assertSame('b/Test2.txt', $diff->to());
         $this->assertCount(1, $diff->chunks());
+    }
+
+    public function testParseDoesNotMistakeContentLinesForHeaderLines(): void
+    {
+        $content = <<<'END'
+diff --git a/migration.sql b/migration.sql
+index abcdefg..abcdefh 100644
+--- a/migration.sql
++++ b/migration.sql
+@@ -1,5 +1,6 @@
+ -- header comment
++-- a comment added by this change
++-- b comment added by this change
+-++ a stray marker removed
+--- a/foo gone
++++ b/foo added
+--- x removed
++++ y added
+ SELECT 1;
+END;
+        $diffs = $this->parser->parse($content);
+        $this->assertCount(1, $diffs);
+
+        $diff   = $diffs[0] ?? throw new LogicException('Expected one diff.');
+        $chunks = $diff->chunks();
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $lines = $chunk->lines();
+        $this->assertContainsOnlyInstancesOf(Line::class, $lines);
+
+        $expected = [
+            ['-- header comment', Line::UNCHANGED],
+            ['-- a comment added by this change', Line::ADDED],
+            ['-- b comment added by this change', Line::ADDED],
+            ['++ a stray marker removed', Line::REMOVED],
+            ['-- a/foo gone', Line::REMOVED],
+            ['++ b/foo added', Line::ADDED],
+            ['-- x removed', Line::REMOVED],
+            ['++ y added', Line::ADDED],
+            ['SELECT 1;', Line::UNCHANGED],
+        ];
+
+        $this->assertCount(count($expected), $lines);
+
+        foreach ($expected as $i => [$expectedContent, $expectedType]) {
+            $line = $lines[$i] ?? throw new LogicException('Expected line #' . $i . '.');
+
+            $this->assertSame($expectedContent, $line->content());
+            $this->assertSame($expectedType, $line->type());
+        }
+    }
+
+    public function testParseContinuesWithNextFileAfterChunkWithFewerLinesThanAnnounced(): void
+    {
+        $content = <<<'END'
+diff --git a/first.txt b/first.txt
+index abcdefg..abcdefh 100644
+--- a/first.txt
++++ b/first.txt
+@@ -1,3 +1,3 @@
+ shared
+-removed
++added
+diff --git a/second.txt b/second.txt
+index abcdefg..abcdefh 100644
+--- a/second.txt
++++ b/second.txt
+@@ -1 +1 @@
+-old
++new
+END;
+        $diffs = $this->parser->parse($content);
+        $this->assertCount(2, $diffs);
+
+        $diff = $diffs[0] ?? throw new LogicException('Expected first diff.');
+        $this->assertSame('a/first.txt', $diff->from());
+        $this->assertSame('b/first.txt', $diff->to());
+
+        $chunks = $diff->chunks();
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $this->assertCount(3, $chunk->lines());
+
+        $diff = $diffs[1] ?? throw new LogicException('Expected second diff.');
+        $this->assertSame('a/second.txt', $diff->from());
+        $this->assertSame('b/second.txt', $diff->to());
+
+        $chunks = $diff->chunks();
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $this->assertCount(2, $chunk->lines());
     }
 
     public function testParseWithRange(): void
