@@ -59,7 +59,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * This component is no longer supported on PHP 8.3
 
-## [7.0.1] - 2026-MM-DD
+## [7.0.1] - 2026-08-25
 
 ### Fixed
 
@@ -227,7 +227,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 [8.2.0]: https://github.com/sebastianbergmann/diff/compare/8.1.0...8.2.0
 [8.1.0]: https://github.com/sebastianbergmann/diff/compare/8.0.0...8.1.0
 [8.0.0]: https://github.com/sebastianbergmann/diff/compare/7.0...8.0.0
-[7.0.1]: https://github.com/sebastianbergmann/diff/compare/7.0.0...7.0
+[7.0.1]: https://github.com/sebastianbergmann/diff/compare/7.0.0...7.0.1
 [7.0.0]: https://github.com/sebastianbergmann/diff/compare/6.0.2...7.0.0
 [6.0.2]: https://github.com/sebastianbergmann/diff/compare/6.0.1...6.0.2
 [6.0.1]: https://github.com/sebastianbergmann/diff/compare/6.0.0...6.0.1
