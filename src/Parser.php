@@ -21,14 +21,19 @@ use function preg_split;
  */
 final class Parser
 {
-    private const string CHUNK_HEADER = '/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/';
+    private const string LINE_BREAK       = '(\r\n|\r|\n)';
+    private const string FROM_FILE_HEADER = '#^---\h+"?(?P<file>[^\\v\\t"]+)#';
+    private const string TO_FILE_HEADER   = '#^\\+\\+\\+\\h+"?(?P<file>[^\\v\\t"]+)#';
+    private const string METADATA_HEADER  = '/^(?:diff --git |index [\da-f.]+|(?:---|\+\+\+) [ab]\/)/';
+    private const string CHUNK_HEADER     = '/^@@\s+-(?P<start>\d+)(?:,\s*(?P<startrange>\d+))?\s+\+(?P<end>\d+)(?:,\s*(?P<endrange>\d+))?\s+@@/';
+    private const string CHUNK_LINE       = '/^(?P<type>[+ -])?(?P<line>.*)/';
 
     /**
      * @return list<Diff>
      */
     public function parse(string $string): array
     {
-        $lines = preg_split('(\r\n|\r|\n)', $string);
+        $lines = preg_split(self::LINE_BREAK, $string);
 
         if ($lines !== false &&
             $lines !== [] &&
@@ -74,8 +79,8 @@ final class Parser
                 continue;
             }
 
-            if (preg_match('#^---\h+"?(?P<file>[^\\v\\t"]+)#', $lines[$i], $fromMatch) &&
-                preg_match('#^\\+\\+\\+\\h+"?(?P<file>[^\\v\\t"]+)#', $lines[$i + 1], $toMatch)) {
+            if (preg_match(self::FROM_FILE_HEADER, $lines[$i], $fromMatch) &&
+                preg_match(self::TO_FILE_HEADER, $lines[$i + 1], $toMatch)) {
                 if ($diff !== null) {
                     $this->parseFileDiff($diff, $collected);
 
@@ -87,7 +92,7 @@ final class Parser
 
                 $i++;
             } else {
-                if (preg_match('/^(?:diff --git |index [\da-f.]+|(?:---|\+\+\+) [ab]\/)/', $lines[$i])) {
+                if (preg_match(self::METADATA_HEADER, $lines[$i])) {
                     continue;
                 }
 
@@ -128,7 +133,7 @@ final class Parser
                 continue;
             }
 
-            if (preg_match('/^(?P<type>[+ -])?(?P<line>.*)/', $line, $match)) {
+            if (preg_match(self::CHUNK_LINE, $line, $match)) {
                 $type = Line::UNCHANGED;
 
                 if ($match['type'] === '+') {
