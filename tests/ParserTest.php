@@ -270,6 +270,49 @@ END;
         }
     }
 
+    public function testParseResynchronizesOnHeadersAfterMalformedChunk(): void
+    {
+        $content = <<<'END'
+diff --git a/first.txt b/first.txt
+index 1111111..2222222 100644
+--- a/first.txt
++++ b/first.txt
+@@ -1,3 +1,3 @@
+ shared
+-removed
++added
+diff --git a/second.txt b/second.txt
+index 3333333..4444444 100644
+--- a/second.txt
++++ b/second.txt
+@@ -1 +1 @@
+-old
++new
+END;
+        $diffs = $this->parser->parse($content);
+        $this->assertCount(2, $diffs);
+
+        $diff = $diffs[0] ?? throw new LogicException('Expected first diff.');
+        $this->assertSame('a/first.txt', $diff->from());
+        $this->assertSame('b/first.txt', $diff->to());
+
+        $chunks = $diff->chunks();
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $this->assertCount(3, $chunk->lines());
+
+        $diff = $diffs[1] ?? throw new LogicException('Expected second diff.');
+        $this->assertSame('a/second.txt', $diff->from());
+        $this->assertSame('b/second.txt', $diff->to());
+
+        $chunks = $diff->chunks();
+        $this->assertCount(1, $chunks);
+
+        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $this->assertCount(2, $chunk->lines());
+    }
+
     public function testParseWithRange(): void
     {
         $content = <<<'END'
