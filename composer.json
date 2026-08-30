@@ -31,7 +31,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^13.3.2",
-        "symfony/process": "^7.4.17"
+        "symfony/process": "^7.4.18"
     },
     "autoload": {
         "classmap": [
