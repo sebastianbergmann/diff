@@ -146,13 +146,13 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
             // check if it has a trailing linebreak, else add a warning under it
             $toFind = [1 => true, 2 => true];
 
-            for ($i = $upperLimit - 1; $i >= 0; $i--) {
-                if (isset($toFind[$diff[$i][1]])) {
-                    unset($toFind[$diff[$i][1]]);
-                    $lc = substr($diff[$i][0], -1);
+            for ($j = $upperLimit - 1; $j >= 0; $j--) {
+                if (isset($toFind[$diff[$j][1]])) {
+                    unset($toFind[$diff[$j][1]]);
+                    $lc = substr($diff[$j][0], -1);
 
                     if ("\n" !== $lc) {
-                        array_splice($diff, $i + 1, 0, [["\n\\ No newline at end of file\n", Differ::NO_LINE_END_EOF_WARNING]]);
+                        array_splice($diff, $j + 1, 0, [["\n\\ No newline at end of file\n", Differ::NO_LINE_END_EOF_WARNING]]);
                     }
 
                     if ($toFind === []) {
