@@ -258,8 +258,6 @@ final class StrictUnifiedDiffOutputBuilder implements DiffOutputBuilderInterface
         $fromRange -= $sameCount;
         $toRange   -= $sameCount;
 
-        assert(isset($i) && is_int($i));
-
         $this->writeHunk(
             $diff,
             $hunkCapture - $contextStartOffset,
