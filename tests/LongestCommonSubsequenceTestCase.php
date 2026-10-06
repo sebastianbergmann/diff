@@ -103,7 +103,6 @@ abstract class LongestCommonSubsequenceTestCase extends TestCase
         $common   = $this->implementation->calculate($from, $to);
         $this->assertSame($expected, $common);
 
-        $from     = ['A',      'C',      'E', 'F', 'G'];
         $to       = ['B', 'C', 'D', 'E', 'F',      'H'];
         $expected = ['C',                'E', 'F'];
         $common   = $this->implementation->calculate($from, $to);
