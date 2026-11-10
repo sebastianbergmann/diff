@@ -68,13 +68,13 @@ final class ParserTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
-        $diff   = $diffs[0] ?? throw new LogicException('Expected one diff.');
+        $diff   = $diffs[0];
         $chunks = $diff->chunks();
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
 
         $this->assertCount(1, $chunks);
 
-        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $chunk = $chunks[0];
         $this->assertSame(20, $chunk->start());
         $this->assertCount(4, $chunk->lines());
     }
@@ -87,13 +87,13 @@ final class ParserTest extends TestCase
 
         $this->assertCount(1, $diffs);
 
-        $diff   = $diffs[0] ?? throw new LogicException('Expected one diff.');
+        $diff   = $diffs[0];
         $chunks = $diff->chunks();
         $this->assertCount(3, $chunks);
 
-        $chunkOne   = $chunks[0] ?? throw new LogicException('Expected first chunk.');
-        $chunkTwo   = $chunks[1] ?? throw new LogicException('Expected second chunk.');
-        $chunkThree = $chunks[2] ?? throw new LogicException('Expected third chunk.');
+        $chunkOne   = $chunks[0];
+        $chunkTwo   = $chunks[1];
+        $chunkThree = $chunks[2];
 
         $this->assertSame(20, $chunkOne->start());
         $this->assertSame(320, $chunkTwo->start());
@@ -162,13 +162,13 @@ END;
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
-        $diff   = $diffs[0] ?? throw new LogicException('Expected one diff.');
+        $diff   = $diffs[0];
         $chunks = $diff->chunks();
 
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(1, $chunks);
 
-        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $chunk = $chunks[0];
         $this->assertSame(49, $chunk->start());
         $this->assertSame(49, $chunk->end());
         $this->assertSame(9, $chunk->startRange());
@@ -178,11 +178,11 @@ END;
         $this->assertContainsOnlyInstancesOf(Line::class, $lines);
         $this->assertCount(2, $lines);
 
-        $line = $lines[0] ?? throw new LogicException('Expected first line.');
+        $line = $lines[0];
         $this->assertSame('A', $line->content());
         $this->assertSame(Line::UNCHANGED, $line->type());
 
-        $line = $lines[1] ?? throw new LogicException('Expected second line.');
+        $line = $lines[1];
         $this->assertSame('B', $line->content());
         $this->assertSame(Line::REMOVED, $line->type());
     }
@@ -209,12 +209,12 @@ END;
         $diffs = $this->parser->parse($content);
         $this->assertCount(2, $diffs);
 
-        $diff = $diffs[0] ?? throw new LogicException('Expected first diff.');
+        $diff = $diffs[0];
         $this->assertSame('a/Test.txt', $diff->from());
         $this->assertSame('b/Test.txt', $diff->to());
         $this->assertCount(1, $diff->chunks());
 
-        $diff = $diffs[1] ?? throw new LogicException('Expected second diff.');
+        $diff = $diffs[1];
         $this->assertSame('a/Test2.txt', $diff->from());
         $this->assertSame('b/Test2.txt', $diff->to());
         $this->assertCount(1, $diff->chunks());
@@ -241,11 +241,11 @@ END;
         $diffs = $this->parser->parse($content);
         $this->assertCount(1, $diffs);
 
-        $diff   = $diffs[0] ?? throw new LogicException('Expected one diff.');
+        $diff   = $diffs[0];
         $chunks = $diff->chunks();
         $this->assertCount(1, $chunks);
 
-        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $chunk = $chunks[0];
         $lines = $chunk->lines();
         $this->assertContainsOnlyInstancesOf(Line::class, $lines);
 
@@ -264,7 +264,7 @@ END;
         $this->assertCount(count($expected), $lines);
 
         foreach ($expected as $i => [$expectedContent, $expectedType]) {
-            $line = $lines[$i] ?? throw new LogicException('Expected line #' . $i . '.');
+            $line = $lines[$i];
 
             $this->assertSame($expectedContent, $line->content());
             $this->assertSame($expectedType, $line->type());
@@ -293,24 +293,24 @@ END;
         $diffs = $this->parser->parse($content);
         $this->assertCount(2, $diffs);
 
-        $diff = $diffs[0] ?? throw new LogicException('Expected first diff.');
+        $diff = $diffs[0];
         $this->assertSame('a/first.txt', $diff->from());
         $this->assertSame('b/first.txt', $diff->to());
 
         $chunks = $diff->chunks();
         $this->assertCount(1, $chunks);
 
-        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $chunk = $chunks[0];
         $this->assertCount(3, $chunk->lines());
 
-        $diff = $diffs[1] ?? throw new LogicException('Expected second diff.');
+        $diff = $diffs[1];
         $this->assertSame('a/second.txt', $diff->from());
         $this->assertSame('b/second.txt', $diff->to());
 
         $chunks = $diff->chunks();
         $this->assertCount(1, $chunks);
 
-        $chunk = $chunks[0] ?? throw new LogicException('Expected one chunk.');
+        $chunk = $chunks[0];
         $this->assertCount(2, $chunk->lines());
     }
 
@@ -330,19 +330,19 @@ END;
         $this->assertContainsOnlyInstancesOf(Diff::class, $diffs);
         $this->assertCount(1, $diffs);
 
-        $diff   = $diffs[0] ?? throw new LogicException('Expected one diff.');
+        $diff   = $diffs[0];
         $chunks = $diff->chunks();
 
         $this->assertContainsOnlyInstancesOf(Chunk::class, $chunks);
         $this->assertCount(2, $chunks);
 
-        $chunk = $chunks[0] ?? throw new LogicException('Expected first chunk.');
+        $chunk = $chunks[0];
         $this->assertSame(49, $chunk->start());
         $this->assertSame(49, $chunk->end());
         $this->assertSame(0, $chunk->startRange());
         $this->assertSame(0, $chunk->endRange());
 
-        $chunk = $chunks[1] ?? throw new LogicException('Expected second chunk.');
+        $chunk = $chunks[1];
         $this->assertSame(50, $chunk->start());
         $this->assertSame(50, $chunk->end());
         $this->assertSame(1, $chunk->startRange());

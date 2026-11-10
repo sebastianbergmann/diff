@@ -742,7 +742,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     public function testInvalidAddLineNumbersOptionIsRejected(): void
     {
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('Option "addLineNumbers" must be a bool, got "integer#1".');
+        $this->expectExceptionMessageIs('Option "addLineNumbers" must be a bool, got "integer#1".');
 
         new StrictUnifiedDiffOutputBuilder([
             'addLineNumbers' => 1,
@@ -754,7 +754,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     public function testInvalidEmitNoLineEndEofWarningOptionIsRejected(): void
     {
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('Option "emitNoLineEndEofWarning" must be a bool, got "string#yes".');
+        $this->expectExceptionMessageIs('Option "emitNoLineEndEofWarning" must be a bool, got "string#yes".');
 
         new StrictUnifiedDiffOutputBuilder([
             'emitNoLineEndEofWarning' => 'yes',
@@ -766,7 +766,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     public function testInvalidEmitDiffLineEndWarningOptionIsRejected(): void
     {
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('Option "emitDiffLineEndWarning" must be a bool, got "integer#0".');
+        $this->expectExceptionMessageIs('Option "emitDiffLineEndWarning" must be a bool, got "integer#0".');
 
         new StrictUnifiedDiffOutputBuilder([
             'emitDiffLineEndWarning' => 0,
@@ -778,7 +778,7 @@ final class StrictUnifiedDiffOutputBuilderTest extends TestCase
     public function testInvalidHeaderOptionIsRejected(): void
     {
         $this->expectException(ConfigurationException::class);
-        $this->expectExceptionMessage('Option "header" must be a string, got "integer#1".');
+        $this->expectExceptionMessageIs('Option "header" must be a string, got "integer#1".');
 
         new StrictUnifiedDiffOutputBuilder([
             'header' => 1,
