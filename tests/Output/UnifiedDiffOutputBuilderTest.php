@@ -107,6 +107,6 @@ final class UnifiedDiffOutputBuilderTest extends TestCase
 
         $output = $differ->diff($from, $to);
 
-        $this->assertEmpty($output);
+        $this->assertSame('', $output);
     }
 }

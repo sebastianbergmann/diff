@@ -25,7 +25,7 @@ final class AbstractChunkOutputBuilderTest extends TestCase
     /**
      * @return array<
      *     array{
-     *         0: array<int, int>,
+     *         0: array<non-negative-int, non-negative-int>,
      *         1: string,
      *         2: string,
      *         3?: int,
@@ -133,7 +133,7 @@ final class AbstractChunkOutputBuilderTest extends TestCase
     }
 
     /**
-     * @param array<int, positive-int> $expected
+     * @param array<non-negative-int, non-negative-int> $expected
      */
     #[DataProvider('provideGetCommonChunks')]
     public function testGetCommonChunks(array $expected, string $from, string $to, int $lineThreshold = 5): void
@@ -146,7 +146,7 @@ final class AbstractChunkOutputBuilderTest extends TestCase
             }
 
             /**
-             * @return array<int, positive-int>
+             * @return array<non-negative-int, non-negative-int>
              */
             public function getChunks(array $diff, int $lineThreshold): array
             {
